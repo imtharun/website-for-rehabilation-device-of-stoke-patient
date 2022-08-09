@@ -1,9 +1,10 @@
 import React from "react";
+import Login from "./pages/Login";
 
 const App = () => {
   return (
-    <div>
-      <h1 className="text-red-500">Hello world</h1>
+    <div className="font-workSans min-h-screen h-screen">
+      <Login />
     </div>
   );
 };
