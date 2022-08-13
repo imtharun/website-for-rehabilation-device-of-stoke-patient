@@ -6,7 +6,6 @@ const con = mysql.createConnection({
     password: config.upass,
     database: config.database
 });
-
 connect();
 //used to establish connection with the database
 function connect()
@@ -54,12 +53,8 @@ function createuser(username,password){
 }
 
 
-
-
-
-
 module.exports = {
     authorise,
     createuser,
-    
+
 };
