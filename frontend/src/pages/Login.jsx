@@ -1,14 +1,25 @@
 import React, { useRef, useState, useEffect } from "react";
 import Bg from "./../assets/og-bg.svg";
 import Logo from "./../assets/psg.png";
+import { validateEmail } from "./Signup";
 
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const [email, setEmail] = useState("");
+  const [isEmail, setIsEmail] = useState(false);
   const [password, setPassword] = useState("");
 
   useEffect(() => {}, []);
+
+  useEffect(() => {
+    console.log(validateEmail(email));
+    if (email !== "" && !validateEmail(email)) {
+      setIsEmail(true);
+    } else {
+      setIsEmail(false);
+    }
+  }, [email]);
 
   const submitHandler = function (event) {
     event.preventDefault();
@@ -30,7 +41,7 @@ const Login = () => {
             </p>
           </div>
           <div className="mt-8">
-            <div className="max-w-xs border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div className="relative max-w-xs border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <input
                 ref={emailRef}
                 className="outline-none block w-full"
@@ -40,6 +51,11 @@ const Login = () => {
                 placeholder="Email"
                 required
               />
+              {isEmail && (
+                <span className="text-red-500 absolute text-xs -top-2 right-0">
+                  Invalid Mail Id
+                </span>
+              )}
             </div>
             <div className="max-w-xs mt-8 border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <input
@@ -54,7 +70,7 @@ const Login = () => {
               />
             </div>
             <div className="my-10">
-              <button className="block max-w-xs w-full rounded-full p-2 hover:opacity-70 mx-auto bg-gray-300 ">
+              <button className="block max-w-xs w-full transition ease-in-out hover:scale-110 rounded-full p-2 mx-auto bg-gray-300 ">
                 Login
               </button>
             </div>

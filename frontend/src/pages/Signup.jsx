@@ -3,6 +3,20 @@ import Bg from "./../assets/og-bg.svg";
 import Logo from "./../assets/psg.png";
 import TextareaAutosize from "react-textarea-autosize";
 
+const isAlpha = (text) => {
+  return text.match("^[ a-zA-Z()]+$");
+};
+
+export const validateEmail = (email) => {
+  return email.match(/^([a-zA-Z0-9\._]+)@([a-zA-Z0-9])+.([a-z]+)(.[a-z]+)?$/);
+};
+
+const validatePhoneNumber = (number) => {
+  return number.match(
+    /^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[6789]\d{9}|(\d[ -]?){10}\d$/
+  );
+};
+
 const Login = () => {
   const nameRef = useRef();
   const emailRef = useRef();
@@ -33,22 +47,7 @@ const Login = () => {
   const [isPhoneNumber, setIsPhoneNumber] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
 
-  const isAlpha = (text) => {
-    return text.match("^[ a-zA-Z()]+$");
-  };
-
-  const validateEmail = (email) => {
-    return email.match(/^([a-zA-Z0-9\._]+)@([a-zA-Z0-9])+.([a-z]+)(.[a-z]+)?$/);
-  };
-
-  const validatePhoneNumber = (number) => {
-    return number.match(
-      /^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[6789]\d{9}|(\d[ -]?){10}\d$/
-    );
-  };
-
   useEffect(() => {
-    console.log(isAlpha(name));
     if (name !== "" && !isAlpha(name)) {
       setIsName(true);
     } else {
@@ -57,7 +56,6 @@ const Login = () => {
   }, [name]);
 
   useEffect(() => {
-    console.log(validateEmail(email));
     if (email !== "" && !validateEmail(email)) {
       setIsEmail(true);
     } else {
