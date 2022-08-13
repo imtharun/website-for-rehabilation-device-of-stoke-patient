@@ -1,0 +1,305 @@
+import React, { useRef, useState, useEffect } from "react";
+import Bg from "./../assets/og-bg.svg";
+import Logo from "./../assets/psg.png";
+import TextareaAutosize from "react-textarea-autosize";
+
+const Login = () => {
+  const nameRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const dobRef = useRef();
+  const confirmPasswordRef = useRef();
+  const phoneNumberRef = useRef();
+  const addressRef = useRef();
+  const medicalConditionRef = useRef();
+  const caretakerNameRef = useRef();
+  const caretakerDobRef = useRef();
+  const caretakerAddressRef = useRef();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [medicalCondition, setMedicalCondition] = useState("");
+  const [dob, setDob] = useState("");
+  const [caretakerName, setCaretakerName] = useState("");
+  const [caretakerAddress, setCaretakerAddress] = useState("");
+  const [caretakerDob, setCaretakerDob] = useState("");
+
+  const [isName, setIsName] = useState(false);
+  const [isEmail, setIsEmail] = useState(false);
+  const [isPhoneNumber, setIsPhoneNumber] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
+
+  const isAlpha = (text) => {
+    return text.match("^[ a-zA-Z()]+$");
+  };
+
+  const validateEmail = (email) => {
+    return email.match(/^([a-zA-Z0-9\._]+)@([a-zA-Z0-9])+.([a-z]+)(.[a-z]+)?$/);
+  };
+
+  const validatePhoneNumber = (number) => {
+    return number.match(
+      /^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[6789]\d{9}|(\d[ -]?){10}\d$/
+    );
+  };
+
+  useEffect(() => {
+    console.log(isAlpha(name));
+    if (name !== "" && !isAlpha(name)) {
+      setIsName(true);
+    } else {
+      setIsName(false);
+    }
+  }, [name]);
+
+  useEffect(() => {
+    console.log(validateEmail(email));
+    if (email !== "" && !validateEmail(email)) {
+      setIsEmail(true);
+    } else {
+      setIsEmail(false);
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (phoneNumber !== "" && !validatePhoneNumber(phoneNumber)) {
+      setIsPhoneNumber(true);
+    } else {
+      setIsPhoneNumber(false);
+    }
+  }, [phoneNumber]);
+
+  useEffect(() => {
+    if (password === "" && confirmPassword === "") {
+      setIsPassword(false);
+      return;
+    }
+
+    if (confirmPassword.length !== password.length) {
+      setIsPassword(true);
+      return;
+    }
+    if (
+      password !== "" &&
+      confirmPassword !== "" &&
+      password !== confirmPassword
+    ) {
+      setIsPassword(true);
+    } else {
+      setIsPassword(false);
+    }
+  }, [password, confirmPassword]);
+
+  const submitHandler = function (event) {
+    event.preventDefault();
+  };
+
+  return (
+    <div className="sm:flex min-h-screen">
+      {/* form div */}
+      <div className="sm:w-1/2 pt-6 mx-6 h-full">
+        <div>
+          <img className="w-[8rem]" src={Logo} alt="Logo" />
+        </div>
+        <form className="mt-24" onSubmit={submitHandler}>
+          <div>
+            <h1 className="text-center text-3xl">Welcome Back!</h1>
+            <p className="text-xs pt-1 text-gray-500 text-center">
+              Please enter your details
+            </p>
+          </div>
+          <div className="mt-8">
+            <div className="relative max-w-xs border-b-[1.5px] border-black mx-auto p-1 pl-0">
+              <input
+                ref={nameRef}
+                className="outline-none block w-full"
+                value={name}
+                type="text"
+                onChange={() => setName(nameRef.current.value)}
+                placeholder="Name"
+                required
+              />
+              {isName && (
+                <span className="text-red-500 absolute text-xs -top-2 right-0">
+                  Invalid Name
+                </span>
+              )}
+            </div>
+            <div className="relative max-w-xs mt-7 border-b-[1.5px] border-black mx-auto p-1 pl-0">
+              <input
+                ref={emailRef}
+                className="outline-none block w-full"
+                value={email}
+                type="email"
+                onChange={() => setEmail(emailRef.current.value)}
+                placeholder="Email"
+                required
+              />
+
+              {isEmail && (
+                <span className="text-red-500 absolute text-xs -top-2 right-0">
+                  Invalid Mail Id
+                </span>
+              )}
+            </div>
+            <div className="max-w-xs mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0">
+              <input
+                ref={dobRef}
+                className="outline-none block w-full"
+                value={dob}
+                placeholder="DD/MM/YYYY"
+                onChange={() => setDob(dobRef.current.value)}
+                type="text"
+                required
+              />
+            </div>
+            <div className="max-w-xs mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+              <input
+                ref={phoneNumberRef}
+                className="outline-none block w-full"
+                value={phoneNumber}
+                type="text"
+                onChange={() => setPhoneNumber(phoneNumberRef.current.value)}
+                placeholder="Phone number"
+                required
+              />
+              {isPhoneNumber && (
+                <span className="text-red-500 absolute text-xs -top-2 right-0">
+                  Invalid Phone Number
+                </span>
+              )}
+            </div>
+            <div className="max-w-xs mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+              <TextareaAutosize
+                ref={addressRef}
+                minRows={2}
+                className="outline-none block w-full"
+                value={address}
+                type="text"
+                onChange={() => setAddress(addressRef.current.value)}
+                placeholder="Address"
+                required
+              />
+            </div>
+            <div className="max-w-xs mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+              <TextareaAutosize
+                ref={medicalConditionRef}
+                minRows={2}
+                className="outline-none block w-full"
+                value={medicalCondition}
+                type="text"
+                onChange={() =>
+                  setMedicalCondition(medicalConditionRef.current.value)
+                }
+                placeholder="Medical Condition"
+                required
+              />
+            </div>
+
+            <div className="max-w-xs mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0">
+              <input
+                ref={passwordRef}
+                className="outline-none block w-full"
+                value={password}
+                onChange={() => setPassword(passwordRef.current.value)}
+                type="password"
+                autoComplete="off"
+                placeholder="Password"
+                required
+              />
+              {isPassword && (
+                <span className="text-red-500 absolute text-xs -top-2 right-0">
+                  Invalid Password
+                </span>
+              )}
+            </div>
+            <div className="max-w-xs mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0">
+              <input
+                ref={confirmPasswordRef}
+                className="outline-none block w-full"
+                value={confirmPassword}
+                onChange={() =>
+                  setConfirmPassword(confirmPasswordRef.current.value)
+                }
+                type="password"
+                autoComplete="off"
+                placeholder="Confirm Password"
+                required
+              />
+              {isPassword && (
+                <span className="text-red-500 absolute text-xs -top-2 right-0">
+                  Invalid Password
+                </span>
+              )}
+            </div>
+            <div className="max-w-xs mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+              <input
+                ref={caretakerNameRef}
+                className="outline-none block w-full"
+                value={caretakerName}
+                type="text"
+                onChange={() =>
+                  setCaretakerName(caretakerNameRef.current.value)
+                }
+                placeholder="Caretaker Name"
+                required
+              />
+            </div>
+            <div className="max-w-xs mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+              <input
+                ref={caretakerDobRef}
+                className="outline-none block w-full"
+                value={caretakerDob}
+                type="text"
+                onChange={() => setCaretakerDob(caretakerDobRef.current.value)}
+                placeholder="Caretaker Dob"
+                required
+              />
+            </div>
+            <div className="max-w-xs mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+              <TextareaAutosize
+                ref={caretakerAddressRef}
+                minRows={2}
+                className="outline-none block w-full"
+                value={caretakerAddress}
+                type="text"
+                onChange={() =>
+                  setCaretakerAddress(caretakerAddressRef.current.value)
+                }
+                placeholder="Caretaker Address"
+                required
+              />
+            </div>
+
+            <div className="my-10">
+              <button className="block hover:scale-110 transition ease-in-out max-w-xs w-full rounded-full p-2 mx-auto bg-gray-300 ">
+                Sign up
+              </button>
+            </div>
+          </div>
+        </form>
+        <div className="pt-[3.7rem] pb-4 w-sm max-w-[370px] mx-auto">
+          <h1 className="text-center text-sm">
+            Virtual Reality Based Rehabilitation Device for Upper Extremity
+            Stroke Survivors
+          </h1>
+          <p className="mt-1  text-center text-xs">Sponsored by DST - BDTD</p>
+        </div>
+      </div>
+      {/* image div */}
+      <div className="w-1/2 hidden sm:block">
+        <img
+          className="h-full w-full rounded-tl-3xl"
+          src={Bg}
+          alt="Background"
+        />
+      </div>
+    </div>
+  );
+};
+
+export default Login;

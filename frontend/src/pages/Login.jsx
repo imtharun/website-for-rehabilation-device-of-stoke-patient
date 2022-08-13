@@ -31,7 +31,6 @@ const Login = () => {
           </div>
           <div className="mt-8">
             <div className="max-w-xs border-b-[1.5px] border-black mx-auto p-1 pl-0">
-              {/* <label className=""></label> */}
               <input
                 ref={emailRef}
                 className="outline-none block w-full"
@@ -43,7 +42,6 @@ const Login = () => {
               />
             </div>
             <div className="max-w-xs mt-8 border-b-[1.5px] border-black mx-auto p-1 pl-0">
-              {/* <label className=""></label> */}
               <input
                 ref={passwordRef}
                 className="outline-none block w-full"
@@ -55,14 +53,14 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="m-10">
-              <button className="block max-w-xs w-full rounded-full p-2 mx-auto bg-gray-300 ">
+            <div className="my-10">
+              <button className="block max-w-xs w-full rounded-full p-2 hover:opacity-70 mx-auto bg-gray-300 ">
                 Login
               </button>
             </div>
           </div>
         </form>
-        <div className="pt-[3.5rem] sm:pt-[4.3rem] w-sm max-w-[370px] mx-auto">
+        <div className="pt-[3.7rem]  w-sm max-w-[370px] mx-auto">
           <h1 className="text-center text-sm">
             Virtual Reality Based Rehabilitation Device for Upper Extremity
             Stroke Survivors
