@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
-import Bg from "./../assets/og-bg.svg";
-import Logo from "./../assets/psg.png";
 import TextareaAutosize from "react-textarea-autosize";
+import Logo from "../components/Logo";
+import Background from "../components/Background";
 
 const isAlpha = (text) => {
   return text.match("^[ a-zA-Z()]+$");
@@ -100,9 +100,7 @@ const Login = () => {
     <div className="sm:flex min-h-screen">
       {/* form div */}
       <div className="sm:w-1/2 pt-6 mx-6 h-full">
-        <div>
-          <img className="w-[8rem]" src={Logo} alt="Logo" />
-        </div>
+        <Logo />
         <form className="mt-24" onSubmit={submitHandler}>
           <div>
             <h1 className="text-center text-3xl">Welcome Back!</h1>
@@ -111,7 +109,7 @@ const Login = () => {
             </p>
           </div>
           <div className="mt-8">
-            <div className="relative max-w-xs border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div className="relative max-w-[22rem] border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <input
                 ref={nameRef}
                 className="outline-none block w-full"
@@ -127,7 +125,7 @@ const Login = () => {
                 </span>
               )}
             </div>
-            <div className="relative max-w-xs mt-7 border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div className="relative max-w-[22rem] mt-7 border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <input
                 ref={emailRef}
                 className="outline-none block w-full"
@@ -144,7 +142,7 @@ const Login = () => {
                 </span>
               )}
             </div>
-            <div className="max-w-xs mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div className="max-w-[22rem] mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <input
                 ref={dobRef}
                 className="outline-none block w-full"
@@ -155,7 +153,7 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="max-w-xs mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <input
                 ref={phoneNumberRef}
                 className="outline-none block w-full"
@@ -171,7 +169,7 @@ const Login = () => {
                 </span>
               )}
             </div>
-            <div className="max-w-xs mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <TextareaAutosize
                 ref={addressRef}
                 minRows={2}
@@ -183,7 +181,7 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="max-w-xs mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <TextareaAutosize
                 ref={medicalConditionRef}
                 minRows={2}
@@ -198,7 +196,7 @@ const Login = () => {
               />
             </div>
 
-            <div className="max-w-xs mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div className="max-w-[22rem] mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <input
                 ref={passwordRef}
                 className="outline-none block w-full"
@@ -215,7 +213,7 @@ const Login = () => {
                 </span>
               )}
             </div>
-            <div className="max-w-xs mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div className="max-w-[22rem] mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <input
                 ref={confirmPasswordRef}
                 className="outline-none block w-full"
@@ -234,7 +232,7 @@ const Login = () => {
                 </span>
               )}
             </div>
-            <div className="max-w-xs mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <input
                 ref={caretakerNameRef}
                 className="outline-none block w-full"
@@ -247,7 +245,7 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="max-w-xs mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <input
                 ref={caretakerDobRef}
                 className="outline-none block w-full"
@@ -258,7 +256,7 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="max-w-xs mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <TextareaAutosize
                 ref={caretakerAddressRef}
                 minRows={2}
@@ -274,7 +272,7 @@ const Login = () => {
             </div>
 
             <div className="my-10">
-              <button className="block hover:scale-110 transition ease-in-out max-w-xs w-full rounded-full p-2 mx-auto bg-gray-300 ">
+              <button className="block hover:scale-110 transition ease-in-out max-w-[22rem] w-full rounded-full p-2 mx-auto bg-gray-300 ">
                 Sign up
               </button>
             </div>
@@ -289,13 +287,7 @@ const Login = () => {
         </div>
       </div>
       {/* image div */}
-      <div className="w-1/2 hidden sm:block">
-        <img
-          className="h-full w-full rounded-tl-3xl"
-          src={Bg}
-          alt="Background"
-        />
-      </div>
+      <Background />
     </div>
   );
 };

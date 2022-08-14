@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
-import Bg from "./../assets/og-bg.svg";
-import Logo from "./../assets/psg.png";
+import Logo from "../components/Logo";
 import { validateEmail } from "./Signup";
+import Background from "../components/Background";
 
 const Login = () => {
   const emailRef = useRef();
@@ -30,9 +30,7 @@ const Login = () => {
     <div className="sm:flex h-full">
       {/* form div */}
       <div className="sm:w-1/2 pt-6 mx-6 h-full">
-        <div>
-          <img className="w-[8rem]" src={Logo} alt="Logo" />
-        </div>
+        <Logo />
         <form className="mt-24" onSubmit={submitHandler}>
           <div>
             <h1 className="text-center text-3xl">Welcome Back!</h1>
@@ -41,7 +39,7 @@ const Login = () => {
             </p>
           </div>
           <div className="mt-8">
-            <div className="relative max-w-xs border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div className="relative max-w-[22rem] border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <input
                 ref={emailRef}
                 className="outline-none block w-full"
@@ -57,7 +55,7 @@ const Login = () => {
                 </span>
               )}
             </div>
-            <div className="max-w-xs mt-8 border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div className="max-w-[22rem] mt-8 border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <input
                 ref={passwordRef}
                 className="outline-none block w-full"
@@ -70,7 +68,7 @@ const Login = () => {
               />
             </div>
             <div className="my-10">
-              <button className="block max-w-xs w-full transition ease-in-out hover:scale-110 rounded-full p-2 mx-auto bg-gray-300 ">
+              <button className="block max-w-[22rem] w-full transition ease-in-out hover:scale-110 rounded-full p-2 mx-auto bg-gray-300 ">
                 Login
               </button>
             </div>
@@ -85,13 +83,7 @@ const Login = () => {
         </div>
       </div>
       {/* image div */}
-      <div className="w-1/2 hidden sm:block">
-        <img
-          className="h-screen w-full rounded-tl-3xl"
-          src={Bg}
-          alt="Background"
-        />
-      </div>
+      <Background />
     </div>
   );
 };
