@@ -1,6 +1,6 @@
 import React from "react";
 import Nav from "../components/Nav";
-import Section from "../components/Sections";
+import Section from "../components/Home";
 
 const DashBoard = () => {
   return (

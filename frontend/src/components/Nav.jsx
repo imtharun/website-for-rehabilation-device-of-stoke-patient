@@ -9,7 +9,7 @@ import {
 
 const Nav = () => {
   return (
-    <nav className="py-4  px-4 sm:w-[14rem] sm:max-w-[14rem]">
+    <nav className="nav py-4 sm:w-[14rem] sm:max-w-[14rem] overflow-scroll">
       <div>
         <Logo />
       </div>
@@ -35,9 +35,9 @@ const Nav = () => {
       </ul>
       <div>
         <button>
-          <ExitIcon className="mt-[14rem] ml-3 sm:hidden w-5 h-5" />
+          <ExitIcon className="mt-[13rem] ml-5 sm:hidden w-5 h-5" />
         </button>
-        <button className="hidden sm:inline-block mt-[10rem] lg:mt-[13rem] ml-7 transition ease-in-out hover:scale-110 bg-gray-400 px-5 text-sm py-3 rounded-full">
+        <button className="hidden mx-auto sm:inline-block mt-[11rem] ml-10 transition ease-in-out hover:scale-110 bg-gray-400 px-5 text-sm py-3 rounded-full">
           Log out
         </button>
       </div>
