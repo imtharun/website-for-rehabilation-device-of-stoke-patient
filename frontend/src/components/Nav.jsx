@@ -37,7 +37,7 @@ const Nav = () => {
         <button>
           <ExitIcon className="mt-[13rem] ml-5 sm:hidden w-5 h-5" />
         </button>
-        <button className="hidden mx-auto sm:inline-block mt-[11rem] ml-10 transition ease-in-out hover:scale-110 bg-gray-400 px-5 text-sm py-3 rounded-full">
+        <button className="hidden mx-auto sm:inline-block mt-[11rem] ml-10 transition ease-in-out hover:scale-110 bg-gray-300 px-5 text-sm py-3 rounded-full">
           Log out
         </button>
       </div>

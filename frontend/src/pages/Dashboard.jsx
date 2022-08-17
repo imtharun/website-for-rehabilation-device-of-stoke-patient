@@ -1,12 +1,13 @@
 import React from "react";
 import Nav from "../components/Nav";
-import Section from "../components/Home";
+// import Home from "../components/Home";
+import GameDetails from "../components/GameDetails";
 
 const DashBoard = () => {
   return (
     <section className="h-full flex bg-[#cfece8]">
       <Nav />
-      <Section />
+      <GameDetails />
     </section>
   );
 };
