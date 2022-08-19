@@ -5,7 +5,7 @@ import Logo_PSG_Mob from "./../assets/psg-mob.png";
 const Logo = () => {
   return (
     <div>
-      <img className="block sm:hidden  w-[4rem] h-[2.5rem]" src={Logo_PSG_Mob} alt="Logo" />
+      <img className="block sm:hidden  w-[3rem] h-[2rem]" src={Logo_PSG_Mob} alt="Logo" />
       <img className="hidden sm:block ml-4 w-[8rem]" src={Logo_PSG} alt="Logo" />
     </div>
   );

@@ -8,12 +8,12 @@ const isAlpha = (text) => {
 };
 
 export const validateEmail = (email) => {
-  return email.match(/^([a-zA-Z0-9\._]+)@([a-zA-Z0-9])+.([a-z]+)(.[a-z]+)?$/);
+  return email.match(/^([a-zA-Z0-9._]+)@([a-zA-Z0-9])+.([a-z]+)(.[a-z]+)?$/);
 };
 
 const validatePhoneNumber = (number) => {
   return number.match(
-    /^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[6789]\d{9}|(\d[ -]?){10}\d$/
+    /^(?:(?:\+|0{0,2})91(\s*[ -]\s*)?|[0]?)?[6789]\d{9}|(\d[ -]?){10}\d$/
   );
 };
 
@@ -46,6 +46,7 @@ const Login = () => {
   const [isEmail, setIsEmail] = useState(false);
   const [isPhoneNumber, setIsPhoneNumber] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
+  const [isCaretakerName, setIsCaretakerName] = useState(false);
 
   useEffect(() => {
     if (name !== "" && !isAlpha(name)) {
@@ -54,6 +55,14 @@ const Login = () => {
       setIsName(false);
     }
   }, [name]);
+
+  useEffect(() => {
+    if (caretakerName !== "" && !isAlpha(caretakerName)) {
+      setIsCaretakerName(true);
+    } else {
+      setIsCaretakerName(false);
+    }
+  }, [caretakerName]);
 
   useEffect(() => {
     if (email !== "" && !validateEmail(email)) {
@@ -101,7 +110,7 @@ const Login = () => {
       {/* form div */}
       <div className="sm:w-1/2 pt-6 mx-6 h-full">
         <Logo />
-        <form className="mt-24" onSubmit={submitHandler}>
+        <form className="mt-20" onSubmit={submitHandler}>
           <div>
             <h1 className="text-center text-3xl">Welcome Back!</h1>
             <p className="text-xs pt-1 text-gray-500 text-center">
@@ -109,7 +118,11 @@ const Login = () => {
             </p>
           </div>
           <div className="mt-8">
-            <div className="relative max-w-[22rem] border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div
+              className={`relative max-w-[22rem] border-b-[1.5px] mx-auto p-1 pl-0 ${
+                isName ? "border-red-500" : "border-black"
+              }`}
+            >
               <input
                 ref={nameRef}
                 className="outline-none block w-full"
@@ -125,7 +138,11 @@ const Login = () => {
                 </span>
               )}
             </div>
-            <div className="relative max-w-[22rem] mt-7 border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div
+              className={`relative max-w-[22rem] mt-7 border-b-[1.5px]  ${
+                isEmail ? "border-red-500" : "border-black"
+              } mx-auto p-1 pl-0 `}
+            >
               <input
                 ref={emailRef}
                 className="outline-none block w-full"
@@ -153,7 +170,11 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div
+              className={`max-w-[22rem] ${
+                isPhoneNumber ? "border-red-500" : "border-black"
+              } mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0`}
+            >
               <input
                 ref={phoneNumberRef}
                 className="outline-none block w-full"
@@ -196,7 +217,11 @@ const Login = () => {
               />
             </div>
 
-            <div className="max-w-[22rem] mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div
+              className={`${
+                isPassword ? "border-red-500" : "border-black"
+              } max-w-[22rem] mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0`}
+            >
               <input
                 ref={passwordRef}
                 className="outline-none block w-full"
@@ -213,7 +238,11 @@ const Login = () => {
                 </span>
               )}
             </div>
-            <div className="max-w-[22rem] mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div
+              className={`${
+                isPassword ? "border-red-500" : "border-black"
+              } max-w-[22rem] mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0`}
+            >
               <input
                 ref={confirmPasswordRef}
                 className="outline-none block w-full"
@@ -232,7 +261,11 @@ const Login = () => {
                 </span>
               )}
             </div>
-            <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+            <div
+              className={`${
+                isCaretakerName ? "border-red-500" : "border-black"
+              } max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0`}
+            >
               <input
                 ref={caretakerNameRef}
                 className="outline-none block w-full"
@@ -244,6 +277,11 @@ const Login = () => {
                 placeholder="Caretaker Name"
                 required
               />
+              {isCaretakerName && (
+                <span className="text-red-500 absolute text-xs -top-2 right-0">
+                  Invalid Name
+                </span>
+              )}
             </div>
             <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
               <input

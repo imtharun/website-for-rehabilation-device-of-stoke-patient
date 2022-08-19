@@ -109,7 +109,7 @@ const GameDetails = () => {
                 </h1>
                 <div className="pt-3">
                   <p className="text-center xs:text-left">
-                    <span className="font-medium ">No of Levels:</span>
+                    <span className="font-medium ">No of Levels: </span>
                     {ele.noOfLevels}
                   </p>
                   <p className="xs:text-left text-center xs:max-w-[80%]">
