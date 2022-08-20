@@ -1,21 +1,25 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-// const db = require("./database");
+const db = require("./database");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
 const { createToken } = require("./JWT.js");
+const mobileapp = require('./apprequests/login');
 
 //port number to listen
 const port = 5000;
-//init
+
+//initialize
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+app.use("/mobile",mobileapp);
+
+
 //initializing
 app.listen(port, () => {
   console.log("Server starten to listen...");
@@ -26,30 +30,8 @@ app.get("/", function (req, res) {
   res.send("Only accepting GET and POST requests!");
 });
 
-// app.post("/auth", function (req, res) {
-//   const mailid = req.body.mailid;
-//   const password = req.body.password;
-//   const resul = db.authoriseuser(username, password, (err, result) => {
-//     if (err) console.log(err);
-//     acces = result;
-//     console.log(acces);
-//     res.send({
-//       access: acces,
-//       user: rep,
-//     });
-//   });
-//   res.send(resul);
-// });
 
-// app.post("/newuser", function (req, res) {
-//   const mailid = req.body.mailid;
-//   const password = req.body.password;
-//   const phoneno = req.body.phoneno;
-//   const address = req.body.address;
-//   const medical_condition = req.body.medical_condition;
-//   const caretakerid = req.body.caretakerid;
-// });
-
+//register a new user
 app.post("/register", (req, res) => {
   const { email, password } = req.body;
   bcrypt
@@ -63,34 +45,37 @@ app.post("/register", (req, res) => {
     });
 });
 
+//login the user
 app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  const email  = req.body.email;
+  const user = req.body.user;
+  const password = req.body.password;
+  console.log(user, email)
+  const cooki = req.cookies["access-token"];
+  console.log(cooki);
 
-  const user = { email, password, id: 12 };
-
-  // check db find whether the user exist or not
-  // const user = await Users.findOne();
-
-  if (!user) {
-    res.status(400).json("User does not exist");
-  }
-
-  // if user exist, fetch hash value stored in password section of the db
-  // const dbPass = user.password;
-  // temp
-  const dbPass = "321321321";
-
-  bcrypt.compare(password, dbPass).then((match) => {
-    console.log(match);
-    if (!match) {
+  const rest = db.authorise(user,password,(err,result)=>
+  {
+    if(err) console.log(err);
+    if(result.access==="denied")
+    {
       res.status(400).json({ error: "wrong email and password combinations" });
-    } else {
-      const accessToken = createToken(user);
-
+    }
+    else
+    {
+      const id = result.userid;
+      const accessToken = createToken(id);
       res.cookie("access-token", accessToken, {
         maxAge: 60 * 60 * 24 * 30 * 1000,
+        httpOnly: true
       });
       res.json("logged in");
     }
-  });
+  })
+});
+
+
+//respond for other unused pages
+app.get('*', function(req, res){
+  res.send('Sorry, this is an invalid URL.');
 });

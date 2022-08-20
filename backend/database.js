@@ -18,7 +18,8 @@ function connect()
 }
 
 
-function authorise(username , password)
+//used to check weather the user is authorised or not
+function authorise(username,password,callback)
 {
     let results;
     sql = 'SELECT password from auth where user_id = ?';
@@ -28,7 +29,8 @@ function authorise(username , password)
     {
         if(result.length===0)
         {
-            results = "denied";
+            results = {"access":"deniedx",
+            "userid":"result.useridfromdatabase"};
             callback(err,results);
             return;
         }
@@ -37,17 +39,23 @@ function authorise(username , password)
         const  resultArray = Object.values(JSON.parse(JSON.stringify(result))[0])[0];
         if(password === resultArray)
         {
-            results = "granted";
+            results = {
+                "access":"granted",
+                "userid":"result.useridfromdatabase"     
+            };
         }
         else
         {
-            results = "denied";
+            results = {"access":"deniedx",
+            "userid":"result.useridfromdatabase"};
         }
         callback(err,results);
     }
     })
 }
 
+
+//create a new user
 function createuser(username,password){
 
 }
@@ -56,5 +64,5 @@ function createuser(username,password){
 module.exports = {
     authorise,
     createuser,
-
+    
 };
