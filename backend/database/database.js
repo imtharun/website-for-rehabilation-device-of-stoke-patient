@@ -24,7 +24,6 @@ function authorise(username,password,callback)
     let results;
     sql = 'SELECT password from auth where user_id = ?';
     const value = [username];
-    console.log(value);
     con.query(sql,value,(err,result)=>
     {
         if(result.length===0)
