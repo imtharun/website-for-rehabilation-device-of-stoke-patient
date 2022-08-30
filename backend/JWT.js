@@ -22,7 +22,9 @@ const validateUser = (req, res) => {
     else{
       res.send("Invalid token user not authenticated!")
     }
-  } catch (error) {}
+  } catch (error) {
+    res.send("Invalid token user not authorised")
+  }
 };
 
 function getTokendata(req,callback)
@@ -32,13 +34,18 @@ function getTokendata(req,callback)
     callback();
   }
   else{
-    const tokendata = jwt.verify(accessToken,secret_key);
-    if(tokendata){
+    try{
+      const tokendata = jwt.verify(accessToken,secret_key);
+      if(tokendata){
       callback(tokendata);
+      }
     }
+    catch(err){
+      callback();
+    }
+    
   }
 }
-
 module.exports = { createToken ,
   validateUser,
   getTokendata,
