@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from "react";
+import axios from "./../api/axios";
 
 const PomView = (props) => {
-  const [timer, setTimer] = useState(props.timeInSeconds);
-  const [start, setStart] = useState(false);
   const firstStart = useRef(true);
   const tick = useRef();
+
+  const finalTime = { hours: 0, minutes: 0, seconds: 0 };
+
+  const [timer, setTimer] = useState(props.timeInSeconds);
+  const [start, setStart] = useState(false);
 
   useEffect(() => {
     if (firstStart.current) {
@@ -19,19 +23,71 @@ const PomView = (props) => {
     } else {
       clearInterval(tick.current);
     }
-
     return () => clearInterval(tick.current);
   }, [start]);
 
   const toggleStart = () => {
     setStart(!start);
+    console.log(finalTime);
   };
 
-  const displaySecondsAsMins = (seconds) => {
+  const getTime = (seconds) => {
     const hours = Math.floor(seconds / 3600);
     seconds %= 3600;
     const mins = Math.floor(seconds / 60);
     const _seconds = seconds % 60;
+
+    return [hours, mins, _seconds];
+  };
+
+  const inSeconds = (hours, minutes, seconds) => {
+    let sec = 0;
+    if (hours !== 0) {
+      sec += hours * 60 * 60;
+    }
+    if (minutes !== 0) {
+      sec += minutes * 60;
+    }
+    sec += seconds;
+
+    return sec;
+  };
+
+  const submit = async (totalTrainedTime, totalTrainedTimeInHMS) => {
+    try {
+      const res = await axios.post({
+        totalTrainedTime,
+        totalTrainedTimeInHMS,
+      });
+
+      console.log(res);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const clickHandler = () => {
+    setStart(false);
+    const inSec = inSeconds(
+      finalTime.hours,
+      finalTime.minutes,
+      finalTime.seconds
+    );
+    const totalTrainedTime = props.timeInSeconds - inSec;
+
+    submit(totalTrainedTime, getTime(totalTrainedTime));
+  };
+
+  const setTime = (hours, minutes, seconds) => {
+    finalTime.hours = hours;
+    finalTime.minutes = minutes;
+    finalTime.seconds = seconds;
+  };
+
+  const displaySecondsAsMins = (seconds) => {
+    const [hours, mins, _seconds] = getTime(seconds);
+    setTime(hours, mins, _seconds);
+
     return (
       <div className="flex flex-col sm:flex-row items-center">
         {hours !== 0 && (
@@ -58,10 +114,10 @@ const PomView = (props) => {
       <div className="text-8xl mt-3  text-center rounded-xl">
         {displaySecondsAsMins(timer)}
       </div>
-      <div className="flex sm:justify-around px-4 my-5">
-        <div className="text-center ">
+      <div className="flex px-4 my-5 justify-between">
+        <div className="text-center">
           <button
-            className="mx-auto  w-[5rem] sm:inline-block  transition-all ease-in-out hover:scale-110 bg-gray-300 text-sm py-3 rounded-full"
+            className="mx-auto -ml-3 w-[5rem] sm:inline-block  transition-all ease-in-out hover:scale-110 bg-gray-300 text-sm py-3 rounded-full"
             onClick={toggleStart}
           >
             {!start ? "Start" : "Stop"}
@@ -69,8 +125,8 @@ const PomView = (props) => {
         </div>
         <div className="text-center ml-6">
           <button
+            onClick={clickHandler}
             className="mx-auto  w-[5rem] sm:inline-block  transition-all ease-in-out hover:scale-110 bg-gray-300 text-sm py-3 rounded-full"
-            onClick={toggleStart}
           >
             Submit
           </button>

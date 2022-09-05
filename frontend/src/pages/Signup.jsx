@@ -2,6 +2,8 @@ import React, { useRef, useState, useEffect } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import Logo from "../components/Logo";
 import Background from "../components/Background";
+import { Link } from "react-router-dom";
+import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 
 const isAlpha = (text) => {
   return text.match("^[ a-zA-Z()]+$");
@@ -314,10 +316,17 @@ const Login = () => {
                 Sign up
               </button>
             </div>
+            <div className="text-center flex justify-center -mt-4 text-sm">
+              Already have an account ?,
+              <span className="ml-1 flex border-b-[1px] border-transparent hover:border-b-black transition-all duration-700 ease-out">
+                <Link to={"/login"}>Log In</Link>
+                <ArrowTopRightIcon className="ml-1 mt-[.25rem] w-3 h-3" />
+              </span>
+            </div>
           </div>
         </form>
         <div className="pt-[3.7rem] pb-4 w-sm max-w-[370px] mx-auto">
-          <h1 className="text-center text-sm">
+          <h1 className="text-center text-xs">
             Virtual Reality Based Rehabilitation Device for Upper Extremity
             Stroke Survivors
           </h1>

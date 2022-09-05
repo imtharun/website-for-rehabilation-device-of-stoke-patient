@@ -2,6 +2,8 @@ import React, { useRef, useState, useEffect } from "react";
 import Logo from "../components/Logo";
 import { validateEmail } from "./Signup";
 import Background from "../components/Background";
+import { ArrowTopRightIcon } from "@radix-ui/react-icons";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const emailRef = useRef();
@@ -67,19 +69,26 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="my-10">
+            <div className="mt-10 mb-8">
               <button className="block max-w-[22rem] w-full transition ease-in-out hover:scale-110 rounded-full p-2 mx-auto bg-gray-300 ">
                 Login
               </button>
             </div>
+            <div className="text-center flex justify-center -mt-4 text-sm">
+              Don't have an account,
+              <span className="ml-1 flex border-b-[1px] border-transparent hover:border-b-black transition-all duration-700 ease-out">
+                <Link to={"/signup"}>Sign up</Link>
+                <ArrowTopRightIcon className="ml-1 mt-[.25rem] w-3 h-3" />
+              </span>
+            </div>
           </div>
         </form>
-        <div className="pt-[3.7rem]  w-sm max-w-[370px] mx-auto">
-          <h1 className="text-center text-sm">
+        <div className="pt-[4.8rem] w-sm max-w-[370px] mx-auto">
+          <h1 className="text-center text-xs">
             Virtual Reality Based Rehabilitation Device for Upper Extremity
             Stroke Survivors
           </h1>
-          <p className="mt-1  text-center text-xs">Sponsored by DST - BDTD</p>
+          <p className="mt-1 text-center text-xs">Sponsored by DST - BDTD</p>
         </div>
       </div>
       {/* image div */}
