@@ -84,12 +84,7 @@ const getjwt = (req, res) => {
       console.log("else result = " + result);
       res.sendStatus(401);
     }
-<<<<<<< Updated upstream
-  });
-
-=======
   });  
->>>>>>> Stashed changes
   return resp;
 };
 
@@ -110,11 +105,7 @@ app.get("/dashboard", (req, res) => {
 });
 
 //return data for user to check data of recent sessions
-<<<<<<< Updated upstream
-app.get("/recentseccions", (req, res) => {
-=======
 app.get('/recentsessions',(req,res)=>{
->>>>>>> Stashed changes
   res = getjwt(req, res);
   console.log("====================================");
   console.log(res);
@@ -122,12 +113,7 @@ app.get('/recentsessions',(req,res)=>{
 });
 
 //respond for other unused pages
-<<<<<<< Updated upstream
-app.get("*", function (req, res) {
-  res.send("Sorry, this is an invalid URL.");
-=======
 app.get('*', function(req, res){
   res.sendStatus(404)
   // res.send('Sorry, this is an invalid URL.');
->>>>>>> Stashed changes
 });
