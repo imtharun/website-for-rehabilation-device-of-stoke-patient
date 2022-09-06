@@ -71,6 +71,7 @@ app.post("/login", async (req, res) => {
   });
 });
 
+
 //checking the jwt token for authentication
 const getjwt = (req, res) => {
   let resp = "";
@@ -83,8 +84,7 @@ const getjwt = (req, res) => {
       console.log("else result = " + result);
       res.sendStatus(401);
     }
-  });
-
+  });  
   return resp;
 };
 
@@ -105,7 +105,7 @@ app.get("/dashboard", (req, res) => {
 });
 
 //return data for user to check data of recent sessions
-app.get("/recentseccions", (req, res) => {
+app.get('/recentsessions',(req,res)=>{
   res = getjwt(req, res);
   console.log("====================================");
   console.log(res);
@@ -113,6 +113,7 @@ app.get("/recentseccions", (req, res) => {
 });
 
 //respond for other unused pages
-app.get("*", function (req, res) {
-  res.send("Sorry, this is an invalid URL.");
+app.get('*', function(req, res){
+  res.sendStatus(404)
+  // res.send('Sorry, this is an invalid URL.');
 });
