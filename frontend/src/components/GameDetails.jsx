@@ -1,16 +1,16 @@
 import React from "react";
-import birdDodge from "./../assets/birdDodge.png";
-import burst from "./../assets/burst.png";
-import blockAndBall from "./../assets/blockAndBall.png";
-import carDodge from "./../assets/carDodge.png";
-import copterBlock from "./../assets/copterBlock.png";
-import dropBalls from "./../assets/dropBalls.jpg";
-import hitCatch from "./../assets/hitCatch.png";
-import hurdles from "./../assets/hurdles.png";
-import newtonBalls from "./../assets/newtonBalls.png";
-import trace from "./../assets/trace.png";
-import veggiePick from "./../assets/veggiePick.png";
-import windows from "./../assets/windows.png";
+import birdDodge from "./../assets/game-images/birdDodge.png";
+import burst from "./../assets/game-images/burst.png";
+import blockAndBall from "./../assets/game-images/blockAndBall.png";
+import carDodge from "./../assets/game-images/carDodge.png";
+import copterBlock from "./../assets/game-images/copterBlock.png";
+import dropBalls from "./../assets/game-images/dropBalls.jpg";
+import hitCatch from "./../assets/game-images/hitCatch.png";
+import hurdles from "./../assets/game-images/hurdles.png";
+import newtonBalls from "./../assets/game-images/newtonBalls.png";
+import trace from "./../assets/game-images/trace.png";
+import veggiePick from "./../assets/game-images/veggiePick.png";
+import windows from "./../assets/game-images/windows.png";
 
 const GameDetails = () => {
   const data = [
@@ -99,9 +99,12 @@ const GameDetails = () => {
       <h1 className=" text-xl font-medium">
         Game Details - VR for Rehabilitation
       </h1>
-      {data.map((ele) => {
+      {data.map((ele, index) => {
         return (
-          <div className="mt-5 bg-gray-300 w-[100%] p-4 rounded-lg mx-auto">
+          <div
+            key={index + 1}
+            className="mt-5 bg-gray-300 w-[100%] p-4 rounded-lg mx-auto"
+          >
             <div className="flex xs:flex-row flex-col justify-center items-center xs:justify-between xs:items-center">
               <div className="">
                 <h1 className="font-semibold text-center xs:text-left">

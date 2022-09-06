@@ -24,9 +24,9 @@ const Recovery = () => {
 
   return (
     <div className="bg-gray-300 px-5 py-3 w-full rounded-lg">
-      {recovered.map((ele) => {
+      {recovered.map((ele, index) => {
         return (
-          <div key={Math.random() * 100} className="mb-3">
+          <div key={index + 1} className="mb-3">
             <span className="text-sm">
               {ele.bodyPart + " - " + ele.percentage + "%"}
             </span>

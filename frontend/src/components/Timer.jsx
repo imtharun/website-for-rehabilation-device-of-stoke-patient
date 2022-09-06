@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "./../api/axios";
+import Serial from "../components/Serial";
 
 const PomView = (props) => {
   const firstStart = useRef(true);
@@ -132,13 +133,16 @@ const PomView = (props) => {
           </button>
         </div>
       </div>
+      <div>
+        <Serial />
+      </div>
     </div>
   );
 };
 
 const Timer = (props) => {
   return (
-    <section className="rounded-tl-2xl bg-white p-7 w-full flex justify-center ">
+    <section className="rounded-tl-2xl bg-white p-7 w-full flex justify-center overflow-y-scroll">
       <PomView timeInSeconds={props.timeInSeconds} />
     </section>
   );

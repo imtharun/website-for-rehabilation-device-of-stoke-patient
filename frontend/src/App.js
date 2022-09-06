@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import { Routes, Route } from "react-router-dom";
@@ -9,10 +9,11 @@ import NewSession from "./pages/NewSession";
 import { useNavigate } from "react-router-dom";
 
 const App = () => {
+  const isFetched = useRef(false);
   const [isPersist, setIsPersist] = useState(false);
   const navigate = useNavigate();
 
-  const persistUser = async () => {
+  const persistUser = useCallback(async () => {
     try {
       const resp = await axios.get("/dashboard");
       console.log(resp);
@@ -21,20 +22,23 @@ const App = () => {
       }
     } catch (error) {
       if (error.response.status === 401) {
-        navigate("/login", { replace: true });
+        // navigate("/login", { replace: true });
         setIsPersist(false);
       }
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
-    // persistUser();
-  }, []);
+    if (!isFetched.current) {
+      isFetched.current = true;
+      persistUser();
+    }
+  }, [persistUser]);
 
   return (
     <div className="font-workSans min-h-screen h-screen">
       <Routes>
-        <Route path="/" element={<Main />} />
+        <Route  path="/" element={<Main />} />
         <Route path="/new-session" element={<NewSession />} />
         <Route path="/game-details" element={<Game />} />
         <Route path="/signup" element={<Signup />} />

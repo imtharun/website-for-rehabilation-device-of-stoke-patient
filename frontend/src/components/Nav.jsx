@@ -1,16 +1,30 @@
 import React from "react";
 import Logo from "./Logo";
-import { NavLink } from "react-router-dom";
 import {
   HomeIcon,
   TimerIcon,
   InfoCircledIcon,
   ExitIcon,
 } from "@radix-ui/react-icons";
+import axios from "../api/axios";
+import { useNavigate, NavLink } from "react-router-dom";
 
 const Nav = () => {
+  const navigate = useNavigate();
+
+  const onLogout = async () => {
+    try {
+      const response = await axios.get("/logout");
+      console.log(response);
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const logoutHandler = (e) => {
     e.preventDefault();
+    onLogout();
   };
 
   return (
@@ -60,7 +74,7 @@ const Nav = () => {
         </NavLink>
       </ul>
       <div>
-        <button>
+        <button onClick={logoutHandler}>
           <ExitIcon className="mt-[13rem] fill-current ml-[0.6rem] sm:hidden w-5 h-5" />
         </button>
         <button

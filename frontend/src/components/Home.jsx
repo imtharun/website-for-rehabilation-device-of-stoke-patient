@@ -69,10 +69,10 @@ const Sections = () => {
         </div>
         <div className="sm:ml-4 flex flex-row md:flex-col justify-between  mt-11">
           <div className="mx-auto">
-            {userData.map((user) => {
+            {userData.map((user, index) => {
               return (
                 <Card
-                  key={Math.random() * 100}
+                  key={index + 1}
                   name={user.name}
                   role={user.role}
                   age={user.age}
