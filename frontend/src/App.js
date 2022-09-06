@@ -40,7 +40,7 @@ const App = () => {
   return (
     <div className="font-workSans min-h-screen h-screen">
       <Routes>
-        <Route index element={<Main />} />
+        <Route index path="/" element={<Main />} />
         <Route path="/new-session" element={<NewSession />} />
         <Route path="/game-details" element={<Game />} />
         <Route path="/signup" element={<Signup />} />

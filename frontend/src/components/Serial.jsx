@@ -7,7 +7,9 @@ const Serial = () => {
   const init = async () => {
     if ("serial" in navigator) {
       try {
+        console.log(navigator);
         const port = await navigator.serial.requestPort();
+        console.log("Port", port);
         await port.open({ baudRate: 9600 });
         reader = port.readable.getReader();
         let signals = await port.getSignals();
@@ -40,22 +42,42 @@ const Serial = () => {
     }
   };
 
+  const getSerialMessages = async () => {
+    document.getElementById("message").innerText += await read();
+  };
+
   useEffect(() => {
-    init();
-    read();
+    // const connect = document.getElementById("connect-to-serial");
+    // const getSerialMessage = document.getElementById("get-serial-message");
+    // connect.addEventListener("pointerdown", () => {
+    //   init();
+    // });
+    // getSerialMessage.addEventListener("pointerdown", async () => {
+    //   getSerialMessages();
+    // });
   }, []);
 
   return (
     <div className="mt-6 ">
       <div className="flex flex-col sm:flex-row justify-between">
-        <button className="mx-auto inline-block ml-1 transition ease-in-out hover:scale-110 bg-gray-300 px-5 text-sm py-3 rounded-full">
+        <button
+          onPointerDown={() => {
+            init();
+          }}
+          id="connect-to-serial"
+          className="mx-auto inline-block ml-1 transition ease-in-out hover:scale-110 bg-gray-300 px-5 text-sm py-3 rounded-full"
+        >
           Connect with Serial Device
         </button>
-        <button className="mx-auto inline-block my-5 sm:my-0  transition ease-in-out hover:scale-110 bg-gray-300 px-5 text-sm py-3 rounded-full">
+        <button
+          onPointerDown={async () => getSerialMessages()}
+          id="get-serial-message"
+          className="mx-auto inline-block my-5 sm:my-0  transition ease-in-out hover:scale-110 bg-gray-300 px-5 text-sm py-3 rounded-full"
+        >
           Get serial message
         </button>
       </div>
-      <div>
+      <div id="serial-message-container">
         <div id="message" className=""></div>
       </div>
     </div>
