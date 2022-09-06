@@ -4,6 +4,7 @@ import Logo from "../components/Logo";
 import Background from "../components/Background";
 import { Link } from "react-router-dom";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
+import axios from "../api/axios";
 
 const isAlpha = (text) => {
   return text.match("^[ a-zA-Z()]+$");
@@ -49,6 +50,10 @@ const Login = () => {
   const [isPhoneNumber, setIsPhoneNumber] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isCaretakerName, setIsCaretakerName] = useState(false);
+
+  useEffect(() => {
+    document.title = "Sign up";
+  }, []);
 
   useEffect(() => {
     if (name !== "" && !isAlpha(name)) {
@@ -103,8 +108,31 @@ const Login = () => {
     }
   }, [password, confirmPassword]);
 
+  const postData = async () => {
+    try {
+      const resp = await axios.post({
+        name,
+        email,
+        password,
+        confirmPassword,
+        phoneNumber,
+        dob,
+        address,
+        medicalCondition,
+        caretakerName,
+        caretakerDob,
+        caretakerAddress,
+      });
+
+      console.log(resp);
+    } catch (error) {
+      console.log(error``);
+    }
+  };
+
   const submitHandler = function (event) {
     event.preventDefault();
+    postData();
   };
 
   return (

@@ -5,7 +5,7 @@ const db = require("./database/database");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const jwt = require("./JWT.js");
-const mobileapp = require('./apprequests/login');
+// const mobileapp = require('./apprequests/login');
 
 //port number to listen
 const port = 5000;
@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
-app.use("/mobile",mobileapp);
+// app.use("/mobile",mobileapp);
 
 
 //initializing

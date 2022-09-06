@@ -4,18 +4,22 @@ import { validateEmail } from "./Signup";
 import Background from "../components/Background";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
+import axios from "../api/axios";
 
 const Login = () => {
+  
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
+
+
   const emailRef = useRef();
   const passwordRef = useRef();
   const [email, setEmail] = useState("");
   const [isEmail, setIsEmail] = useState(false);
   const [password, setPassword] = useState("");
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
-    console.log(validateEmail(email));
     if (email !== "" && !validateEmail(email)) {
       setIsEmail(true);
     } else {
@@ -23,9 +27,21 @@ const Login = () => {
     }
   }, [email]);
 
+  const authenticate = async () => {
+    try {
+      const resp = await axios.post({
+        email,
+        password,
+      });
+      console.log(resp);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const submitHandler = function (event) {
     event.preventDefault();
-    console.log(email, password);
+    authenticate();
   };
 
   return (

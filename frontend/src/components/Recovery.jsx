@@ -1,7 +1,5 @@
 import React from "react";
 
-// import { AnimatedLineProgressBar } from "@frogress/line";
-
 export const Progress = (props) => {
   return (
     <div className=" bg-gray-500 rounded-full mb-4 w-full">
