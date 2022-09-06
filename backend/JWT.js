@@ -46,7 +46,10 @@ function getTokendata(req,callback)
     
   }
 }
+
 module.exports = { createToken ,
+
   validateUser,
   getTokendata,
-   };
+  
+};

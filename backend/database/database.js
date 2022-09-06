@@ -56,12 +56,10 @@ function authorise(username,password,callback)
 
 //create a new user
 function createuser(username,password){
-
+    
 }
-
 
 module.exports = {
     authorise,
     createuser,
-    
 };
