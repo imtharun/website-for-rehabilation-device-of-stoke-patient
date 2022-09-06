@@ -7,6 +7,7 @@ import Main from "./pages/Home";
 import Game from "./pages/Games";
 import NewSession from "./pages/NewSession";
 import { useNavigate } from "react-router-dom";
+import Error from "./components/Error";
 
 const App = () => {
   const isFetched = useRef(false);
@@ -18,6 +19,7 @@ const App = () => {
       const resp = await axios.get("/dashboard");
       console.log(resp);
       if (resp) {
+        navigate("/", { replace: true });
         setIsPersist(true);
       }
     } catch (error) {
@@ -38,11 +40,12 @@ const App = () => {
   return (
     <div className="font-workSans min-h-screen h-screen">
       <Routes>
-        <Route  path="/" element={<Main />} />
+        <Route index element={<Main />} />
         <Route path="/new-session" element={<NewSession />} />
         <Route path="/game-details" element={<Game />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/*" element={<Error />} />
       </Routes>
     </div>
   );

@@ -7,11 +7,9 @@ import { Link } from "react-router-dom";
 import axios from "../api/axios";
 
 const Login = () => {
-  
   useEffect(() => {
     document.title = "Login";
   }, []);
-
 
   const emailRef = useRef();
   const passwordRef = useRef();
