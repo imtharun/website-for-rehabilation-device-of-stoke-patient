@@ -36,7 +36,9 @@ const Nav = () => {
         <NavLink
           style={({ isActive }) => ({
             fontWeight: isActive ? 600 : 400,
-            color: !isActive ? "#54626F" : "#000",
+            color: !isActive
+              ? "#54626F"
+              : "rgb(100 116 139 / var(--tw-bg-opacity))",
           })}
           to={"/"}
           className="hover:font-medium"
@@ -49,7 +51,9 @@ const Nav = () => {
         <NavLink
           style={({ isActive }) => ({
             fontWeight: isActive ? 600 : 400,
-            color: !isActive ? "#54626F" : "#000",
+            color: !isActive
+              ? "#54626F"
+              : "rgb(100 116 139 / var(--tw-bg-opacity))",
           })}
           to={"/new-session"}
           className="hover:font-medium"
@@ -62,7 +66,9 @@ const Nav = () => {
         <NavLink
           style={({ isActive }) => ({
             fontWeight: isActive ? 600 : 400,
-            color: !isActive ? "#54626F" : "#000",
+            color: !isActive
+              ? "#54626F"
+              : "rgb(100 116 139 / var(--tw-bg-opacity))",
           })}
           to={"/game-details"}
           className="hover:font-medium"
@@ -79,7 +85,7 @@ const Nav = () => {
         </button>
         <button
           onClick={logoutHandler}
-          className="hidden font-medium mx-auto sm:inline-block mt-[11rem] ml-9 transition ease-in-out hover:scale-110 bg-gray-200 shadow-sm px-5 text-sm py-3 rounded-full"
+          className="hidden font-medium mx-auto sm:inline-block mt-[11rem] ml-9 transition ease-in-out hover:scale-110 bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100 shadow-sm px-5 text-sm py-3 rounded-full"
         >
           Log out
         </button>

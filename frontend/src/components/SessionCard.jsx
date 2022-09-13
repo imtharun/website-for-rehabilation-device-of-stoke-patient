@@ -16,11 +16,11 @@ const SessionCard = () => {
 
 export const Buttons = () => {
   return (
-    <div className="flex flex-col xxxs:flex-row xxxs:justify-between p-4 -mx-2">
-      <button className="my-4 shadow-md sm:my-0 px-5 transition ease-in-out hover:scale-110 bg-gray-200  text-sm  py-3 rounded-full">
+    <div className="flex flex-col xxxs:flex-row xxxs:justify-between p-4 -mx-2  ">
+      <button className="my-4 shadow-md sm:my-0 px-5 transition ease-in-out hover:scale-110   text-sm  py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100">
         Progress
       </button>
-      <button className="my-4 shadow-md sm:my-0 transition ease-in-out hover:scale-110 bg-gray-200 px-5 text-sm py-3 rounded-full">
+      <button className="my-4 shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-5 text-sm py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100">
         Download
       </button>
     </div>

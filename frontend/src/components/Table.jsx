@@ -22,7 +22,7 @@ const Table = () => {
                     return (
                       <th
                         scope="col"
-                        className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                        className="text-sm font-medium px-6 py-4 text-left"
                       >
                         {col}
                       </th>
@@ -34,19 +34,19 @@ const Table = () => {
                 {rows.map((row) => {
                   return (
                     <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-black">
                         {row.sno}
                       </td>
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td className="text-sm font-light px-6 py-4 whitespace-nowrap ">
                         {row.Angle1}
                       </td>
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
                         {row.Angle2}
                       </td>
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
                         {row.Angle3}
                       </td>
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                      <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
                         {row.Angle4}
                       </td>
                     </tr>

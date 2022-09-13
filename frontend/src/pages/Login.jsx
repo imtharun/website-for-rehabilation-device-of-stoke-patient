@@ -43,7 +43,7 @@ const Login = () => {
   };
 
   return (
-    <div className="sm:flex h-full">
+    <div className="relative sm:flex min-h-screen">
       {/* form div */}
       <div className="sm:w-1/2 pt-6 mx-6 h-full">
         <Logo />
@@ -84,7 +84,7 @@ const Login = () => {
               />
             </div>
             <div className="mt-10 mb-8">
-              <button className="block max-w-[22rem] w-full transition ease-in-out hover:scale-110 rounded-full p-2 mx-auto bg-gray-200 ">
+              <button className="block max-w-[22rem] w-full transition ease-in-out hover:scale-110 rounded-full p-2 mx-auto bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100 ">
                 Login
               </button>
             </div>
@@ -106,7 +106,9 @@ const Login = () => {
         </div>
       </div>
       {/* image div */}
-      <Background />
+      <div className="w-1/2 h-screen">
+        <Background />
+      </div>
     </div>
   );
 };

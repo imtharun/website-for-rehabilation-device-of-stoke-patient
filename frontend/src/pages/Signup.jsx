@@ -5,6 +5,7 @@ import Background from "../components/Background";
 import { Link } from "react-router-dom";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import axios from "../api/axios";
+import "tw-elements";
 
 const isAlpha = (text) => {
   return text.match("^[ a-zA-Z()]+$");
@@ -32,7 +33,10 @@ const Login = () => {
   const caretakerNameRef = useRef();
   const caretakerDobRef = useRef();
   const caretakerAddressRef = useRef();
+  const drRef = useRef();
+  const patientRef = useRef();
 
+  const [isDoctor, setIsDoctor] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -136,7 +140,7 @@ const Login = () => {
   };
 
   return (
-    <div className="sm:flex min-h-screen">
+    <div className="relative sm:flex min-h-screen">
       {/* form div */}
       <div className="sm:w-1/2 pt-6 mx-6 h-full">
         <Logo />
@@ -232,20 +236,6 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
-              <TextareaAutosize
-                ref={medicalConditionRef}
-                minRows={2}
-                className="outline-none block w-full"
-                value={medicalCondition}
-                type="text"
-                onChange={() =>
-                  setMedicalCondition(medicalConditionRef.current.value)
-                }
-                placeholder="Medical Condition"
-                required
-              />
-            </div>
 
             <div
               className={`${
@@ -291,61 +281,123 @@ const Login = () => {
                 </span>
               )}
             </div>
-            <div
-              className={`${
-                isCaretakerName ? "border-red-500" : "border-black"
-              } max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0`}
-            >
-              <input
-                ref={caretakerNameRef}
-                className="outline-none block w-full"
-                value={caretakerName}
-                type="text"
-                onChange={() =>
-                  setCaretakerName(caretakerNameRef.current.value)
-                }
-                placeholder="Caretaker Name"
-                required
-              />
-              {isCaretakerName && (
-                <span className="text-red-500 absolute text-xs -top-2 right-0">
-                  Invalid Name
-                </span>
-              )}
-            </div>
-            <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
-              <input
-                ref={caretakerDobRef}
-                className="outline-none block w-full"
-                value={caretakerDob}
-                type="text"
-                onChange={() => setCaretakerDob(caretakerDobRef.current.value)}
-                placeholder="Caretaker Dob"
-                required
-              />
-            </div>
-            <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
-              <TextareaAutosize
-                ref={caretakerAddressRef}
-                minRows={2}
-                className="outline-none block w-full"
-                value={caretakerAddress}
-                type="text"
-                onChange={() =>
-                  setCaretakerAddress(caretakerAddressRef.current.value)
-                }
-                placeholder="Caretaker Address"
-                required
-              />
+
+            <div className="flex mt-6 max-w-[22rem] mx-auto justify-between">
+              <div className="form-check">
+                <input
+                  ref={drRef}
+                  className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-[#cfece8] checked:border-[#cfece8] focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                  type="radio"
+                  name="flexRadioDefault"
+                  id="flexRadioDefault1"
+                  onChange={() => setIsDoctor(true)}
+                  defaultChecked
+                />
+                <label
+                  className="form-check-label inline-block text-gray-800"
+                  htmlFor="flexRadioDefault1"
+                >
+                  Doctor
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  ref={patientRef}
+                  className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-[#cfece8] checked:border-[#cfece8] focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                  type="radio"
+                  name="flexRadioDefault"
+                  onChange={() => setIsDoctor(false)}
+                  id="flexRadioDefault2"
+                />
+                <label
+                  className="form-check-label inline-block text-gray-800"
+                  htmlFor="flexRadioDefault2"
+                >
+                  Patient
+                </label>
+              </div>
             </div>
 
+            {!isDoctor && (
+              <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+                <TextareaAutosize
+                  ref={medicalConditionRef}
+                  minRows={2}
+                  className="outline-none block w-full"
+                  value={medicalCondition}
+                  type="text"
+                  onChange={() =>
+                    setMedicalCondition(medicalConditionRef.current.value)
+                  }
+                  placeholder="Medical Condition"
+                  required
+                />
+              </div>
+            )}
+
+            {!isDoctor && (
+              <div
+                className={`${
+                  isCaretakerName ? "border-red-500" : "border-black"
+                } max-w-[22rem] mt-5 relative border-b-[1.5px] border-black mx-auto p-1 pl-0`}
+              >
+                <input
+                  ref={caretakerNameRef}
+                  className="outline-none block w-full"
+                  value={caretakerName}
+                  type="text"
+                  onChange={() =>
+                    setCaretakerName(caretakerNameRef.current.value)
+                  }
+                  placeholder="Caretaker Name"
+                  required
+                />
+                {isCaretakerName && (
+                  <span className="text-red-500 absolute text-xs -top-2 right-0">
+                    Invalid Name
+                  </span>
+                )}
+              </div>
+            )}
+            {!isDoctor && (
+              <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+                <input
+                  ref={caretakerDobRef}
+                  className="outline-none block w-full"
+                  value={caretakerDob}
+                  type="text"
+                  onChange={() =>
+                    setCaretakerDob(caretakerDobRef.current.value)
+                  }
+                  placeholder="Caretaker Dob"
+                  required
+                />
+              </div>
+            )}
+            {!isDoctor && (
+              <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+                <TextareaAutosize
+                  ref={caretakerAddressRef}
+                  minRows={2}
+                  className="outline-none block w-full"
+                  value={caretakerAddress}
+                  type="text"
+                  onChange={() =>
+                    setCaretakerAddress(caretakerAddressRef.current.value)
+                  }
+                  placeholder="Caretaker Address"
+                  required
+                />
+              </div>
+            )}
+
             <div className="my-10">
-              <button className="block hover:scale-110 transition ease-in-out max-w-[22rem] w-full rounded-full p-2 mx-auto bg-gray-200 ">
+              <button className="block hover:scale-110 transition ease-in-out max-w-[22rem] w-full rounded-full p-2 mx-auto bg-gray-100 border-slate-500 border text-slate-500 hover:bg-slate-500 hover:text-gray-100">
                 Sign up
               </button>
             </div>
             <div className="text-center flex justify-center -mt-4 text-sm">
-              Already have an account ?,
+              Already have an account ?
               <span className="ml-1 flex border-b-[1px] border-transparent hover:border-b-black transition-all duration-700 ease-out">
                 <Link to={"/login"}>Log In</Link>
                 <ArrowTopRightIcon className="ml-1 mt-[.25rem] w-3 h-3" />
@@ -353,7 +405,7 @@ const Login = () => {
             </div>
           </div>
         </form>
-        <div className="pt-[3.7rem] pb-4 w-sm max-w-[370px] mx-auto">
+        <div className="pt-[3.7rem] pb-4 w-sm max-w-[370px] mx-auto ">
           <h1 className="text-center text-xs">
             Virtual Reality Based Rehabilitation Device for Upper Extremity
             Stroke Survivors
@@ -362,7 +414,9 @@ const Login = () => {
         </div>
       </div>
       {/* image div */}
-      <Background />
+      <div className="w-1/2 h-screen">
+        <Background isDoctor={isDoctor} />
+      </div>
     </div>
   );
 };
