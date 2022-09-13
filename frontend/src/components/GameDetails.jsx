@@ -103,7 +103,7 @@ const GameDetails = () => {
         return (
           <div
             key={index + 1}
-            className="mt-5 bg-gray-300 w-[100%] p-4 rounded-lg mx-auto"
+            className="mt-5 bg-gray-200 w-[100%] p-4 rounded-lg mx-auto"
           >
             <div className="flex xs:flex-row flex-col justify-center items-center xs:justify-between xs:items-center">
               <div className="">

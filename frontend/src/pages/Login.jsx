@@ -84,7 +84,7 @@ const Login = () => {
               />
             </div>
             <div className="mt-10 mb-8">
-              <button className="block max-w-[22rem] w-full transition ease-in-out hover:scale-110 rounded-full p-2 mx-auto bg-gray-300 ">
+              <button className="block max-w-[22rem] w-full transition ease-in-out hover:scale-110 rounded-full p-2 mx-auto bg-gray-200 ">
                 Login
               </button>
             </div>

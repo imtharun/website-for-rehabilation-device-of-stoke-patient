@@ -23,7 +23,7 @@ const Error = () => {
         <div className="p-3">
           <button
             onClick={clickHandler}
-            className="block mx-auto transition ease-in-out hover:scale-110 bg-gray-300 px-5 text-sm py-3 rounded-full"
+            className="block mx-auto transition ease-in-out hover:scale-110 bg-gray-200 px-5 text-sm py-3 rounded-full"
           >
             Back to home
           </button>

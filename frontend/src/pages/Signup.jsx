@@ -340,7 +340,7 @@ const Login = () => {
             </div>
 
             <div className="my-10">
-              <button className="block hover:scale-110 transition ease-in-out max-w-[22rem] w-full rounded-full p-2 mx-auto bg-gray-300 ">
+              <button className="block hover:scale-110 transition ease-in-out max-w-[22rem] w-full rounded-full p-2 mx-auto bg-gray-200 ">
                 Sign up
               </button>
             </div>

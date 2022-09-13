@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 const Serial = () => {
-//   const encoder = new TextEncoder();
+  //   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
   let reader = "";
   const init = async () => {
@@ -65,14 +65,14 @@ const Serial = () => {
             init();
           }}
           id="connect-to-serial"
-          className="mx-auto inline-block ml-1 transition ease-in-out hover:scale-110 bg-gray-300 px-5 text-sm py-3 rounded-full"
+          className="mx-auto inline-block ml-1 transition ease-in-out hover:scale-110 bg-gray-200 px-5 text-sm py-3 rounded-full shadow-md"
         >
           Connect with Serial Device
         </button>
         <button
           onPointerDown={async () => getSerialMessages()}
           id="get-serial-message"
-          className="mx-auto inline-block my-5 sm:my-0  transition ease-in-out hover:scale-110 bg-gray-300 px-5 text-sm py-3 rounded-full"
+          className="mx-auto inline-block my-5 sm:my-0  transition ease-in-out hover:scale-110 bg-gray-200 shadow-md px-5 text-sm py-3 rounded-full"
         >
           Get serial message
         </button>

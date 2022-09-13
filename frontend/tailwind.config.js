@@ -3,6 +3,8 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     screens: {
+      forCard: { raw: "(max-width: 970px) and (min-width:550px)" },
+      xxxs: "350px",
       xs: "550px",
       sm: "640px",
       // => @media (min-width: 640px) { ... }

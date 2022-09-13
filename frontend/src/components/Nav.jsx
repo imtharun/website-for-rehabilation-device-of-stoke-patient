@@ -79,7 +79,7 @@ const Nav = () => {
         </button>
         <button
           onClick={logoutHandler}
-          className="hidden mx-auto sm:inline-block mt-[11rem] ml-9 transition ease-in-out hover:scale-110 bg-gray-300 px-5 text-sm py-3 rounded-full"
+          className="hidden font-medium mx-auto sm:inline-block mt-[11rem] ml-9 transition ease-in-out hover:scale-110 bg-gray-200 shadow-sm px-5 text-sm py-3 rounded-full"
         >
           Log out
         </button>
