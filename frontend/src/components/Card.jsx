@@ -2,16 +2,16 @@ import React from "react";
 
 const Card = (props) => {
   return (
-    <div className="bg-gray-300 p-6 rounded-lg mb-3 text-sm">
+    <div className="bg-gray-300 max-w-[330px] p-6 rounded-lg ml-6 970:ml-2 mb-3 text-sm">
       <div className="text-gray-black">
         <img
-          className="block mx-auto w-[100px] h-[100px] rounded-full"
+          className="block mx-auto w-[100px]  h-[100px] rounded-full"
           src={props.profile}
           alt="Profile"
         />
       </div>
       <div className="max-w-[200px]">
-        <h1 className="text-center font-medium">{props.role}</h1>
+        <h1 className="text-center font-medium my-2">{props.role}</h1>
         <h1 className="font-medium">
           Name: <span className="font-normal">{props.name}</span>
         </h1>

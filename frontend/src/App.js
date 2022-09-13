@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import { Routes, Route } from "react-router-dom";
 import axios from "./api/axios";
-import Main from "./pages/Home";
+import Main from "./pages/Main";
 import Game from "./pages/Games";
 import NewSession from "./pages/NewSession";
 import { useNavigate } from "react-router-dom";

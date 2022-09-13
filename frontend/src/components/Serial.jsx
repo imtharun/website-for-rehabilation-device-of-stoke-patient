@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 const Serial = () => {
-  const encoder = new TextEncoder();
+//   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
   let reader = "";
   const init = async () => {

@@ -13,8 +13,6 @@ const Main = () => {
       <Nav />
       <Routes>
         <Route index path={"/"} element={<Home />} />
-        {/* <Route path="/new-session" element={<Timer timeInSeconds={9000} />} />
-        <Route path="/game-details" element={<GameDetails />} /> */}
       </Routes>
     </section>
   );
