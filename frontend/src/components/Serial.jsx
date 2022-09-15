@@ -65,20 +65,23 @@ const Serial = () => {
             init();
           }}
           id="connect-to-serial"
-          className="mx-auto inline-block ml-1my-4 shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-5 text-sm py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
+          className="text-xs sm:text-sm mx-auto inline-block ml-1my-4 shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-5 py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
         >
           Connect with Serial Device
         </button>
         <button
           onPointerDown={async () => getSerialMessages()}
           id="get-serial-message"
-          className="mx-auto inline-block my-5 sm:my-0   shadow-md  transition ease-in-out hover:scale-110  px-5 text-sm py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
+          className="text-xs sm:text-sm mx-auto inline-block my-5 sm:my-0 sm:ml-2 shadow-md  transition ease-in-out hover:scale-110  px-5 py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
         >
           Get serial message
         </button>
       </div>
       <div id="serial-message-container">
-        <div id="message" className=""></div>
+        <div className="bg-gray-100 p-3 max-h-28 overflow-y-scroll mt-16 rounded-md">
+          <div>Serial Monitor</div>
+          <div id="message" className=""></div>
+        </div>
       </div>
     </div>
   );

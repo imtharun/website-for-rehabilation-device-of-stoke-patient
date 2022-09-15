@@ -7,6 +7,7 @@ module.exports = {
   theme: {
     screens: {
       forCard: { raw: "(max-width: 970px) and (min-width:550px)" },
+      forTimer: "970px",
       xxxs: "350px",
       xs: "550px",
       sm: "640px",

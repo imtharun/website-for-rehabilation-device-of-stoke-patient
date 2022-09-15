@@ -10,7 +10,7 @@ const NewSession = () => {
   return (
     <section className="h-full flex bg-[#cfece8] ">
       <Nav />
-      <Timer timeInSeconds={9000} />
+      <Timer timeInSeconds={20} />
     </section>
   );
 };
