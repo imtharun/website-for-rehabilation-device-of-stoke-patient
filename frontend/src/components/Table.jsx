@@ -1,13 +1,32 @@
 import React from "react";
 
 const Table = () => {
-  const cols = ["S No", "Angle1", "Angle2", "Angle3", "Angle4"];
+  const cols = [
+    "Game name",
+    "Joints",
+    "Min ROM",
+    "Max ROM",
+    "Duration (in mins)",
+    "Current Level",
+  ];
   const rows = [
-    { sno: 1, Angle1: 2.2, Angle2: 1.22, Angle3: 34.3, Angle4: 565.6 },
-    { sno: 2, Angle1: 2.2, Angle2: 1.22, Angle3: 34.3, Angle4: 565.6 },
-    { sno: 3, Angle1: 2.2, Angle2: 1.22, Angle3: 34.3, Angle4: 565.6 },
-    { sno: 4, Angle1: 2.2, Angle2: 1.22, Angle3: 34.3, Angle4: 565.6 },
-    { sno: 5, Angle1: 2.2, Angle2: 1.22, Angle3: 34.3, Angle4: 565.6 },
+    {
+      gameName: "Burst",
+      joints: " Fingers and Palm – closing & opening",
+      minRom: 1,
+      maxRom: 2,
+      timeDuration: 12,
+      currentLevel: 2,
+    },
+    {
+      gameName: "Trace",
+      joints:
+        "Shoulder – Flexion/Extension, Horizontal & Vertical Abduction/Adduction",
+      minRom: 1,
+      maxRom: 2,
+      timeDuration: 12,
+      currentLevel: 4,
+    },
   ];
 
   return (
@@ -22,7 +41,7 @@ const Table = () => {
                     return (
                       <th
                         scope="col"
-                        className="text-sm font-medium px-6 py-4 text-left"
+                        className="text-sm whitespace-nowrap font-medium px-4 py-4 text-left"
                       >
                         {col}
                       </th>
@@ -34,20 +53,23 @@ const Table = () => {
                 {rows.map((row) => {
                   return (
                     <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-black">
-                        {row.sno}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                        {row.gameName}
+                      </td>
+                      <td className="text-sm w-[150px] max-w-[150px] break-wor font-light px-6 py-4">
+                        {row.joints}
                       </td>
                       <td className="text-sm font-light px-6 py-4 whitespace-nowrap ">
-                        {row.Angle1}
+                        {row.minRom}
                       </td>
                       <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                        {row.Angle2}
+                        {row.maxRom}
+                      </td>
+                      <td className="text-sm  font-light px-6 py-4 whitespace-nowrap">
+                        {row.timeDuration}
                       </td>
                       <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                        {row.Angle3}
-                      </td>
-                      <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                        {row.Angle4}
+                        {row.currentLevel}
                       </td>
                     </tr>
                   );

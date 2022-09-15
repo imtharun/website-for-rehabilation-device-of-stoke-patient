@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "./../api/axios";
 import Serial from "../components/Serial";
+import "tw-elements";
 
 const PomView = (props) => {
   const firstStart = useRef(true);
@@ -111,14 +112,13 @@ const PomView = (props) => {
 
   return (
     <div className="">
-      <h1 className="text-3xl text-center">Timer</h1>
       <div className="text-8xl mt-3  text-center rounded-xl">
         {displaySecondsAsMins(timer)}
       </div>
       <div className="flex px-4 my-5 justify-between">
         <div className="text-center">
           <button
-            className="mx-auto -ml-3 w-[5rem] sm:inline-block  transition-all ease-in-out hover:scale-110 bg-gray-200 shadow-md text-sm py-3 rounded-full"
+            className="mx-auto -ml-3 w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-5 text-sm py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
             onClick={toggleStart}
           >
             {!start ? "Start" : "Stop"}
@@ -127,7 +127,7 @@ const PomView = (props) => {
         <div className="text-center ml-6">
           <button
             onClick={clickHandler}
-            className="mx-auto  w-[5rem] sm:inline-block  transition-all ease-in-out hover:scale-110 bg-gray-200 text-sm py-3 shadow-md rounded-full"
+            className="mx-auto w-[5rem] sm:inline-block  transition-all ease-in-out hover:scale-110  shadow-md sm:my-0  px-3 text-sm py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
           >
             Submit
           </button>
@@ -142,9 +142,60 @@ const PomView = (props) => {
 
 const Timer = (props) => {
   return (
-    <section className="rounded-tl-2xl bg-white p-7 w-full flex justify-center overflow-y-scroll">
-      <PomView timeInSeconds={props.timeInSeconds} />
+    <section className="bg-white p-7 w-full overflow-y-scroll rounded-tl-2xl">
+      <h1 className="text-3xl text-center">Timer</h1>
+      <div className=" flex justify-around ">
+        <div className="p-4 flex">
+          <div>
+            <Input game="Bird Dodge" />
+            <Input game="Burst" />
+            <Input game="Block & Ball" />
+            <Input game="Car Dodge" />
+            <Input game="Copter Block" />
+            <Input game="Drop balls" />
+            <Input game="Hit Catch" />
+            <Input game="Hurdles" />
+            <Input game="Newton Balls" />
+            <Input game="Trace" />
+            <Input game="Veggie Pick" />
+            <Input game="Windows" />
+          </div>
+          <div className="p-3 flex flex-col justify-between">
+            <h1 className="text-center">
+              Current Level: <span>3</span>
+            </h1>
+            <div className="">
+              <button className="m-4 shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-5 text-sm py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100">
+                Increase Level
+              </button>
+              <button className="m-4 shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-5 text-sm py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100">
+                Decrease Level
+              </button>
+            </div>
+          </div>
+        </div>
+        <PomView timeInSeconds={props.timeInSeconds} />
+      </div>
     </section>
+  );
+};
+
+const Input = (props) => {
+  return (
+    <div className="form-check">
+      <input
+        className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-[#cfece8] checked:border-[#cfece8] focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+        type="radio"
+        name="flexRadioDefault"
+        id={props.game.toLowerCase().replace(" ", "")}
+      />
+      <label
+        className="form-check-label inline-block text-gray-800"
+        htmlFor={props.game.toLowerCase().replace(" ", "")}
+      >
+        {props.game}
+      </label>
+    </div>
   );
 };
 

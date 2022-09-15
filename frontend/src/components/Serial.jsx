@@ -65,14 +65,14 @@ const Serial = () => {
             init();
           }}
           id="connect-to-serial"
-          className="mx-auto inline-block ml-1 transition ease-in-out hover:scale-110 bg-gray-200 px-5 text-sm py-3 rounded-full shadow-md"
+          className="mx-auto inline-block ml-1my-4 shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-5 text-sm py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
         >
           Connect with Serial Device
         </button>
         <button
           onPointerDown={async () => getSerialMessages()}
           id="get-serial-message"
-          className="mx-auto inline-block my-5 sm:my-0  transition ease-in-out hover:scale-110 bg-gray-200 shadow-md px-5 text-sm py-3 rounded-full"
+          className="mx-auto inline-block my-5 sm:my-0   shadow-md  transition ease-in-out hover:scale-110  px-5 text-sm py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
         >
           Get serial message
         </button>
