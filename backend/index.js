@@ -1,10 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const db = require("./database/database");
+const db = require("./database/mysql_db");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const jwt = require("./Helper/JWT.js");
+const mongodb = require("./database/mongodb.js");
 // const mobileapp = require('./apprequests/login');
 
 //port number to listen
@@ -29,6 +30,8 @@ app.get("/", function (req, res) {
   res.send("Only accepting GET and POST requests!");
 });
 
+
+
 //register a new user
 app.post("/register", (req, res) => {
   const { email, password } = req.body;
@@ -43,9 +46,14 @@ app.post("/register", (req, res) => {
     });
 });
 
+
+//Clearing cookie to logout user
 app.get("/logout", (req, res) => {
-  return res.sendStatus(200);
+  res.clearCookie("access-token");
+  res.sendStatus(200);
 });
+
+
 
 //login the user
 app.post("/login", async (req, res) => {
@@ -82,7 +90,10 @@ app.post("/login", async (req, res) => {
 //this is to add user data after checking the data in the jwt token
 app.post("/addusrdata", (req, res) => {
   const id = jwt.getjwt(req, res);
+  const sessionid = req.body.sessionid;
+
 });
+
 
 //return data for user dashboard
 app.get("/dashboard", (req, res) => {
@@ -99,7 +110,7 @@ app.get('/recentsessions',(req,res)=>{
   const resp = jwt.getjwt(req, res);
   console.log("dashboard = "+resp);
   if(resp===undefined){
-    console.log("returning");
+    console.log("invaliduserid...");
     return
   }
   res.send("recent sessions....");
@@ -107,6 +118,31 @@ app.get('/recentsessions',(req,res)=>{
   console.log(resp);
   console.log("====================================");
 });
+
+app.get('/download/:id',(req,res)=>{
+  const userid = jwt.getjwt(req,res);
+  if(userid===undefined){
+    console.log("invaliduserid...");
+    return
+  }
+  const sessionid = req.params.id;
+  const result = db.downloaddata(userid,sessionid,(err,result)=>{
+    if(err){
+      console.log(err);
+      return
+    }
+    
+  })
+
+});
+
+app.get('/test',(req,res)=>{
+  const result = mongodb.createcoollection("test",(err,result)=>{
+    if(err) throw err;
+    res.send("sucess");
+  });
+});
+
 
 //respond for other unused pages
 app.get('*', function(req, res){

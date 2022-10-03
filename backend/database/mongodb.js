@@ -1,18 +1,19 @@
 var MongoClient = require('mongodb').MongoClient;
-var config = require("./config_sql")
-var url = config.mongodburl
-var db = "configdatabase"
+const { connectDb, getDb } = require('./mongoconnect')
 
-MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  dbo = db.db("db");
-  dbo.createCollection("customers", function(err, res) {
+
+var db // store db object in this object
+connectDb(() => ( db = getDb("user") ))
+
+function createcoollection(name,callback){
+  db.createCollection(name, function(err, res) {
     if (err) throw err;
     console.log("Collection created!");
-    db.close();
-  });
-});
+    callback(err,res);
+  });  
+}
 
-module.exports ={
-  
+
+module.exports = {
+  createcoollection,
 }
