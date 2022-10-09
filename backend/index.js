@@ -1,10 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const db = require("./database/database");
+const db = require("./database/mysql_db");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
-const jwt = require("./JWT.js");
+const jwt = require("./Helper/JWT.js");
+const mongodb = require("./database/mongodb.js");
 // const mobileapp = require('./apprequests/login');
 
 //port number to listen
@@ -29,6 +30,8 @@ app.get("/", function (req, res) {
   res.send("Only accepting GET and POST requests!");
 });
 
+
+
 //register a new user
 app.post("/register", (req, res) => {
   const { email, password } = req.body;
@@ -43,9 +46,14 @@ app.post("/register", (req, res) => {
     });
 });
 
+
+//Clearing cookie to logout user
 app.get("/logout", (req, res) => {
-  return res.sendStatus(200);
+  res.clearCookie("access-token");
+  res.sendStatus(200);
 });
+
+
 
 //login the user
 app.post("/login", async (req, res) => {
@@ -63,7 +71,7 @@ app.post("/login", async (req, res) => {
       const id = result.userid;
       const accessToken = jwt.createToken(id);
       res.cookie("access-token", accessToken, {
-        maxAge: 60 * 60 * 24 * 30 * 1000,
+        maxAge: 60 * 30 * 1 * 30 * 1000,
         httpOnly: true, //used this for security reasons...
       });
       res.send("logged in");
@@ -72,21 +80,6 @@ app.post("/login", async (req, res) => {
 });
 
 
-//checking the jwt token for authentication
-const getjwt = (req, res) => {
-  let resp = "";
-  const id = jwt.getTokendata(req, (result) => {
-    if (result) {
-      resp = result;
-      console.log("result = " + result);
-      res.send(result); // put the data code here
-    } else {
-      console.log("else result = " + result);
-      res.sendStatus(401);
-    }
-  });  
-  return resp;
-};
 
 //checking if jwt token is valid or not
 // app.post('/checkjwt',(req,res)=>{
@@ -96,21 +89,60 @@ const getjwt = (req, res) => {
 
 //this is to add user data after checking the data in the jwt token
 app.post("/addusrdata", (req, res) => {
-  const id = getjwt(req, res);
+  const id = jwt.getjwt(req, res);
+  const sessionid = req.body.sessionid;
+
 });
+
 
 //return data for user dashboard
 app.get("/dashboard", (req, res) => {
-  res = getjwt(req, res);
+  const resp = jwt.getjwt(req, res);
+  console.log("dashboard = "+resp);
+  if(resp===undefined){
+    return
+  }
+  res.send("hello page!");
 });
 
 //return data for user to check data of recent sessions
 app.get('/recentsessions',(req,res)=>{
-  res = getjwt(req, res);
+  const resp = jwt.getjwt(req, res);
+  console.log("dashboard = "+resp);
+  if(resp===undefined){
+    console.log("invaliduserid...");
+    return
+  }
+  res.send("recent sessions....");
   console.log("====================================");
-  console.log(res);
+  console.log(resp);
   console.log("====================================");
 });
+
+app.get('/download/:id',(req,res)=>{
+  const userid = jwt.getjwt(req,res);
+  if(userid===undefined){
+    console.log("invaliduserid...");
+    return
+  }
+  const sessionid = req.params.id;
+  const result = db.downloaddata(userid,sessionid,(err,result)=>{
+    if(err){
+      console.log(err);
+      return
+    }
+    
+  })
+
+});
+
+app.get('/test',(req,res)=>{
+  const result = mongodb.createcoollection("test",(err,result)=>{
+    if(err) throw err;
+    res.send("sucess");
+  });
+});
+
 
 //respond for other unused pages
 app.get('*', function(req, res){

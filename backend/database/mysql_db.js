@@ -13,7 +13,7 @@ function connect()
     con.connect(function(err) 
     {
         if (err) throw err;
-        console.log("database Connected!");
+        console.log("MYsql Connected!");
     });
 }
 
@@ -56,6 +56,7 @@ function authorise(username,password,callback)
 
 //create a new user
 function createuser(username,password){
+    
     
 }
 
