@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-const Serial = () => {
+const Serial = (props) => {
   //   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
   let reader = "";
@@ -43,19 +43,12 @@ const Serial = () => {
   };
 
   const getSerialMessages = async () => {
-    document.getElementById("message").innerText += await read();
-  };
+    init();
 
-  useEffect(() => {
-    // const connect = document.getElementById("connect-to-serial");
-    // const getSerialMessage = document.getElementById("get-serial-message");
-    // connect.addEventListener("pointerdown", () => {
-    //   init();
-    // });
-    // getSerialMessage.addEventListener("pointerdown", async () => {
-    //   getSerialMessages();
-    // });
-  }, []);
+    const message = document.getElementById("message");
+    message.innerText += await read();
+  };
+  useEffect(() => {}, []);
 
   return (
     <div className="mt-6 ">
@@ -69,16 +62,16 @@ const Serial = () => {
         >
           Connect with Serial Device
         </button>
-        <button
+        {/* <button
           onPointerDown={async () => getSerialMessages()}
           id="get-serial-message"
           className="text-xs sm:text-sm mx-auto inline-block my-5 sm:my-0 sm:ml-2 shadow-md  transition ease-in-out hover:scale-110  px-5 py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
         >
           Get serial message
-        </button>
+        </button> */}
       </div>
       <div id="serial-message-container">
-        <div className="bg-gray-100 p-3 max-h-28 overflow-y-scroll mt-16 rounded-md">
+        <div className="bg-gray-100 p-3 mx-auto max-w-lg max-h-60 overflow-y-scroll mt-8 rounded-md">
           <div>Serial Monitor</div>
           <div id="message" className=""></div>
         </div>

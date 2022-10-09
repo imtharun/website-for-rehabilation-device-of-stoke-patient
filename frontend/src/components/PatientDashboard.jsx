@@ -5,7 +5,7 @@ import Card from "./Card";
 import DefaultProfilePic from "./../assets/default-profile-pic.png";
 import SessionCard from "./SessionCard";
 
-const Home = () => {
+const PatientDashboard = () => {
   return (
     <section className="rounded-tl-2xl bg-white p-3 pt-6 sm:p-4 w-full overflow-y-scroll">
       <TimeAndDate />
@@ -13,8 +13,12 @@ const Home = () => {
         <div className="flex-1">
           <SessionCard />
           <SessionCard />
+          <SessionCard />
+          <SessionCard />
         </div>
-        <CardComponent />
+        <div>
+          <CardComponent />
+        </div>
       </div>
     </section>
   );
@@ -69,6 +73,18 @@ const CardComponent = () => {
       age: 79,
       address: "600 Pennsylvania Avenue NW, Washington, LA, TN",
     },
+    {
+      role: "Care taker",
+      name: "Jack Dane",
+      age: 79,
+      address: "600 Pennsylvania Avenue NW, Washington, LA, TN",
+    },
+    {
+      role: "Care taker",
+      name: "Jack Dane",
+      age: 79,
+      address: "600 Pennsylvania Avenue NW, Washington, LA, TN",
+    },
   ];
   return (
     <div className="mt-[1rem] mx-auto flex  flex-col items-center forCard:flex-row 970:flex-col">
@@ -88,4 +104,4 @@ const CardComponent = () => {
   );
 };
 
-export default Home;
+export default PatientDashboard;

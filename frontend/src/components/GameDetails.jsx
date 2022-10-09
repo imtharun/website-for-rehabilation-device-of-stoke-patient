@@ -57,7 +57,7 @@ const GameDetails = () => {
       name: "Hit catch",
       supportingJoints:
         "Shoulder – Flexion/Extension & Abduction/Adduction, Elbow – Flexion/Extension",
-      noOfLevels: 5,
+      noOfLevels: 3,
       picture: hitCatch,
     },
     {

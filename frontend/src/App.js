@@ -1,19 +1,20 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
+import axios from "./api/axios";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import { Routes, Route } from "react-router-dom";
-import axios from "./api/axios";
-import Main from "./pages/Main";
-import Game from "./pages/Games";
+import PatientHome from "./pages/PatientHome";
+import DoctorHome from "./pages/DoctorHome";
 import NewSession from "./pages/NewSession";
-import { useNavigate } from "react-router-dom";
+import Game from "./pages/Games";
 import Error from "./components/Error";
+import "./index.css";
 
 const App = () => {
   const isFetched = useRef(false);
   const [isPersist, setIsPersist] = useState(false);
   const navigate = useNavigate();
-
+  const userType = "doctor";
   const persistUser = useCallback(async () => {
     try {
       const resp = await axios.get("/dashboard");
@@ -38,9 +39,16 @@ const App = () => {
   }, [persistUser]);
 
   return (
-    <div className="font-workSans min-h-screen h-screen">
+    <div className="font-workSans h-screen min-h-screen">
       <Routes>
-        <Route index path="/" element={<Main />} />
+        <Route
+          index
+          path="/"
+          element={
+            (userType === "patient" && <PatientHome />) ||
+            (userType === "doctor" && <DoctorHome />)
+          }
+        />
         <Route path="/new-session" element={<NewSession />} />
         <Route path="/game-details" element={<Game />} />
         <Route path="/signup" element={<Signup />} />

@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import Nav from "../components/Nav";
-import GameDetails from "./../components/GameDetails";
-
+import PatientDashboard from "../components/PatientDashboard";
 import { HomeIcon, TimerIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 
-const Game = () => {
+const PatientHome = () => {
   useEffect(() => {
-    document.title = "Game Details";
+    document.title = "Home";
   }, []);
 
   const navForPatient = [
@@ -32,9 +31,9 @@ const Game = () => {
   return (
     <section className="h-full flex bg-[#cfece8] ">
       <Nav navItems={navForPatient} />
-      <GameDetails />
+      <PatientDashboard />
     </section>
   );
 };
 
-export default Game;
+export default PatientHome;

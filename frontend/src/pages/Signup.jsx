@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import Logo from "../components/Logo";
-import Background from "../components/Background";
 import { Link } from "react-router-dom";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import axios from "../api/axios";
@@ -22,6 +21,8 @@ const validatePhoneNumber = (number) => {
 };
 
 const Login = () => {
+  const USER_TYPES = ["Patient", "Doctor", "Caretaker"];
+
   const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -29,31 +30,25 @@ const Login = () => {
   const confirmPasswordRef = useRef();
   const phoneNumberRef = useRef();
   const addressRef = useRef();
-  const medicalConditionRef = useRef();
-  const caretakerNameRef = useRef();
-  const caretakerDobRef = useRef();
-  const caretakerAddressRef = useRef();
-  const drRef = useRef();
-  const patientRef = useRef();
 
-  const [isDoctor, setIsDoctor] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
-  const [medicalCondition, setMedicalCondition] = useState("");
   const [dob, setDob] = useState("");
-  const [caretakerName, setCaretakerName] = useState("");
-  const [caretakerAddress, setCaretakerAddress] = useState("");
-  const [caretakerDob, setCaretakerDob] = useState("");
+
+  const [userType, setUserType] = useState("Patient");
 
   const [isName, setIsName] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
   const [isPhoneNumber, setIsPhoneNumber] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
-  const [isCaretakerName, setIsCaretakerName] = useState(false);
+
+  const radioChangeHandler = (e) => {
+    setUserType(e.target.value);
+  };
 
   useEffect(() => {
     document.title = "Sign up";
@@ -66,14 +61,6 @@ const Login = () => {
       setIsName(false);
     }
   }, [name]);
-
-  useEffect(() => {
-    if (caretakerName !== "" && !isAlpha(caretakerName)) {
-      setIsCaretakerName(true);
-    } else {
-      setIsCaretakerName(false);
-    }
-  }, [caretakerName]);
 
   useEffect(() => {
     if (email !== "" && !validateEmail(email)) {
@@ -122,15 +109,11 @@ const Login = () => {
         phoneNumber,
         dob,
         address,
-        medicalCondition,
-        caretakerName,
-        caretakerDob,
-        caretakerAddress,
       });
 
       console.log(resp);
     } catch (error) {
-      console.log(error``);
+      console.log(error);
     }
   };
 
@@ -140,283 +123,220 @@ const Login = () => {
   };
 
   return (
-    <div className="relative sm:flex min-h-screen">
-      {/* form div */}
-      <div className="sm:w-1/2 pt-6 mx-6 h-full">
+    <div className="bg-og-bg bg-cover">
+      <div className="pt-3 ml-2">
         <Logo />
-        <form className="mt-20" onSubmit={submitHandler}>
-          <div>
-            <h1 className="text-center text-3xl">Welcome Back!</h1>
-            <p className="text-xs pt-1 text-gray-500 text-center">
-              Please enter your details
-            </p>
-          </div>
-          <div className="mt-8">
-            <div
-              className={`relative max-w-[22rem] border-b-[1.5px] mx-auto p-1 pl-0 ${
-                isName ? "border-red-500" : "border-black"
-              }`}
-            >
-              <input
-                ref={nameRef}
-                className="outline-none block w-full"
-                value={name}
-                type="text"
-                onChange={() => setName(nameRef.current.value)}
-                placeholder="Name"
-                required
-              />
-              {isName && (
-                <span className="text-red-500 absolute text-xs -top-2 right-0">
-                  Invalid Name
-                </span>
-              )}
-            </div>
-            <div
-              className={`relative max-w-[22rem] mt-7 border-b-[1.5px]  ${
-                isEmail ? "border-red-500" : "border-black"
-              } mx-auto p-1 pl-0 `}
-            >
-              <input
-                ref={emailRef}
-                className="outline-none block w-full"
-                value={email}
-                type="email"
-                onChange={() => setEmail(emailRef.current.value)}
-                placeholder="Email"
-                required
-              />
-
-              {isEmail && (
-                <span className="text-red-500 absolute text-xs -top-2 right-0">
-                  Invalid Mail Id
-                </span>
-              )}
-            </div>
-            <div className="max-w-[22rem] mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0">
-              <input
-                ref={dobRef}
-                className="outline-none block w-full"
-                value={dob}
-                placeholder="DD/MM/YYYY"
-                onChange={() => setDob(dobRef.current.value)}
-                type="text"
-                required
-              />
-            </div>
-            <div
-              className={`max-w-[22rem] ${
-                isPhoneNumber ? "border-red-500" : "border-black"
-              } mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0`}
-            >
-              <input
-                ref={phoneNumberRef}
-                className="outline-none block w-full"
-                value={phoneNumber}
-                type="text"
-                onChange={() => setPhoneNumber(phoneNumberRef.current.value)}
-                placeholder="Phone number"
-                required
-              />
-              {isPhoneNumber && (
-                <span className="text-red-500 absolute text-xs -top-2 right-0">
-                  Invalid Phone Number
-                </span>
-              )}
-            </div>
-            <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
-              <TextareaAutosize
-                ref={addressRef}
-                minRows={2}
-                className="outline-none block w-full"
-                value={address}
-                type="text"
-                onChange={() => setAddress(addressRef.current.value)}
-                placeholder="Address"
-                required
-              />
-            </div>
-
-            <div
-              className={`${
-                isPassword ? "border-red-500" : "border-black"
-              } max-w-[22rem] mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0`}
-            >
-              <input
-                ref={passwordRef}
-                className="outline-none block w-full"
-                value={password}
-                onChange={() => setPassword(passwordRef.current.value)}
-                type="password"
-                autoComplete="off"
-                placeholder="Password"
-                required
-              />
-              {isPassword && (
-                <span className="text-red-500 absolute text-xs -top-2 right-0">
-                  Invalid Password
-                </span>
-              )}
-            </div>
-            <div
-              className={`${
-                isPassword ? "border-red-500" : "border-black"
-              } max-w-[22rem] mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0`}
-            >
-              <input
-                ref={confirmPasswordRef}
-                className="outline-none block w-full"
-                value={confirmPassword}
-                onChange={() =>
-                  setConfirmPassword(confirmPasswordRef.current.value)
-                }
-                type="password"
-                autoComplete="off"
-                placeholder="Confirm Password"
-                required
-              />
-              {isPassword && (
-                <span className="text-red-500 absolute text-xs -top-2 right-0">
-                  Invalid Password
-                </span>
-              )}
-            </div>
-
-            <div className="flex mt-6 max-w-[22rem] mx-auto justify-between">
-              <div className="form-check">
-                <input
-                  ref={drRef}
-                  className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-[#cfece8] checked:border-[#cfece8] focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                  type="radio"
-                  name="flexRadioDefault"
-                  id="flexRadioDefault1"
-                  onChange={() => setIsDoctor(true)}
-                  defaultChecked
-                />
-                <label
-                  className="form-check-label inline-block text-gray-800"
-                  htmlFor="flexRadioDefault1"
-                >
-                  Doctor
-                </label>
-              </div>
-              <div className="form-check">
-                <input
-                  ref={patientRef}
-                  className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-[#cfece8] checked:border-[#cfece8] focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                  type="radio"
-                  name="flexRadioDefault"
-                  onChange={() => setIsDoctor(false)}
-                  id="flexRadioDefault2"
-                />
-                <label
-                  className="form-check-label inline-block text-gray-800"
-                  htmlFor="flexRadioDefault2"
-                >
-                  Patient
-                </label>
-              </div>
-            </div>
-
-            {!isDoctor && (
-              <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
-                <TextareaAutosize
-                  ref={medicalConditionRef}
-                  minRows={2}
-                  className="outline-none block w-full"
-                  value={medicalCondition}
-                  type="text"
-                  onChange={() =>
-                    setMedicalCondition(medicalConditionRef.current.value)
-                  }
-                  placeholder="Medical Condition"
-                  required
-                />
-              </div>
-            )}
-
-            {!isDoctor && (
+      </div>
+      <div className="xxxs:flex xxxs:justify-center shadow-xl">
+        {/* form div */}
+        <div className="xxxs:w-[28rem] mx-5">
+          <form
+            className="mt-[3.3rem] shadow-2xl p-6 bg-white rounded-md"
+            onSubmit={submitHandler}
+          >
+            <Top />
+            <div className="mt-8">
               <div
-                className={`${
-                  isCaretakerName ? "border-red-500" : "border-black"
-                } max-w-[22rem] mt-5 relative border-b-[1.5px] border-black mx-auto p-1 pl-0`}
+                className={`relative max-w-[22rem] border-b-[1.5px] mx-auto p-1 pl-0 ${
+                  isName ? "border-red-500" : "border-black"
+                }`}
               >
                 <input
-                  ref={caretakerNameRef}
+                  ref={nameRef}
                   className="outline-none block w-full"
-                  value={caretakerName}
+                  value={name}
                   type="text"
-                  onChange={() =>
-                    setCaretakerName(caretakerNameRef.current.value)
-                  }
-                  placeholder="Caretaker Name"
+                  onChange={() => setName(nameRef.current.value)}
+                  placeholder="Name"
                   required
                 />
-                {isCaretakerName && (
+                {isName && (
                   <span className="text-red-500 absolute text-xs -top-2 right-0">
                     Invalid Name
                   </span>
                 )}
               </div>
-            )}
-            {!isDoctor && (
-              <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
+              <div
+                className={`relative max-w-[22rem] mt-7 border-b-[1.5px]  ${
+                  isEmail ? "border-red-500" : "border-black"
+                } mx-auto p-1 pl-0 `}
+              >
                 <input
-                  ref={caretakerDobRef}
+                  ref={emailRef}
                   className="outline-none block w-full"
-                  value={caretakerDob}
+                  value={email}
+                  type="email"
+                  onChange={() => setEmail(emailRef.current.value)}
+                  placeholder="Email"
+                  required
+                />
+
+                {isEmail && (
+                  <span className="text-red-500 absolute text-xs -top-2 right-0">
+                    Invalid Mail Id
+                  </span>
+                )}
+              </div>
+              <div className="max-w-[22rem] mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0">
+                <input
+                  ref={dobRef}
+                  className="outline-none block w-full"
+                  value={dob}
+                  placeholder="DD/MM/YYYY"
+                  onChange={() => setDob(dobRef.current.value)}
                   type="text"
-                  onChange={() =>
-                    setCaretakerDob(caretakerDobRef.current.value)
-                  }
-                  placeholder="Caretaker Dob"
                   required
                 />
               </div>
-            )}
-            {!isDoctor && (
+              <div
+                className={`max-w-[22rem] ${
+                  isPhoneNumber ? "border-red-500" : "border-black"
+                } mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0`}
+              >
+                <input
+                  ref={phoneNumberRef}
+                  className="outline-none block w-full"
+                  value={phoneNumber}
+                  type="text"
+                  onChange={() => setPhoneNumber(phoneNumberRef.current.value)}
+                  placeholder="Phone number"
+                  required
+                />
+                {isPhoneNumber && (
+                  <span className="text-red-500 absolute text-xs -top-2 right-0">
+                    Invalid Phone Number
+                  </span>
+                )}
+              </div>
               <div className="max-w-[22rem] mt-7 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
                 <TextareaAutosize
-                  ref={caretakerAddressRef}
+                  ref={addressRef}
                   minRows={2}
                   className="outline-none block w-full"
-                  value={caretakerAddress}
+                  value={address}
                   type="text"
-                  onChange={() =>
-                    setCaretakerAddress(caretakerAddressRef.current.value)
-                  }
-                  placeholder="Caretaker Address"
+                  onChange={() => setAddress(addressRef.current.value)}
+                  placeholder="Address"
                   required
                 />
               </div>
-            )}
 
-            <div className="my-10">
-              <button className="block hover:scale-110 transition ease-in-out max-w-[22rem] w-full rounded-full p-2 mx-auto bg-gray-100 border-slate-500 border text-slate-500 hover:bg-slate-500 hover:text-gray-100">
-                Sign up
-              </button>
+              <div
+                className={`${
+                  isPassword ? "border-red-500" : "border-black"
+                } max-w-[22rem] mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0`}
+              >
+                <input
+                  ref={passwordRef}
+                  className="outline-none block w-full"
+                  value={password}
+                  onChange={() => setPassword(passwordRef.current.value)}
+                  type="password"
+                  autoComplete="off"
+                  placeholder="Password"
+                  required
+                />
+                {isPassword && (
+                  <span className="text-red-500 absolute text-xs -top-2 right-0">
+                    Invalid Password
+                  </span>
+                )}
+              </div>
+              <div
+                className={`${
+                  isPassword ? "border-red-500" : "border-black"
+                } max-w-[22rem] mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0`}
+              >
+                <input
+                  ref={confirmPasswordRef}
+                  className="outline-none block w-full"
+                  value={confirmPassword}
+                  onChange={() =>
+                    setConfirmPassword(confirmPasswordRef.current.value)
+                  }
+                  type="password"
+                  autoComplete="off"
+                  placeholder="Confirm Password"
+                  required
+                />
+                {isPassword && (
+                  <span className="text-red-500 absolute text-xs -top-2 right-0">
+                    Invalid Password
+                  </span>
+                )}
+              </div>
+
+              <div className="flex mt-6 max-w-[22rem] mx-auto justify-between">
+                {USER_TYPES.map((user, index) => {
+                  return (
+                    <div className="form-check">
+                      <input
+                        className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-[#cfece8] checked:border-[#cfece8] focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                        type="radio"
+                        value={user}
+                        name="flexRadioDefault"
+                        checked={userType === user}
+                        id={"flexRadioDefault" + index}
+                        onChange={radioChangeHandler}
+                      />
+                      <label
+                        className="form-check-label inline-block text-gray-800"
+                        htmlFor={"flexRadioDefault" + index}
+                      >
+                        {user}
+                      </label>
+                    </div>
+                  );
+                })}
+              </div>
+              <Mid />
             </div>
-            <div className="text-center flex justify-center -mt-4 text-sm">
-              Already have an account ?
-              <span className="ml-1 flex border-b-[1px] border-transparent hover:border-b-black transition-all duration-700 ease-out">
-                <Link to={"/login"}>Log In</Link>
-                <ArrowTopRightIcon className="ml-1 mt-[.25rem] w-3 h-3" />
-              </span>
-            </div>
-          </div>
-        </form>
-        <div className="pt-[3.7rem] pb-4 w-sm max-w-[370px] mx-auto ">
-          <h1 className="text-center text-xs">
-            Virtual Reality Based Rehabilitation Device for Upper Extremity
-            Stroke Survivors
-          </h1>
-          <p className="mt-1  text-center text-xs">Sponsored by DST - BDTD</p>
+          </form>
+          <Bottom />
         </div>
       </div>
-      {/* image div */}
-      <div className="w-1/2 h-screen">
-        <Background isDoctor={isDoctor} />
+    </div>
+  );
+};
+
+export const Top = () => {
+  return (
+    <div>
+      <h1 className="text-center text-3xl">Welcome !</h1>
+      <p className="text-xs pt-1 text-gray-500 text-center">
+        Please enter your details
+      </p>
+    </div>
+  );
+};
+
+const Mid = () => {
+  return (
+    <div>
+      <div className="my-10">
+        <button className="block hover:scale-110 transition ease-in-out max-w-[22rem] w-full rounded-full p-2 mx-auto bg-gray-100 border-slate-500 border text-slate-500 hover:bg-slate-500 hover:text-gray-100">
+          Sign up
+        </button>
       </div>
+      <div className="text-center flex justify-center -mt-4 text-sm">
+        Already have an account ?
+        <span className="ml-1 flex border-b-[1px] border-transparent hover:border-b-black transition-all duration-700 ease-out">
+          <Link to={"/login"}>Log In</Link>
+          <ArrowTopRightIcon className="ml-1 mt-[.25rem] w-3 h-3" />
+        </span>
+      </div>
+    </div>
+  );
+};
+
+export const Bottom = () => {
+  return (
+    <div className="pt-[3.5rem] pb-4 w-sm max-w-[370px] mx-auto ">
+      <h1 className="text-center text-xs">
+        Virtual Reality Based Rehabilitation Device for Upper Extremity Stroke
+        Survivors
+      </h1>
+      <p className="mt-1  text-center text-xs">Sponsored by DST - BDTD</p>
     </div>
   );
 };

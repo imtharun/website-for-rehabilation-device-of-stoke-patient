@@ -1,9 +1,14 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Error404 from "./../assets/Error404.svg";
 import { useNavigate } from "react-router-dom";
 
 const Error = () => {
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    document.title = "Error 404"
+  }, [])
+
 
   const clickHandler = () => {
     navigate("/", { replace: true });

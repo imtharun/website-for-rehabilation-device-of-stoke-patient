@@ -29,6 +29,9 @@ module.exports = {
     },
 
     extend: {
+      backgroundImage: {
+        'og-bg': "url('/src/assets/og-bg.svg')"
+      },
       fontFamily: {
         workSans: ["Work Sans", "sans-serif"],
       },

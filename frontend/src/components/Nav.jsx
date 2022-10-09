@@ -1,15 +1,10 @@
 import React from "react";
 import Logo from "./Logo";
-import {
-  HomeIcon,
-  TimerIcon,
-  InfoCircledIcon,
-  ExitIcon,
-} from "@radix-ui/react-icons";
+import { ExitIcon } from "@radix-ui/react-icons";
 import axios from "../api/axios";
 import { useNavigate, NavLink } from "react-router-dom";
 
-const Nav = () => {
+const Nav = (props) => {
   const navigate = useNavigate();
 
   const onLogout = async () => {
@@ -28,56 +23,35 @@ const Nav = () => {
   };
 
   return (
-    <nav className="nav py-4  px-2 sm:w-[14rem] sm:max-w-[14rem] overflow-scroll">
+    <nav className="nav py-4  mx-1 sm:w-[14rem] sm:max-w-[14rem] overflow-scroll">
       <div>
         <Logo />
       </div>
-      <ul className="mt-48 -ml-2">
-        <NavLink
-          style={({ isActive }) => ({
-            fontWeight: isActive ? 600 : 400,
-            color: !isActive
-              ? "#54626F"
-              : "rgb(100 116 139 / var(--tw-bg-opacity))",
+      <ul className="mt-48 -ml-2 ">
+        {props.navItems &&
+          props.navItems.map((ele, index) => {
+            return (
+              <NavLink
+                key={index + 1}
+                style={({ isActive }) => ({
+                  fontWeight: isActive ? 600 : 400,
+                  color: !isActive
+                    ? "#54626F"
+                    : "rgb(100 116 139 / var(--tw-bg-opacity))",
+                })}
+                to={ele.link}
+                className="hover:font-medium mx-auto"
+                end
+              >
+                <li className="flex items-center sm:ml-6 mb-4 ">
+                  {ele.iconComponent}
+                  <span className="pl-2 hidden sm:inline-block">
+                    {ele.name}
+                  </span>
+                </li>
+              </NavLink>
+            );
           })}
-          to={"/"}
-          className="hover:font-medium"
-        >
-          <li className="flex items-center sm:ml-4 mb-4 ">
-            <HomeIcon className="w-5 h-5 mx-auto sm:mx-0 sm:ml-1" />
-            <span className="pl-2 hidden sm:inline-block">Home</span>
-          </li>
-        </NavLink>
-        <NavLink
-          style={({ isActive }) => ({
-            fontWeight: isActive ? 600 : 400,
-            color: !isActive
-              ? "#54626F"
-              : "rgb(100 116 139 / var(--tw-bg-opacity))",
-          })}
-          to={"/new-session"}
-          className="hover:font-medium"
-        >
-          <li className="flex items-center justify-left sm:ml-4 mb-4 ">
-            <TimerIcon className="w-5 h-5 mx-auto sm:mx-0 sm:ml-1" />
-            <span className="pl-2 hidden sm:inline">New Session</span>
-          </li>
-        </NavLink>
-        <NavLink
-          style={({ isActive }) => ({
-            fontWeight: isActive ? 600 : 400,
-            color: !isActive
-              ? "#54626F"
-              : "rgb(100 116 139 / var(--tw-bg-opacity))",
-          })}
-          to={"/game-details"}
-          className="hover:font-medium"
-        >
-          <li className="flex items-center justify-left sm:ml-4 ">
-            <InfoCircledIcon className="w-5 h-5 mx-auto sm:mx-0 sm:ml-1 " />
-            <span className="pl-2 hidden sm:inline ">Game Details</span>
-          </li>
-        </NavLink>
       </ul>
       <div>
         <button onClick={logoutHandler}>
