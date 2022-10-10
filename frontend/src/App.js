@@ -10,6 +10,7 @@ import Game from "./pages/Games";
 import Error from "./components/Error";
 import "./index.css";
 import ManagePatients from "./pages/ManagePatients";
+import { CaretakerHome } from "./pages/CaretakerHome";
 
 const App = () => {
   const isFetched = useRef(false);
@@ -47,7 +48,8 @@ const App = () => {
           path="/"
           element={
             (userType === "patient" && <PatientHome />) ||
-            (userType === "doctor" && <DoctorHome />)
+            (userType === "doctor" && <DoctorHome />) ||
+            (userType === "caretaker" && <CaretakerHome />)
           }
         />
         <Route path="/new-session" element={<NewSession />} />

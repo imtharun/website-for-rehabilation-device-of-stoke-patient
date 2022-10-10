@@ -62,7 +62,7 @@ const AddOrRemovePatients = () => {
         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
       "
             id="exampleText0"
-            placeholder="Enter Patient Name"
+            placeholder="Enter Patient Mail"
           />
         </div>
       </div>
