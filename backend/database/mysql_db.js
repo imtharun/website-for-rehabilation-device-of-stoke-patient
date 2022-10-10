@@ -10,7 +10,7 @@ connect();
 //used to establish connection with the database
 function connect()
 {
-    con.connect(function(err) 
+    con.connect(function(err)
     {
         if (err) throw err;
         console.log("MYsql Connected!");
@@ -53,14 +53,34 @@ function authorise(username,password,callback)
     })
 }
 
-
-//create a new user
-function createuser(username,password){
-    
-    
+//dashboard functions
+function dashboard_patient(patientid,callback){
+    console.log("dashboard_patient");
 }
+
+function dashboard_doctor(doctorid,callback){  
+    console.log("dashboard_doctor");
+}
+
+function dashboard_caretaker(caretakerid,callback){
+    console.log("dashboard_caretaker");
+}
+
+
+//register the respective users
+function registerpatient(callback){
+    console.log("registerpatient");
+}
+function registerdoctor(callback){
+    console.log("registerdoctor");
+}
+function registercaretaker(callback){
+    console.log("registercaretaker");
+}
+
+
 
 module.exports = {
     authorise,
-    createuser,
+
 };
