@@ -29,7 +29,7 @@ const NewSession = () => {
   }, []);
 
   return (
-    <section className="h-full flex bg-[#cfece8] ">
+    <section className="h-full flex bg-[#cfece8]">
       <Nav navItems={navForPatient} />
       <Timer timeInSeconds={20} />
     </section>

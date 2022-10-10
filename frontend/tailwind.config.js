@@ -19,6 +19,7 @@ module.exports = {
       970: "970px",
 
       lg: "1024px",
+      xlg: "1030px",
       // => @media (min-width: 1024px) { ... }
 
       xl: "1280px",
@@ -30,7 +31,7 @@ module.exports = {
 
     extend: {
       backgroundImage: {
-        'og-bg': "url('/src/assets/og-bg.svg')"
+        "og-bg": "url('/src/assets/og-bg.svg')",
       },
       fontFamily: {
         workSans: ["Work Sans", "sans-serif"],

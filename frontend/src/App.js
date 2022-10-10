@@ -9,6 +9,7 @@ import NewSession from "./pages/NewSession";
 import Game from "./pages/Games";
 import Error from "./components/Error";
 import "./index.css";
+import ManagePatients from "./pages/ManagePatients";
 
 const App = () => {
   const isFetched = useRef(false);
@@ -53,6 +54,7 @@ const App = () => {
         <Route path="/game-details" element={<Game />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/manage-patients" element={<ManagePatients />} />
         <Route path="/*" element={<Error />} />
       </Routes>
     </div>

@@ -1,9 +1,10 @@
 import React from "react";
-import Nav from "../components/Nav";
-import { AvatarIcon, HomeIcon } from "@radix-ui/react-icons";
-import DoctorDashboard from "../components/DoctorDashboard";
 
-const DoctorHome = () => {
+import { HomeIcon, AvatarIcon } from "@radix-ui/react-icons";
+import Nav from "../components/Nav";
+import AddOrRemovePatients from "../components/AddOrRemovePatients";
+
+const ManagePatients = () => {
   const navForDoctor = [
     {
       name: "Home",
@@ -17,12 +18,14 @@ const DoctorHome = () => {
     },
   ];
 
+  
+
   return (
     <section className="h-full flex bg-[#cfece8]">
       <Nav navItems={navForDoctor} />
-      <DoctorDashboard />
+      <AddOrRemovePatients />
     </section>
   );
 };
 
-export default DoctorHome;
+export default ManagePatients;

@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import profile from "./../assets/default-profile-pic.png";
 import SessionCard from "./SessionCard";
+import { TimeAndDate } from "./PatientDashboard";
 
 const DoctorDashboard = () => {
   const searchRef = useRef();
@@ -8,13 +9,25 @@ const DoctorDashboard = () => {
 
   const patientData = [
     {
-      name: "D k Suryah",
+      name: "D k Suryah ",
+      Age: 81,
+      caretakers: ["Adhithya sdfsdfs", "Karikala dasdasda", "Pooniyin Selvan"],
+      profile: profile,
+    },
+    {
+      name: "Yuvarraj",
+      Age: 81,
+      caretakers: ["Adhithya", "Karikala", "Pooniyin Selvan"],
+      profile: profile,
+    },
+    {
+      name: "Yuvarraj",
       Age: 81,
       caretakers: ["Adhithya sdfsdfs", "Karikala", "Pooniyin Selvan"],
       profile: profile,
     },
     {
-      name: "Yuvarraj",
+      name: "Shivanesh",
       Age: 81,
       caretakers: ["Adhithya", "Karikala", "Pooniyin Selvan"],
       profile: profile,
@@ -39,7 +52,8 @@ const DoctorDashboard = () => {
 
   return (
     <section className="rounded-tl-2xl bg-white p-3 pt-6 sm:p-4 w-full overflow-y-scroll">
-      <div>
+      <TimeAndDate />
+      <div className="-mt-3">
         <div>
           <h1 className="text-center my-6 text-2xl">Search Patients</h1>
         </div>
@@ -83,7 +97,7 @@ const DoctorDashboard = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center xs:justify-start mx-2 my-2 flex-wrap">
+      <div className="flex justify-center   xxxs:ml-6 my-2  flex-1 flex-wrap">
         {searchName.length !== 0 ? (
           patientData.filter((ele) => {
             return ele.name.toLowerCase().includes(searchName.toLowerCase());
@@ -113,7 +127,7 @@ const DoctorDashboard = () => {
 const PatientCard = ({ ele }) => {
   return (
     <div className="bg-gray-100 rounded-md mx-2 my-2 max-w-[25rem]">
-      <div className="flex flex-col  xs:flex-row px-4 py-2  ">
+      <div className="flex flex-col xs:flex-row px-4 py-2 ">
         <div className="self-center mt-4">
           <img
             className="w-[90px] h-[90px] rounded-full "
@@ -130,7 +144,7 @@ const PatientCard = ({ ele }) => {
           </div>
           <div className="pt-2 text-center xs:text-left">
             <p className="text-base">Caretakers: </p>
-            <div className="flex flex-wrap max-w-[17rem] justify-center xs:justify-start">
+            <div className="flex flex-wrap max-w-[17rem] h-[2rem] max-h-2rem justify-center xs:justify-start">
               {ele.caretakers.map((caretaker, index) => {
                 const size = ele.caretakers.length;
                 if (index !== size - 1) {
@@ -154,7 +168,7 @@ const PatientCard = ({ ele }) => {
       <div className="grid justify-items-center xs:justify-items-end">
         <button
           type="button"
-          className="mr-3 mb-2 inline-block font-medium  transition ease-in-out hover:scale-110 bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100 shadow-sm px-5 text-sm py-3 rounded-full"
+          className=" mr-3 mb-2 inline-block font-medium  transition ease-in-out hover:scale-110 bg-gray-100 border-slate-500 border text-slate-500 hover:bg-slate-500 hover:text-gray-100 shadow-sm px-5 text-sm py-3 rounded-full "
           data-bs-toggle="modal"
           data-bs-target="#exampleModalLg"
         >
