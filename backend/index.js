@@ -13,8 +13,11 @@ const patient = require("./routes/patient");
 const doctor = require("./routes/doctor");
 const caretaker = require("./routes/caretaker");
 // const mobileapp = require('./apprequests/login');
-
-
+// const corsOptions ={
+//   origin:'http://127.0.0.1:3000', 
+//   credentials:true,            //access-control-allow-credentials:true
+//   optionSuccessStatus:200,
+// }
 //port number to listen
 const port = 5000;
 
@@ -40,6 +43,14 @@ async function validateCookiesfunc (req, res, next) {
   }
   next()
 }
+
+//developer mode enabled
+app.get("/sett", function (req, res) {
+  res.cookie("access-token", "eyJhbGciOiJIUzI1NiJ9.cmVzdWx0LnVzZXJpZGZyb21kYXRhYmFzZQ.4-rJnJ8eX-fm0FRbcmfBeukeU-COT1S4tsNlYk4jqig", {
+    maxAge: 60 * 30 * 1 * 30 * 1000, //used this for security reasons...
+  });
+  res.send("done");
+});
 
 //home page
 app.get("/", function (req, res) {
@@ -84,9 +95,14 @@ app.post("/login", async (req, res) => {
       const accessToken = jwt.createToken(id);
       res.cookie("access-token", accessToken, {
         maxAge: 60 * 30 * 1 * 30 * 1000,
-        httpOnly: true, //used this for security reasons...
+        httpOnly: false
+        // domain: undefined,
+        // sameSite: "lax",
+        // httpOnly: true, //used this for security reasons...
       });
       //use function to send all dashboard data
+      // res.setHeader('Access-Control-Allow-Origin','http://localhost:3000');
+      // res.setHeader('Access-Control-Allow-Credentials',true);
       res.send("logged in");
     }
   });
@@ -99,11 +115,6 @@ app.use('/caretaker', caretaker);
 
 //return data for user dashboard
 app.get("/dashboard", (req, res) => {
-  // const resp = jwt.getjwt(req, res);
-  // console.log("dashboard = "+resp);
-  // if(resp===undefined){
-  //   return
-  // }
   const userid = req.userid;
   res.send("hello page!");
 });
@@ -111,11 +122,12 @@ app.get("/dashboard", (req, res) => {
 
 app.get('/test',(req,res)=>{
   console.log("user i  ===",req.userid)
+  res.send("ok")
 });
 
 
 //respond for other unused pages
 app.get('*', function(req, res){
-  res.sendStatus(404)
-  // res.send('Sorry, this is an invalid URL.');
+  res.sendStatus(404).json({
+    error:"Sorry this is an invalid URL!"});
 });

@@ -9,7 +9,6 @@ const jwt = require("../Helper/JWT.js");
 const mongodb = require("../database/mongodb.js");
 const router = express.Router();
 
-
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 router.use(cors());
@@ -21,18 +20,14 @@ router.use(cors());
 
 //this is to add user data after checking the data in the jwt token
 router.post("/addusrdata", (req, res) => {
-    const id = jwt.getjwt(req, res);
+    // const id = jwt.getjwt(req, res);
+    const id = req.userid;
     const sessionid = req.body.sessionid;
 });
 
 //return data for user to check data of recent sessions
 router.get('/recentsessions',(req,res)=>{
-    const resp = jwt.getjwt(req, res);
-    console.log("dashboard = "+resp);
-    if(resp===undefined){
-      console.log("invaliduserid...");
-      return
-    }
+    const id = req.userid;
     res.send("recent sessions....");
     console.log("====================================");
     console.log(resp);
