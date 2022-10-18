@@ -3,7 +3,7 @@ import profile from "./../assets/default-profile-pic.png";
 import SessionCard from "./SessionCard";
 import { TimeAndDate } from "./PatientDashboard";
 
-export const patientData = [
+const patientData = [
   {
     name: "D k Suryah ",
     Age: 81,
@@ -124,7 +124,7 @@ const DoctorDashboard = () => {
   );
 };
 
-export const PatientCard = ({ ele }) => {
+const PatientCard = ({ ele }) => {
   return (
     <div className="bg-gray-100 rounded-md mx-2 my-2 max-w-[25rem]">
       <div className="flex flex-col xs:flex-row px-4 py-2 ">
@@ -168,7 +168,7 @@ export const PatientCard = ({ ele }) => {
       <div className="grid justify-items-center xs:justify-items-end">
         <button
           type="button"
-          className=" mr-3 mb-2 inline-block font-medium  transition ease-in-out hover:scale-110 bg-gray-100 border-slate-500 border text-slate-500 hover:bg-slate-500 hover:text-gray-100 shadow-sm px-5 text-sm py-3 rounded-full "
+          className=" mr-3 mb-2 inline-block font-medium  transition ease-in-out hover:scale-110 bg-gray-100 border-slate-500 border text-slate-500 hover:bg-slate-500 hover:text-gray-100 shadow-sm px-3 text-sm py-2 rounded-full "
           data-bs-toggle="modal"
           data-bs-target="#exampleModalLg"
         >
@@ -180,7 +180,7 @@ export const PatientCard = ({ ele }) => {
   );
 };
 
-const Modal = () => {
+export const Modal = () => {
   return (
     <div
       className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-y-scroll"

@@ -16,15 +16,15 @@ const App = () => {
   const isFetched = useRef(false);
   const [isPersist, setIsPersist] = useState(false);
   const navigate = useNavigate();
-  const userType = "doctor";
+  const userType = "patient";
   const persistUser = useCallback(async () => {
     try {
-      const resp = await axios.get("/dashboard");
-      console.log(resp);
-      if (resp) {
-        navigate("/", { replace: true });
-        setIsPersist(true);
-      }
+      // const resp = await axios.get("/dashboard");
+      // console.log(resp);
+      // if (resp) {
+      //   navigate("/", { replace: true });
+      //   setIsPersist(true);
+      // }
     } catch (error) {
       if (error.response.status === 401) {
         // navigate("/login", { replace: true });

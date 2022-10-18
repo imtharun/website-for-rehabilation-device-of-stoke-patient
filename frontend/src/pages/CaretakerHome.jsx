@@ -18,7 +18,7 @@ export const CaretakerHome = () => {
   ];
   return (
     <section className="h-full flex bg-[#cfece8]">
-      <Nav navItem={navForCaretakers} />
+      <Nav navItems={navForCaretakers} />
       <CaretakerDashboard />
     </section>
   );

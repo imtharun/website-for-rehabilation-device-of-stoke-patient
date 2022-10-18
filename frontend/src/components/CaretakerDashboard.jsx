@@ -1,6 +1,40 @@
 import React, { useRef, useState, useEffect } from "react";
-import { PatientCard, patientData } from "./DoctorDashboard";
+import { Modal } from "./DoctorDashboard";
 import { TimeAndDate } from "./PatientDashboard";
+import profile from "./../assets/default-profile-pic.png";
+
+const patientData = [
+  {
+    name: "D k Suryah ",
+    Age: 81,
+    monitorDoctor: "Adithiyaa",
+    profile: profile,
+  },
+  {
+    name: "Yuvarraj",
+    Age: 81,
+    monitorDoctor: "Adithiyaa",
+    profile: profile,
+  },
+  {
+    name: "Yuvarraj",
+    Age: 81,
+    monitorDoctor: "Adithiyaa",
+    profile: profile,
+  },
+  {
+    name: "Shivanesh",
+    Age: 81,
+    monitorDoctor: "Adithiyaa",
+    profile: profile,
+  },
+  {
+    name: "Shivanesh",
+    Age: 81,
+    monitorDoctor: "Adithiyaa",
+    profile: profile,
+  },
+];
 
 const CaretakerDashboard = () => {
   const searchRef = useRef();
@@ -87,6 +121,49 @@ const CaretakerDashboard = () => {
         )}
       </div>
     </section>
+  );
+};
+
+const PatientCard = ({ ele }) => {
+  return (
+    <div className="bg-gray-100 rounded-md mx-2 my-2 max-w-[26rem]">
+      <div className="flex flex-col xs:flex-row px-4 py-2 ">
+        <div className="self-center mt-4">
+          <img
+            className="w-[90px] h-[90px] rounded-full "
+            src={ele.profile}
+            alt="Profile"
+          />
+        </div>
+        <div className="text-center xs:text-left pl-3 pt-4">
+          <div>
+            <h1 className="text-base font-medium">{ele.name}</h1>
+            <small className="text-xs text-gray-500 block -pt-3">
+              {ele.Age} years old
+            </small>
+          </div>
+          <div className="pt-2 text-center xs:text-left">
+            <p className="text-sm">Monitor Doctor: </p>
+            <div className="">
+              <span className="block text-[0.8rem] mr-2">
+                {ele.monitorDoctor}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="grid justify-items-center xs:justify-items-end">
+        <button
+          type="button"
+          className=" mr-3 mb-2 inline-block font-medium  transition ease-in-out hover:scale-110 bg-gray-100 border-slate-500 border text-slate-500 hover:bg-slate-500 hover:text-gray-100 shadow-sm px-3 text-sm py-2 rounded-full "
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModalLg"
+        >
+          More info
+        </button>
+        <Modal />
+      </div>
+    </div>
   );
 };
 

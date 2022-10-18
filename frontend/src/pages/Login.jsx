@@ -13,9 +13,9 @@ const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const [email, setEmail] = useState("");
-  const [isEmail, setIsEmail] = useState(false);
+  const [isEmail, setIsEmail] = useState(true);
   const [password, setPassword] = useState("");
-  const [isPassword, setIsPassword] = useState(false);
+  const [isPassword, setIsPassword] = useState(true);
 
   useEffect(() => {
     if (email !== "" && !validateEmail(email)) {
@@ -39,6 +39,7 @@ const Login = () => {
         email,
         password,
       });
+
       console.log(resp);
     } catch (error) {
       console.log(error);
@@ -107,7 +108,7 @@ const Login = () => {
                     email.length !== 0
                       ? "opacity-100 hover:bg-slate-500 hover:scale-110 hover:text-gray-100 cursor-pointer"
                       : "opacity-50 cursor-not-allowed"
-                  } block max-w-[21rem] w-full transition ease-in-out  rounded-full p-2 bg-gray-100 border-slate-500 border  text-slate-500  `}
+                  } block max-w-[21rem] w-full transition ease-in-out  rounded-full p-2 bg-gray-100 border-slate-500 border  text-slate-500`}
                 >
                   Login
                 </button>

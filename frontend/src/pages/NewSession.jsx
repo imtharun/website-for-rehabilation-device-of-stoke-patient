@@ -31,7 +31,7 @@ const NewSession = () => {
   return (
     <section className="h-full flex bg-[#cfece8]">
       <Nav navItems={navForPatient} />
-      <Timer timeInSeconds={20} />
+      <Timer timeInSeconds={100} />
     </section>
   );
 };
