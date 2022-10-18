@@ -35,10 +35,14 @@ const Login = () => {
 
   const authenticate = async () => {
     try {
-      const resp = await axios.post("/login", {
-        email,
-        password,
-      });
+      const resp = await axios.post(
+        "/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
 
       console.log(resp);
     } catch (error) {
