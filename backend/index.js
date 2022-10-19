@@ -12,12 +12,7 @@ const mongodb = require("./database/mongodb.js");
 const patient = require("./routes/patient");
 const doctor = require("./routes/doctor");
 const caretaker = require("./routes/caretaker");
-// const mobileapp = require('./apprequests/login');
-// const corsOptions ={
-//   origin:'http://127.0.0.1:3000', 
-//   credentials:true,            //access-control-allow-credentials:true
-//   optionSuccessStatus:200,
-// }
+
 //port number to listen
 const port = 5000;
 
@@ -25,7 +20,7 @@ const port = 5000;
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({origin:"http://localhost:3000", credentials:true}));
 app.use(express.json());
 app.use(cookieParser());
 // app.use("/mobile",mobileapp);
@@ -95,15 +90,17 @@ app.post("/login", async (req, res) => {
       const accessToken = jwt.createToken(id);
       res.cookie("access-token", accessToken, {
         maxAge: 60 * 30 * 1 * 30 * 1000,
-        httpOnly: false
+        httpOnly: true,
         // domain: undefined,
         // sameSite: "lax",
-        // httpOnly: true, //used this for security reasons...
+        //used this for security reasons...
       });
       //use function to send all dashboard data
       // res.setHeader('Access-Control-Allow-Origin','http://localhost:3000');
       // res.setHeader('Access-Control-Allow-Credentials',true);
-      res.send("logged in");
+      const userType = "patient";
+      res.json({userType});
+      res.send();
     }
   });
 });

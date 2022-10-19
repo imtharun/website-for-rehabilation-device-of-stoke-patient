@@ -1,9 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
 import Logo from "../components/Logo";
+import Cookies from "universal-cookie"
 import { validateEmail, Bottom, Top } from "./Signup";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
 import axios from "../api/axios";
+import {UserTypeContext} from "./../UserContextProvider"
+import { useContext } from "react";
 
 const Login = () => {
   useEffect(() => {
@@ -16,6 +19,8 @@ const Login = () => {
   const [isEmail, setIsEmail] = useState(true);
   const [password, setPassword] = useState("");
   const [isPassword, setIsPassword] = useState(true);
+
+  const {userType, setUserType}  = useContext(UserTypeContext);
 
   useEffect(() => {
     if (email !== "" && !validateEmail(email)) {
@@ -44,7 +49,10 @@ const Login = () => {
         { withCredentials: true }
       );
 
-      console.log(resp);
+      const cookies = new Cookies();
+      cookies.set("userType", resp.data.userType, { path: "/" });
+
+      setUserType(resp.data.userType);
     } catch (error) {
       console.log(error);
     }
