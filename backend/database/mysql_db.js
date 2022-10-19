@@ -8,10 +8,8 @@ const con = mysql.createConnection({
 });
 connect();
 //used to establish connection with the database
-function connect()
-{
-    con.connect(function(err)
-    {
+function connect(){
+    con.connect(function(err){
         if (err) throw err;
         console.log("MYsql Connected!");
     });
@@ -19,11 +17,11 @@ function connect()
 
 
 //used to check weather the user is authorised or not
-function authorise(username,password,callback)
+function authorise(email,password,callback)
 {
     let results;
     sql = 'SELECT password from auth where user_id = ?';
-    const value = [username];
+    const value = [email];
     con.query(sql,value,(err,result)=>
     {
         if(result.length===0)
@@ -55,15 +53,25 @@ function authorise(username,password,callback)
 
 //dashboard functions
 function dashboard_patient(patientid,callback){
-    console.log("dashboard_patient");
+    sql = "get patient dashboard data";
+    con.query(sql,patientid,(err,result)=>{
+        callback(err,results);
+    })
 }
 
-function dashboard_doctor(doctorid,callback){  
-    console.log("dashboard_doctor");
+
+function dashboard_doctor(doctorid,callback){ 
+    sql = "get doctor dashboard data";
+    con.query(sql,doctorid,(err,result)=>{
+        callback(err,results);
+    })    
 }
 
 function dashboard_caretaker(caretakerid,callback){
-    console.log("dashboard_caretaker");
+    sql = "get caretaker dashboard data";
+    con.query(sql,caretakerid,(err,result)=>{
+        callback(err,results);
+    })
 }
 
 
@@ -82,5 +90,10 @@ function registercaretaker(callback){
 
 module.exports = {
     authorise,
-
+    dashboard_caretaker,
+    dashboard_doctor,
+    dashboard_patient,
+    registercaretaker,
+    registerdoctor,
+    registerpatient,
 };

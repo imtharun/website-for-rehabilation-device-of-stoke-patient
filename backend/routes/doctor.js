@@ -3,9 +3,7 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const db = require("../database/mysql_db");
-const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
-const jwt = require("../Helper/JWT.js");
 const mongodb = require("../database/mongodb.js");
 const router = express.Router();
 
@@ -16,16 +14,19 @@ router.use(cors());
 router.use(express.json());
 router.use(cookieParser());
 router.use(cors());
-// const db = require('../mysql_connect');
-// const pg = require('../postgre_connect')
-
-router.post("/employee",(req,res)=>
-{
-    const data = "hello";
-    res.send(resdata);
-});
 
 
+router.post("/dashboard",(req,res)=>{
+    const id = req.userid;
+    db.dashboard_doctor(id,(err,result)=>{
+      if(err){
+        res.send(err);
+      }
+      else{
+        res.send(result);
+      }
+    })
+})
 
 
 router.get('*', (req, res) => {
