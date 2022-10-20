@@ -114,16 +114,20 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(userType);
+  }, [userType]);
+
   const postData = async () => {
     try {
-      const resp = await axios.post({
+      const resp = await axios.post("/signup", {
         name,
         email,
         password,
-        confirmPassword,
         phoneNumber,
         dob,
         address,
+        userType,
       });
 
       console.log(resp);
