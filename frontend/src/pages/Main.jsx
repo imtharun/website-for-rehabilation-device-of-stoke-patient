@@ -21,31 +21,36 @@ import { UserTypeContext } from "../UserContextProvider";
 
 const App = () => {
   // const isFetched = useRef(false);
-  const { userType } = useContext(UserTypeContext);
-  const [isPersist, setIsPersist] = useState(false);
+  const { userType, isUserPersistent, persistentHandler } =
+    useContext(UserTypeContext);
+
   const navigate = useNavigate();
   const persistUser = useCallback(async () => {
     try {
-      console.log(userType);
+      console.log(
+        "running persist user callback",
+        "setIsUserPersistent",
+        isUserPersistent
+      );
       if (!userType) {
         navigate("/login", { replace: true });
-        setIsPersist(false);
+        persistentHandler(false);
+        return;
       }
       const resp = await axios.get(`/${userType}/dashboard`, {
         withCredentials: true,
       });
       if (resp.status === 200) {
-        console.log(resp);
         navigate("/", { replace: true });
-        setIsPersist(true);
+        persistentHandler(true);
       }
     } catch (error) {
       if (error?.response?.status === 401) {
         navigate("/login", { replace: true });
-        setIsPersist(false);
+        persistentHandler(false);
       }
     }
-  }, [navigate, userType]);
+  }, [userType]);
 
   // useEffect(() => {
   //   if (!isFetched.current) {
@@ -56,7 +61,7 @@ const App = () => {
 
   useEffect(() => {
     persistUser();
-  }, [persistUser, userType]);
+  }, [userType]);
 
   return (
     <div className="font-workSans h-screen min-h-screen">
@@ -70,12 +75,14 @@ const App = () => {
             (userType === "caretaker" && <CaretakerHome />)
           }
         />
-        <Route path="/new-session" element={<NewSession />} />
-        <Route path="/game-details" element={<Game />} />
+        {userType && <Route path="/new-session" element={<NewSession />} />}
+        {userType && <Route path="/game-details" element={<Game />} />}
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/manage-patients" element={<ManagePatients />} />
-        <Route path="/*" element={<Error />} />
+        {userType && (
+          <Route path="/manage-patients" element={<ManagePatients />} />
+        )}
+        {userType && <Route path="/*" element={<Error />} />}
       </Routes>
     </div>
   );

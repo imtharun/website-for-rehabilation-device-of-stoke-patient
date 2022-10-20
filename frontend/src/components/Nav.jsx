@@ -8,7 +8,7 @@ import { UserTypeContext } from "../UserContextProvider";
 
 const Nav = (props) => {
   const navigate = useNavigate();
-  const { userHandler } = useContext(UserTypeContext);
+  const { userHandler, setIsUserPersistent } = useContext(UserTypeContext);
 
   const onLogout = async () => {
     try {
@@ -19,6 +19,7 @@ const Nav = (props) => {
         cookies.remove("userType");
         userHandler("");
         navigate("/login", { replace: true });
+        setIsUserPersistent(false);
       }
     } catch (error) {
       console.log(error);

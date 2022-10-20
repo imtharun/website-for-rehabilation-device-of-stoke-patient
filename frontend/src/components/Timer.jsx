@@ -94,7 +94,7 @@ const PomView = (props) => {
       <div className="flex px-4 my-5 justify-center items-center">
         <div className="">
           <button
-            className="text-xs sm:text-sm mx-auto -ml-3 w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-5  py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
+            className="text-xs sm:text-sm mx-auto -ml-3 mr-3 w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-5  py-3 rounded-full bg-gray-100 border-slate-500 border text-slate-500 hover:bg-slate-500 hover:text-gray-100"
             onClick={toggleStart}
           >
             {!start ? "Start" : "Stop"}
@@ -109,7 +109,7 @@ const PomView = (props) => {
         <div className="text-center ml-4">
           <button
             onClick={clickHandler}
-            className="text-xs sm:text-sm mx-auto -ml-3 w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out hover:scale-110 py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
+            className="text-xs mr-3 sm:text-sm mx-auto -ml-3 w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out hover:scale-110 py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
           >
             Submit
           </button>
@@ -196,7 +196,7 @@ const IncreaseAndDecreaseButtons = (props) => {
   const defaultLevel = 3;
   return (
     <div className="flex flex-col justify-center items-center mt-4 ">
-      <div className="mb-0 sm:mb-4">
+      <div className="mb-0 sm:mb-4 ">
         <button
           onClick={() => {
             props.setLevel((prev) => {
