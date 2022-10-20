@@ -6,26 +6,24 @@ const db = require("../database/mysql_db");
 const cookieParser = require("cookie-parser");
 const mongodb = require("../database/mongodb.js");
 const router = express.Router();
-
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
-router.use(cors());
 router.use(express.json());
 router.use(cookieParser());
-router.use(cors());
 
 
 
-router.post("/dashboard",(req,res)=>{
+router.get("/dashboard",(req,res)=>{
   const id = req.userid;
-  db.dashboard_patient(id,(err,result)=>{
-    if(err){
-      res.send(err);
-    }
-    else{
-      res.send(result);
-    }
-  })
+  res.send("hi");
+  // db.dashboard_patient(id,(err,result)=>{
+  //   if(err){
+  //     res.send(err);
+  //   }
+  //   else{
+  //     res.send(result);
+  //   }
+  // })
 })
 
 

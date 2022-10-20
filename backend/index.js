@@ -20,10 +20,23 @@ const port = 5000;
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(cors({origin:"http://localhost:3000", credentials:true}));
+app.use(cors({
+  origin:["http://localhost:3000","http://localhost:3000/patient/dashboard","http://localhost:3000/login"], 
+  credentials:true,
+  optionsSuccessStatus: 200}));
 app.use(express.json());
 app.use(cookieParser());
-// app.use("/mobile",mobileapp);
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:3000/patient/dashboard', 'http://localhost:3000/login'];
+app.use((req,res,next)=>{
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+}
+  // res.setHeader('Access-Control-Allow-Origin',["http://localhost:3000/","http://localhost:3000/patient/dashboard","http://localhost:3000/login"]);
+  res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
+  res.setHeader('Access-Control-Allow-Methods','Content-Type','Authorization');
+  next(); 
+})
 //initializing
 app.listen(port, () => {
   console.log("Server starten to listen...");
