@@ -21,18 +21,23 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors({
-  origin:["http://localhost:3000","http://localhost:3000/patient/dashboard","http://localhost:3000/login"], 
+  origin:["http://localhost:3000"], 
   credentials:true,
   optionsSuccessStatus: 200}));
 app.use(express.json());
 app.use(cookieParser());
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:3000/patient/dashboard', 'http://localhost:3000/login'];
+
+//request from frontend allowed oringins....
+const allowedOrigins = ['http://localhost:3000', 
+'http://localhost:3000/patient/dashboard', 
+'http://localhost:3000/login'
+];
+
 app.use((req,res,next)=>{
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
 }
-  // res.setHeader('Access-Control-Allow-Origin',["http://localhost:3000/","http://localhost:3000/patient/dashboard","http://localhost:3000/login"]);
   res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
   res.setHeader('Access-Control-Allow-Methods','Content-Type','Authorization');
   next(); 
