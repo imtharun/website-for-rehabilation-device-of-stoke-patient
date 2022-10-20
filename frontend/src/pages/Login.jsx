@@ -51,7 +51,6 @@ const Login = () => {
       console.log(resp);
       const cookies = new Cookies();
       cookies.set("userType", resp.data.userType, { path: "/" });
-
       userHandler(resp.data.userType);
     } catch (error) {
       console.log(error);

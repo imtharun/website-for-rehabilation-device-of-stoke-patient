@@ -27,7 +27,10 @@ const App = () => {
   const persistUser = useCallback(async () => {
     try {
       console.log(userType);
-      if (!userType) throw new Error("No user type found");
+      if (!userType) {
+        navigate("/login", { replace: true });
+        setIsPersist(false);
+      }
       const resp = await axios.get(`/${userType}/dashboard`, {
         withCredentials: true,
       });

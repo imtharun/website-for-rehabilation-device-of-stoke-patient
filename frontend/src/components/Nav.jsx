@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import Logo from "./Logo";
+import Cookies from "universal-cookie";
 import { ExitIcon } from "@radix-ui/react-icons";
 import axios from "../api/axios";
 import { useNavigate, NavLink } from "react-router-dom";
+import { UserTypeContext } from "../UserContextProvider";
 
 const Nav = (props) => {
   const navigate = useNavigate();
+  const { userHandler } = useContext(UserTypeContext);
 
   const onLogout = async () => {
     try {
       const response = await axios.get("/logout");
       console.log(response);
-      navigate("/login", { replace: true });
+      if (response.status === 200) {
+        const cookies = new Cookies();
+        cookies.remove("userType");
+        userHandler("");
+        navigate("/login", { replace: true });
+      }
     } catch (error) {
       console.log(error);
     }
