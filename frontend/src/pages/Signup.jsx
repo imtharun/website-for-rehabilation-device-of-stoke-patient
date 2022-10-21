@@ -1,10 +1,11 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import Logo from "../components/Logo";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import axios from "../api/axios";
 import "tw-elements";
+import { UserTypeContext } from "../UserContextProvider";
 
 const isAlpha = (text) => {
   return text.match("^[ a-zA-Z()]+$");
@@ -21,6 +22,8 @@ const validatePhoneNumber = (number) => {
 };
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { userType } = useContext(UserTypeContext);
   const USER_TYPES = ["Patient", "Doctor", "Caretaker"];
 
   const nameRef = useRef();
@@ -38,9 +41,9 @@ const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
   const [dob, setDob] = useState("");
-  const [image, setImage] = useState();
-  const [imageUrl, setImageUrl] = useState();
-  const [userType, setUserType] = useState("Patient");
+  const [image, setImage] = useState("");
+  // const [imageUrl, setImageUrl] = useState();
+  const [userTypee, setUserTypee] = useState("Patient");
 
   const [isName, setIsName] = useState(true);
   const [isEmail, setIsEmail] = useState(true);
@@ -48,7 +51,7 @@ const Login = () => {
   const [isPassword, setIsPassword] = useState(true);
 
   const radioChangeHandler = (e) => {
-    setUserType(e.target.value);
+    setUserTypee(e.target.value);
   };
 
   useEffect(() => {
@@ -72,8 +75,6 @@ const Login = () => {
   }, [email]);
 
   useEffect(() => {
-    // console.log(image + " " + imageUrl);
-
     if (phoneNumber !== "" && !validatePhoneNumber(phoneNumber)) {
       setIsPhoneNumber(false);
     } else {
@@ -106,20 +107,18 @@ const Login = () => {
     }
   }, [password, confirmPassword]);
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    if (e.target.files.length !== 0) {
-      setImage(e.target.files[0]);
-      setImageUrl(URL.createObjectURL(image));
-    }
-  };
-
   useEffect(() => {
-    console.log(userType);
-  }, [userType]);
+    if (userType) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate, userType]);
 
   const postData = async () => {
     try {
+      const formData = new FormData();
+      formData.append("image", image, image.name);
+      formData.append("name", image.name);
+
       const resp = await axios.post("/signup", {
         name,
         email,
@@ -127,10 +126,14 @@ const Login = () => {
         phoneNumber,
         dob,
         address,
-        userType,
+        userTypee,
+        formData,
       });
 
       console.log(resp);
+      if (resp.status === 200) {
+        navigate("/login");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -232,13 +235,15 @@ const Login = () => {
                   htmlFor="formFile"
                   className="form-label inline-block mb-2 text-gray-400"
                 >
-                  Uploading Profile Picture
+                  Profile Picture
                 </label>
                 <input
                   className="form-control block text-gray-400 w-full px-3 py-1 text-base font-normal  bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
                   type="file"
                   id="formFile"
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    setImage(e.target.files[0]);
+                  }}
                   accept="image/png, image/gif, image/jpeg"
                   required
                 />
@@ -311,7 +316,7 @@ const Login = () => {
                         type="radio"
                         value={user}
                         name="flexRadioDefault"
-                        checked={userType === user}
+                        checked={userTypee === user}
                         id={"flexRadioDefault" + index}
                         onChange={radioChangeHandler}
                       />
@@ -347,7 +352,9 @@ const Login = () => {
                 <div className="text-center flex justify-center -mt-4 text-sm">
                   Already have an account ?
                   <span className="ml-1 flex border-b-[1px] border-transparent hover:border-b-black transition-all duration-700 ease-out">
-                    <Link to={"/login"}>Log In</Link>
+                    <Link to={"/login"} replace>
+                      Log In
+                    </Link>
                     <ArrowTopRightIcon className="ml-1 mt-[.25rem] w-3 h-3" />
                   </span>
                 </div>

@@ -1,21 +1,9 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import Nav from "../components/Nav";
 import GameDetails from "./../components/GameDetails";
-import { useNavigate } from "react-router-dom";
 import { HomeIcon, TimerIcon, InfoCircledIcon } from "@radix-ui/react-icons";
-import { UserTypeContext } from "../UserContextProvider";
 
 const Game = () => {
-  const navigate = useNavigate();
-  const { userType } = useContext(UserTypeContext);
-
-  useEffect(() => {
-    if (!userType) {
-      navigate("/login", { replace: true });
-      return;
-    }
-  }, [navigate, userType]);
-
   useEffect(() => {
     document.title = "Game Details";
   }, []);

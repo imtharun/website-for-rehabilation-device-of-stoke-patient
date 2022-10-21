@@ -1,17 +1,18 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import Logo from "../components/Logo";
 import Cookies from "universal-cookie";
 import { validateEmail, Bottom, Top } from "./Signup";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import { UserTypeContext } from "./../UserContextProvider";
-import { useContext } from "react";
 
 const Login = () => {
   useEffect(() => {
     document.title = "Login";
   }, []);
+
+  const navigate = useNavigate();
 
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -20,7 +21,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isPassword, setIsPassword] = useState(true);
 
-  const { userHandler } = useContext(UserTypeContext);
+  const { userHandler, userType } = useContext(UserTypeContext);
 
   useEffect(() => {
     if (email !== "" && !validateEmail(email)) {
@@ -38,6 +39,12 @@ const Login = () => {
     }
   }, [password]);
 
+  useEffect(() => {
+    if (userType) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate, userType]);
+
   const authenticate = async () => {
     try {
       const resp = await axios.post(
@@ -48,6 +55,10 @@ const Login = () => {
         },
         { withCredentials: true }
       );
+
+      if (resp.status === 200) {
+        navigate("/", { replace: true });
+      }
       console.log(resp);
       const cookies = new Cookies();
       cookies.set("userType", resp.data.userType, { path: "/" });
@@ -127,7 +138,9 @@ const Login = () => {
               <div className="text-center flex justify-center -mt-4 text-sm">
                 Don't have an account,
                 <span className="ml-1 flex border-b-[1px] border-transparent hover:border-b-black transition-all duration-700 ease-out">
-                  <Link to={"/signup"}>Sign up</Link>
+                  <Link to={"/signup"} replace>
+                    Sign up
+                  </Link>
                   <ArrowTopRightIcon className="ml-1 mt-[.25rem] w-3 h-3" />
                 </span>
               </div>

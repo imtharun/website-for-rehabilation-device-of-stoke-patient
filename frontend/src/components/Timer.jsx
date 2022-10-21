@@ -137,9 +137,9 @@ const Timer = (props) => {
   return (
     <section className="bg-white p-6 w-full overflow-y-scroll rounded-tl-2xl">
       <h1 className="text-3xl text-center">Timer</h1>
-      <div className=" flex flex-col forTimer:flex-row justify-around ">
+      <div className=" flex flex-col forTimer:flex-row justify-around my-6">
         <div className="py-2 flex flex-col forCard:flex-row forCard:justify-around  sm:justify-center items-center">
-          <div className="flex text-[13px] sm:text-sm">
+          <div className="flex flex-col md:flex-row mt-4 text-[15px] ">
             <div>
               <Input game="Bird Dodge" />
               <Input game="Burst" />
@@ -148,7 +148,7 @@ const Timer = (props) => {
               <Input game="Copter Block" />
               <Input game="Drop balls" />
             </div>
-            <div className="ml-3">
+            <div className="md:ml-3">
               <Input game="Hit Catch" />
               <Input game="Hurdles" />
               <Input game="Newton Balls" />
@@ -176,7 +176,7 @@ const Input = (props) => {
   return (
     <div className="form-check pb-1">
       <input
-        className="form-check-input appearance-none rounded-full h-2 w-2  sm:h-4 sm:w-4 border border-gray-300 bg-white checked:bg-[#cfece8] checked:border-[#cfece8] focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+        className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-[#cfece8] checked:border-[#cfece8] focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
         type="radio"
         name="flexRadioDefault"
         id={props.game.toLowerCase().replace(" ", "")}

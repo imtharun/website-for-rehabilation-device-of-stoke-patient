@@ -16,7 +16,7 @@ const PatientDashboard = () => {
         </div>
         <TimeAndDate />
       </div>
-      <div className="flex flex-col 970:flex-row mt-2">
+      <div className="flex flex-col 970:flex-row mt-2 ">
         <div className="flex-1">
           <SessionCard />
           <SessionCard />
@@ -89,7 +89,7 @@ const CardComponent = () => {
     },
   ];
   return (
-    <div className="mt-[1rem] mx-auto flex  flex-col items-center forCard:flex-row 970:flex-col">
+    <div className="mt-[1rem] mx-auto flex flex-col items-center forCard:flex-row forCard:justify-center forCard:flex-wrap 970:flex-col">
       {userData.map((user, index) => {
         return (
           <Card

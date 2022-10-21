@@ -1,13 +1,9 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import Nav from "../components/Nav";
-import { UserTypeContext } from "../UserContextProvider";
 import { HomeIcon, TimerIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import Timer from "../components/Timer";
-import { useNavigate } from "react-router-dom";
 
 const NewSession = () => {
-  const { userType } = useContext(UserTypeContext);
-  const navigate = useNavigate();
   const navForPatient = [
     {
       name: "Home",
@@ -31,13 +27,6 @@ const NewSession = () => {
   useEffect(() => {
     document.title = "New session";
   }, []);
-
-  useEffect(() => {
-    if (!userType) {
-      navigate("/login", { replace: true });
-      return;
-    }
-  }, [navigate, userType]);
 
   return (
     <section className="h-full flex bg-[#cfece8]">

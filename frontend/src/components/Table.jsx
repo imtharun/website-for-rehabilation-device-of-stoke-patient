@@ -18,6 +18,7 @@ const Table = () => {
       timeDuration: 12,
       currentLevel: 2,
     },
+    
     {
       gameName: "Trace",
       joints:
@@ -30,10 +31,10 @@ const Table = () => {
   ];
 
   return (
-    <div className="flex flex-col max-w-3xl ml-2 sm:mx-auto">
-      <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-          <div className="overflow-hidden">
+    <div className="flex flex-col max-w-3xl ml-2 rounded-md mx-2 sm:mx-4">
+      <div className="p-2 mx-2 overflow-x-auto sm:-mx-6 lg:-mx-8 scrollbar-thin scrollbar-thumb-[#389387] scrollbar-track-[#cfece8] scrollbar-thumb-rounded-full  left-[-100]">
+        <div className="py-2 inline-block min-w-full  ">
+          <div className="overflow-hidden rounded-md">
             <table className="min-w-full ">
               <thead className="bg-gray-100 border-b">
                 <tr>

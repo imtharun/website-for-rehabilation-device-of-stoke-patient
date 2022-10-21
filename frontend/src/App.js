@@ -3,7 +3,7 @@ import Main from "./pages/Main";
 
 const App = () => {
   return (
-    <div className="App">
+    <div className="App ">
       <Main />
     </div>
   );

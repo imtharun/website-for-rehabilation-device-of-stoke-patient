@@ -8,7 +8,7 @@ import { UserTypeContext } from "../UserContextProvider";
 
 const Nav = (props) => {
   const navigate = useNavigate();
-  const { userHandler, setIsUserPersistent } = useContext(UserTypeContext);
+  const { userHandler } = useContext(UserTypeContext);
 
   const onLogout = async () => {
     try {
@@ -19,7 +19,6 @@ const Nav = (props) => {
         cookies.remove("userType");
         userHandler("");
         navigate("/login", { replace: true });
-        setIsUserPersistent(false);
       }
     } catch (error) {
       console.log(error);
@@ -50,6 +49,7 @@ const Nav = (props) => {
                 })}
                 to={ele.link}
                 className="hover:font-medium mx-auto"
+                replace
                 end
               >
                 <li className="flex items-center sm:ml-6 mb-4 ">
