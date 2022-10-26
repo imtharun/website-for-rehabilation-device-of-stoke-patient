@@ -33,6 +33,7 @@ const Login = () => {
   const confirmPasswordRef = useRef();
   const phoneNumberRef = useRef();
   const addressRef = useRef();
+  const hospitalNameRef = useRef();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -42,7 +43,7 @@ const Login = () => {
   const [address, setAddress] = useState("");
   const [dob, setDob] = useState("");
   const [image, setImage] = useState("");
-  // const [imageUrl, setImageUrl] = useState();
+  const [hospitalName, setHospitalName] = useState("");
   const [userTypee, setUserTypee] = useState("Patient");
 
   const [isName, setIsName] = useState(true);
@@ -206,6 +207,19 @@ const Login = () => {
                   value={dob}
                   placeholder="DD/MM/YYYY"
                   onChange={() => setDob(dobRef.current.value)}
+                  type="text"
+                  required
+                />
+              </div>
+              <div className="max-w-[22rem] mt-7 relative  border-b-[1.5px] border-black mx-auto p-1 pl-0">
+                <input
+                  ref={hospitalNameRef}
+                  className="outline-none block w-full"
+                  value={hospitalName}
+                  placeholder="Hospital Name"
+                  onChange={() =>
+                    setHospitalName(hospitalNameRef.current.value)
+                  }
                   type="text"
                   required
                 />

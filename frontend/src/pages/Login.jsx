@@ -61,7 +61,7 @@ const Login = () => {
       }
       console.log(resp);
       const cookies = new Cookies();
-      cookies.set("userType", resp.data.userType, { path: "/" });
+      cookies.set("userType", resp.data.userType, { path: "/", maxAge: 86400 });
       userHandler(resp.data.userType);
     } catch (error) {
       console.log(error);
@@ -78,7 +78,7 @@ const Login = () => {
       <div className="pt-3 ml-2">
         <Logo />
       </div>
-      <div className="xxxs:flex xxxs:justify-center">
+      <div className="xxxs:flex xxxs:justify-center min-h-screen xxxs:items-center">
         {/* form div */}
         <div className="xxxs:w-[26rem] pt-2 mx-[0.86rem]">
           <form
