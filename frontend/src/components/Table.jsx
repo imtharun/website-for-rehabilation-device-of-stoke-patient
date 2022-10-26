@@ -2,7 +2,7 @@ import React from "react";
 
 const Table = (props) => {
   return (
-    <div className="flex flex-col mx-auto rounded-md max-w-3xl p-2">
+    <div className="flex flex-col mx-auto rounded-md max-w-3xl xxl:max-w-4xl 2xl:max-w-6xl p-2">
       <div className="p-2">
         <div className="">
           <div className="overflow-x-scroll block min-w-full rounded-md scrollbar-thin scrollbar-thumb-[#389387] scrollbar-track-[#cfece8] scrollbar-thumb-rounded-full">

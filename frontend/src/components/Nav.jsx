@@ -31,11 +31,11 @@ const Nav = (props) => {
   };
 
   return (
-    <nav className="nav py-4  mx-1 sm:w-[14rem] sm:max-w-[14rem] overflow-scroll">
+    <nav className="nav py-4 relative mx-1 sm:w-[14rem] sm:max-w-[14rem] overflow-scroll h-full">
       <div>
         <Logo />
       </div>
-      <ul className="mt-48 -ml-2 ">
+      <ul className="mt-48 -ml-2">
         {props.navItems &&
           props.navItems.map((ele, index) => {
             return (
@@ -62,7 +62,7 @@ const Nav = (props) => {
             );
           })}
       </ul>
-      <div>
+      <div className="relative">
         <button onClick={logoutHandler}>
           <ExitIcon className="mt-[13rem] fill-current ml-[0.6rem] sm:hidden w-5 h-5" />
         </button>

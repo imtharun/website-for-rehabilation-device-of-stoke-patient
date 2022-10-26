@@ -4,7 +4,7 @@ import Recovery from "./Recovery";
 
 const SessionCard = (props) => {
   return (
-    <div className="flex flex-col my-3 justify-center item-center max-w-[790px]">
+    <div className="flex flex-col my-3 justify-center item-center">
       <div className="w-full bg-gray-300 p-2 rounded-md">
         <h1 className="text-sm sm:text-lg font-medium pl-4 pt-2">Session 99</h1>
         <Table cols={props.cols} rows={props.rows} />
