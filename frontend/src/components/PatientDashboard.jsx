@@ -6,128 +6,8 @@ import DefaultProfilePic from "./../assets/default-profile-pic.png";
 import SessionCard from "./SessionCard";
 
 const PatientDashboard = () => {
-  const props = [
-    {
-      cols: [
-        "Game name",
-        "Joints",
-        ["Shoulder 1", "Shoulder 2", "Shoulder 3", "Elbow", "Wrist"],
-        "Duration (in mins)",
-        "Current Level",
-      ],
-      rows: [
-        {
-          gameName: "Burst",
-          joints: " Fingers and Palm – closing & opening",
-          roms: [
-            { minRom: 7, maxRom: 8 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 11, maxRom: 12 },
-            { minRom: 11, maxRom: 12 },
-            { minRom: 11, maxRom: 12 },
-          ],
-          timeDuration: 12,
-          currentLevel: 2,
-        },
-
-        {
-          gameName: "Trace",
-          joints:
-            "Shoulder – Flexion/Extension, Horizontal & Vertical Abduction/Adduction",
-          roms: [
-            { minRom: 7, maxRom: 8 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 11, maxRom: 12 },
-            { minRom: 11, maxRom: 12 },
-            { minRom: 11, maxRom: 12 },
-          ],
-          timeDuration: 12,
-          currentLevel: 4,
-        },
-      ],
-    },
-    {
-      cols: [
-        "Game name",
-        "Joints",
-        ["Shoulder 1", "Shoulder 2", "Shoulder 3", "Elbow", "Wrist"],
-        "Duration (in mins)",
-        "Current Level",
-      ],
-      rows: [
-        {
-          gameName: "Burst",
-          joints: " Fingers and Palm – closing & opening",
-          roms: [
-            { minRom: 7, maxRom: 8 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-          ],
-          timeDuration: 12,
-          currentLevel: 2,
-        },
-
-        {
-          gameName: "Trace",
-          joints:
-            "Shoulder – Flexion/Extension, Horizontal & Vertical Abduction/Adduction",
-          roms: [
-            { minRom: 7, maxRom: 8 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-          ],
-          timeDuration: 12,
-          currentLevel: 4,
-        },
-      ],
-    },
-    {
-      cols: [
-        "Game name",
-        "Joints",
-        ["Shoulder 1", "Shoulder 2", "Shoulder 3", "Elbow", "Wrist"],
-        "Duration (in mins)",
-        "Current Level",
-      ],
-      rows: [
-        {
-          gameName: "Burst",
-          joints: " Fingers and Palm – closing & opening",
-          roms: [
-            { minRom: 7, maxRom: 8 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-          ],
-          timeDuration: 12,
-          currentLevel: 2,
-        },
-
-        {
-          gameName: "Trace",
-          joints:
-            "Shoulder – Flexion/Extension, Horizontal & Vertical Abduction/Adduction",
-          roms: [
-            { minRom: 7, maxRom: 8 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-          ],
-          timeDuration: 12,
-          currentLevel: 4,
-        },
-      ],
-    },
-  ];
   return (
-    <section className=" bg-white p-3 pt-6 sm:p-4 w-full overflow-y-scroll">
+    <section className="rounded-tl-2xl bg-white p-3 pt-6 sm:p-4 w-full overflow-y-scroll">
       <div className="flex justify-between">
         <div className="mt-[4px]">
           <h1 className="flex items-end font-medium text-sm sm:text-lg">
@@ -138,11 +18,7 @@ const PatientDashboard = () => {
       </div>
       <div className="flex flex-col justify-around mx-auto 970:flex-col xlg:flex-row mt-2">
         <div className="">
-          {props.map((ele, index) => {
-            return (
-              <SessionCard key={index + 1} cols={ele.cols} rows={ele.rows} />
-            );
-          })}
+          <SessionCard />
         </div>
         <div>
           <CardComponent />

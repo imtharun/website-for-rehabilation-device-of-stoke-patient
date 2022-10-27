@@ -208,7 +208,6 @@ export const Modal = () => {
           </div>
           <div className="modal-body relative p-4">
             <SessionCard />
-            <SessionCard />
           </div>
         </div>
       </div>

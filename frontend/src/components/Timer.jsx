@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import axios from "./../api/axios";
 import Serial from "../components/Serial";
+import { GameNameContext } from "../ActiveGameContextProvider";
 import "tw-elements";
 
 const PomView = (props) => {
+  const { game, nameHandler } = useContext(GameNameContext);
   const firstStart = useRef(true);
   const tick = useRef();
 
@@ -28,6 +30,10 @@ const PomView = (props) => {
 
   const toggleStart = async () => {
     setStart(!start);
+    if (start) {
+      console.log(game);
+      console.log(timer + " ");
+    }
   };
 
   const getTime = (seconds) => {
@@ -92,24 +98,23 @@ const PomView = (props) => {
         {displaySecondsAsMins(timer)}
       </div>
       <div className="flex px-4 my-5 justify-center items-center">
-        <div className="">
+        <div className="text-center">
+          <button className="text-xs sm:text-sm mx-auto w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-5  py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100">
+            Play
+          </button>
+        </div>
+        <div className="ml-4">
           <button
-            className="text-xs sm:text-sm mx-auto -ml-3 mr-3 w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-5  py-3 rounded-full bg-gray-100 border-slate-500 border text-slate-500 hover:bg-slate-500 hover:text-gray-100"
+            className="text-xs sm:text-sm mx-auto  w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-5  py-3 rounded-full bg-gray-100 border-slate-500 border text-slate-500 hover:bg-slate-500 hover:text-gray-100"
             onClick={toggleStart}
           >
             {!start ? "Start" : "Stop"}
           </button>
-          {/* <button
-            className="text-xs sm:text-sm mx-auto ml-3 w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-5  py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
-            onClick={toggleStart}
-          >
-            Stop
-          </button> */}
         </div>
         <div className="text-center ml-4">
           <button
             onClick={clickHandler}
-            className="text-xs mr-3 sm:text-sm mx-auto -ml-3 w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out hover:scale-110 py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
+            className="text-xs mr-3 sm:text-sm mx-auto w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out hover:scale-110 py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
           >
             Submit
           </button>
@@ -134,6 +139,7 @@ const PomView = (props) => {
 
 const Timer = (props) => {
   const [level, setLevel] = useState(3);
+
   return (
     <section className="bg-white p-6 w-full overflow-y-scroll rounded-tl-2xl">
       <h1 className="text-3xl text-center">Timer</h1>
@@ -173,12 +179,17 @@ const Timer = (props) => {
 };
 
 const Input = (props) => {
+  const radioChangeHandler = (event) => {
+    console.log(event.target.value);
+  };
   return (
     <div className="form-check pb-1">
       <input
-        className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-[#cfece8] checked:border-[#cfece8] focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+        className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-[#298e80] checked:border-[#298e80] focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
         type="radio"
         name="flexRadioDefault"
+        onChange={radioChangeHandler}
+        value={props.game}
         id={props.game.toLowerCase().replace(" ", "")}
       />
       <label

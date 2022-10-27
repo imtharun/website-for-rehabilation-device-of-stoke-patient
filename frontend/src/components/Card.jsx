@@ -2,7 +2,7 @@ import React from "react";
 
 const Card = (props) => {
   return (
-    <div className="bg-gray-300 max-w-[330px] min-w-[211px] p-6 rounded-lg mx-1 970:ml-2 mb-3 text-sm">
+    <div className="bg-gray-300 max-w-[330px] mt-2 min-w-[211px] p-6 rounded-lg mx-1 970:ml-2 mb-3 text-sm">
       <div className="text-gray-black">
         <img
           className="block mx-auto w-[100px]  h-[100px] rounded-full"
