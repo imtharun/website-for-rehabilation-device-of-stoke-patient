@@ -34,6 +34,7 @@ const Login = () => {
   const phoneNumberRef = useRef();
   const addressRef = useRef();
   const hospitalNameRef = useRef();
+  const doctorEmailRef = useRef();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -45,11 +46,13 @@ const Login = () => {
   const [image, setImage] = useState("");
   const [hospitalName, setHospitalName] = useState("");
   const [userTypee, setUserTypee] = useState("Patient");
+  const [doctorEmail, setDoctorEmail] = useState("");
 
   const [isName, setIsName] = useState(true);
   const [isEmail, setIsEmail] = useState(true);
   const [isPhoneNumber, setIsPhoneNumber] = useState(true);
   const [isPassword, setIsPassword] = useState(true);
+  const [isDoctorEmail, setIsDoctorEmail] = useState(true);
 
   const radioChangeHandler = (e) => {
     setUserTypee(e.target.value);
@@ -74,6 +77,14 @@ const Login = () => {
       setIsEmail(true);
     }
   }, [email]);
+
+  useEffect(() => {
+    if (doctorEmail !== "" && !validateEmail(doctorEmail)) {
+      setIsDoctorEmail(false);
+    } else {
+      setIsDoctorEmail(true);
+    }
+  }, [doctorEmail]);
 
   useEffect(() => {
     if (phoneNumber !== "" && !validatePhoneNumber(phoneNumber)) {
@@ -152,9 +163,9 @@ const Login = () => {
       </div>
       <div className="xxxs:flex xxxs:justify-center shadow-xl">
         {/* form div */}
-        <div className="xxxs:w-[28rem] mx-5">
+        <div className="xxxs:w-[28rem] mx-5 ">
           <form
-            className="mt-[3.3rem] shadow-2xl p-6 bg-white rounded-md"
+            className="mt-[3.3rem] shadow-2xl p-6 bg-white rounded-md h-[880px] overflow-y-scroll scrollbar-none"
             onSubmit={submitHandler}
           >
             <Top />
@@ -344,8 +355,33 @@ const Login = () => {
                   );
                 })}
               </div>
+              {userTypee === "Patient" && (
+                <div
+                  className={`relative max-w-[22rem] mt-7 border-b-[1.5px]  ${
+                    !isDoctorEmail ? "border-red-500" : "border-black"
+                  } mx-auto p-1 pl-0 `}
+                >
+                  <input
+                    ref={doctorEmailRef}
+                    className="outline-none block w-full"
+                    value={doctorEmail}
+                    type="email"
+                    onChange={() =>
+                      setDoctorEmail(doctorEmailRef.current.value)
+                    }
+                    placeholder="Doctor Email"
+                    required
+                  />
+
+                  {!isDoctorEmail && (
+                    <span className="text-red-500 absolute text-xs -top-2 right-0">
+                      Invalid Mail Id
+                    </span>
+                  )}
+                </div>
+              )}
               <div>
-                <div className="my-10">
+                <div className="my-8">
                   <button
                     className={`${
                       isEmail &&

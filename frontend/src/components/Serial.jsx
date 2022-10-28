@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
+import { GameNameContext } from "../ActiveGameContextProvider";
 
 const Serial = (props) => {
   //   const encoder = new TextEncoder();
+  const { start } = useContext(GameNameContext);
   const decoder = new TextDecoder();
   let reader = "";
   const init = async () => {

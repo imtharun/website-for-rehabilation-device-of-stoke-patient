@@ -61,7 +61,6 @@ const SessionCard = () => {
             { minRom: 9, maxRom: 10 },
             { minRom: 9, maxRom: 10 },
             { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
           ],
           timeDuration: 12,
           currentLevel: 2,

@@ -5,12 +5,13 @@ import { GameNameContext } from "../ActiveGameContextProvider";
 import "tw-elements";
 
 const PomView = (props) => {
-  const { game, nameHandler } = useContext(GameNameContext);
+  const [ans, setAns] = useState([]);
+  const { game, start, startHandler } = useContext(GameNameContext);
   const firstStart = useRef(true);
   const tick = useRef();
 
   const [timer, setTimer] = useState(0);
-  const [start, setStart] = useState(false);
+  // const [start, setStart] = useState(false);
 
   useEffect(() => {
     if (firstStart.current) {
@@ -28,13 +29,26 @@ const PomView = (props) => {
     return () => clearInterval(tick.current);
   }, [props.timeInSeconds, start, timer]);
 
-  const toggleStart = async () => {
-    setStart(!start);
-    if (start) {
-      console.log(game);
-      console.log(timer + " ");
+  const toggleStart = () => {
+    startHandler(!start);
+  };
+
+  const addHandler = () => {
+    if (!start) {
+      setTimer(0);
+      const obj = { game, timer, timeInHMS: getTime(timer) };
+      setAns([...ans, obj]);
+      console.log(ans);
     }
   };
+
+  useEffect(() => {
+    if (ans.length === 0) {
+      console.log("Empty");
+    } else {
+      console.log(ans);
+    }
+  }, [ans]);
 
   const getTime = (seconds) => {
     const hours = Math.floor(seconds / 3600);
@@ -45,12 +59,11 @@ const PomView = (props) => {
     return { hours, mins, _seconds };
   };
 
-  const submit = async (totalTrainedTime, totalTrainedTimeInHMS) => {
+  const submit = async () => {
+    console.log(start);
     try {
-      const res = await axios.post({
-        totalTrainedTime,
-        totalTrainedTimeInHMS,
-      });
+      console.log(ans);
+      const res = await axios.post({ ans });
 
       console.log(res);
     } catch (error) {
@@ -58,11 +71,18 @@ const PomView = (props) => {
     }
   };
 
-  const clickHandler = () => {
-    setStart(false);
+  const clickHandler = async () => {
+    if (start) {
+      console.log(game);
+      const obj = { game, timer, timeInHMS: getTime(timer) };
+      setAns([...ans, obj]);
+      setTimer(0);
+    }
+    startHandler(false);
 
-    console.log(timer, getTime(timer));
-    submit(timer, getTime(timer));
+    if (game) {
+      submit();
+    }
   };
 
   const displaySecondsAsMins = (seconds) => {
@@ -99,32 +119,71 @@ const PomView = (props) => {
       </div>
       <div className="flex px-4 my-5 justify-center items-center">
         <div className="text-center">
-          <button className="text-xs sm:text-sm mx-auto w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-5  py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100">
+          <button
+            disabled={game === ""}
+            className={`text-xs sm:text-sm mx-auto w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out px-5  py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 ${
+              game === ""
+                ? "opacity-50 cursor-not-allowed"
+                : " opacity-100 hover:bg-slate-500 hover:scale-110 hover:text-gray-100 cursor-pointer"
+            }`}
+          >
             Play
           </button>
         </div>
         <div className="ml-4">
           <button
-            className="text-xs sm:text-sm mx-auto  w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-5  py-3 rounded-full bg-gray-100 border-slate-500 border text-slate-500 hover:bg-slate-500 hover:text-gray-100"
+            disabled={game === ""}
+            className={`text-xs sm:text-sm mx-auto  w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out px-5  py-3 rounded-full bg-gray-100 border-slate-500 border text-slate-500 
+             ${
+               game === ""
+                 ? "opacity-50 cursor-not-allowed"
+                 : " opacity-100 hover:bg-slate-500 hover:scale-110 hover:text-gray-100 cursor-pointer"
+             }`}
             onClick={toggleStart}
           >
             {!start ? "Start" : "Stop"}
           </button>
         </div>
+        <div className="ml-4 text-center">
+          <button
+            disabled={game === "" || start || timer === 0}
+            onClick={addHandler}
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModalLg"
+            className={`text-xs sm:text-sm mx-auto w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out px-5  py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 ${
+              game === "" || start || timer === 0
+                ? "opacity-50 cursor-not-allowed"
+                : " opacity-100 hover:bg-slate-500 hover:scale-110 hover:text-gray-100 cursor-pointer"
+            }`}
+          >
+            Add
+          </button>
+          <Modal />
+        </div>
         <div className="text-center ml-4">
           <button
             onClick={clickHandler}
-            className="text-xs mr-3 sm:text-sm mx-auto w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out hover:scale-110 py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
+            disabled={ans.length === 0}
+            className={`text-xs mr-3 sm:text-sm mx-auto w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 ${
+              ans.length === 0
+                ? "opacity-50 cursor-not-allowed"
+                : " opacity-100 hover:bg-slate-500 hover:scale-110 hover:text-gray-100 cursor-pointer"
+            }`}
           >
             Submit
           </button>
         </div>
         <div className="text-center ml-4">
           <button
+            disabled={game === "" || timer === 0}
             onClick={() => {
               setTimer(0);
             }}
-            className="text-xs sm:text-sm mx-auto -ml-3 w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out hover:scale-110 py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
+            className={`text-xs sm:text-sm mx-auto -ml-3 w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 ${
+              game === "" || timer === 0
+                ? "opacity-50 cursor-not-allowed"
+                : " opacity-100 hover:bg-slate-500 hover:scale-110 hover:text-gray-100 cursor-pointer"
+            }`}
           >
             Clear
           </button>
@@ -179,8 +238,10 @@ const Timer = (props) => {
 };
 
 const Input = (props) => {
+  const { nameHandler } = useContext(GameNameContext);
+
   const radioChangeHandler = (event) => {
-    console.log(event.target.value);
+    nameHandler(event.target.value);
   };
   return (
     <div className="form-check pb-1">
@@ -230,6 +291,71 @@ const IncreaseAndDecreaseButtons = (props) => {
         >
           Decrease Level
         </button>
+      </div>
+    </div>
+  );
+};
+
+const Modal = () => {
+  const JOINTS = ["Shoulder 1", "Shoulder 2", "Shoulder 3", "Elbow", "Wrist"];
+  return (
+    <div
+      className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-y-scroll"
+      id="exampleModalLg"
+      tabIndex="-1"
+      aria-labelledby="exampleModalLgLabel"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div className="modal-dialog modal-lg relative w-auto pointer-events-none">
+        <div className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+          <div className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+            <h5
+              className="text-xl font-medium leading-normal text-gray-800"
+              id="exampleModalLgLabel"
+            >
+              Patient's Session Details
+            </h5>
+            <button
+              type="button"
+              className="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div className="modal-body relative p-4">
+            {JOINTS.map((ele, index) => {
+              return (
+                <div key={index + 1} className="flex">
+                  <div>{ele}</div>
+                  <div className="">
+                    <div className="border-b-[1.5px] border-black ml-4  pl-0 ">
+                      <input
+                        className="outline-none block w-full"
+                        placeholder="Min ROM"
+                        type="text"
+                        required
+                      />
+                    </div>
+                    <div className="border-b-[1.5px] border-black ml-4 pl-0">
+                      <input
+                        className="outline-none block w-full"
+                        placeholder="Max ROM"
+                        type="text"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+            <div className="">
+              <button className="opacity-100 hover:bg-slate-500 hover:scale-110 hover:text-gray-100 cursor-pointer block py-2 px-4 transition ease-in-out rounded-full bg-gray-100 border-slate-500 border  text-slate-500">
+                Add
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

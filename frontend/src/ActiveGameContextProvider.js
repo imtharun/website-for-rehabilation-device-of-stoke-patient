@@ -3,13 +3,20 @@ export const GameNameContext = React.createContext();
 
 function UserContextProvider(props) {
   const [game, setGame] = useState("");
+  const [start, setStart] = useState(false);
 
   const nameHandler = (name) => {
-    setGame(game);
+    setGame(name);
+  };
+
+  const startHandler = (flag) => {
+    setStart(flag);
   };
 
   return (
-    <GameNameContext.Provider value={{ game, nameHandler }}>
+    <GameNameContext.Provider
+      value={{ game, nameHandler, start, startHandler }}
+    >
       {props.children}
     </GameNameContext.Provider>
   );
