@@ -72,7 +72,7 @@ const GameDetails = () => {
       noOfLevels: 3,
       picture: hitCatch,
       description:
-        "The player has to hit balls coming from various positions. The speed of the balls coming towards will be incremented for upcoming levels. The score will be calculated on hitting the balls",
+        "The player has to hit balls coming from various positions. The score will be calculated on hitting the balls.",
     },
     {
       name: "Hurdles",
