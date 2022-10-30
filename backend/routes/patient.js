@@ -1,15 +1,12 @@
 //imports
 const express = require('express');
 const bodyParser = require("body-parser");
-const cors = require("cors");
 const db = require("../database/mysql_db");
-const cookieParser = require("cookie-parser");
 const mongodb = require("../database/mongodb.js");
 const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 router.use(express.json());
-router.use(cookieParser());
 
 
 
@@ -27,6 +24,18 @@ router.get("/dashboard",(req,res)=>{
 })
 
 
+router.get("/sess",(req,res)=>{
+    const id = "patient1@gmail.com";
+    db.patientsessions(id,(err,result)=>{
+      if(err){
+        res.send(err);
+      }
+      else{
+        res.send(result);
+      }
+    })
+})
+
 
 //this is to add user data after checking the data in the jwt token
 router.post("/addusrdata", (req, res) => {
@@ -39,27 +48,12 @@ router.post("/addusrdata", (req, res) => {
 router.get('/recentsessions',(req,res)=>{
     const id = req.userid;
     res.send("recent sessions....");
-    console.log("====================================");
-    console.log(resp);
-    console.log("====================================");
 });
 
-router.get('/download/:id',(req,res)=>{
-    const userid = jwt.getjwt(req,res);
-    if(userid===undefined){
-      console.log("invaliduserid...");
-      return
-    }
-    const sessionid = req.params.id;
-    const result = db.downloaddata(userid,sessionid,(err,result)=>{
-      if(err){
-        console.log(err);
-        return
-      }})
-});
-
-
-
+router.get("/feedback",(req,res)=>{
+    const id = req.userid;
+    res.send("feedback");
+})
 
 //404 error page
 router.get('*', (req, res) => {
