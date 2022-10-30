@@ -60,10 +60,8 @@ const getjwt = (req, res) => {
   const id = getTokendata(req, (result) => {
     if (result) {
       resp = result;
-      console.log("result = " + resp);
       return resp;
     } else {
-      console.log("else result = " + result);
       res.sendStatus(401);
     }
   });

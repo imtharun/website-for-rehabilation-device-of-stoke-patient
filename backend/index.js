@@ -3,9 +3,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const db = require("./database/mysql_db");
-const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
-const jwt = require("./Helper/JWT.js");
+const jwt = require("./helper/jwt.js");
 const mongodb = require("./database/mongodb.js");
 
 //routing
@@ -30,7 +29,9 @@ app.use(cookieParser());
 //request from frontend allowed oringins....
 const allowedOrigins = ['http://localhost:3000', 
 'http://localhost:3000/patient/dashboard', 
-'http://localhost:3000/login'
+'http://localhost:3000/login',
+'http://localhost:3000/signup',
+'http://localhost:3000/doctor/dashboard',
 ];
 
 app.use((req,res,next)=>{
@@ -42,28 +43,24 @@ app.use((req,res,next)=>{
   res.setHeader('Access-Control-Allow-Methods','Content-Type','Authorization');
   next(); 
 })
+
+
 //initializing
 app.listen(port, () => {
-  console.log("Server starten to listen...");
+  console.log("Server started to listen...");
 });
+
 
 //function to validate user id and add it to request
 async function validateCookiesfunc (req, res, next) {
   req.userid = jwt.getjwt(req, res);
-  console.log("dashboard = "+req.userid);
+  console.log("user_id = "+req.userid);
   if(req.userid === undefined){
     return
   }
   next()
 }
 
-//developer mode enabled
-app.get("/sett", function (req, res) {
-  res.cookie("access-token", "eyJhbGciOiJIUzI1NiJ9.cmVzdWx0LnVzZXJpZGZyb21kYXRhYmFzZQ.4-rJnJ8eX-fm0FRbcmfBeukeU-COT1S4tsNlYk4jqig", {
-    maxAge: 60 * 30 * 1 * 30 * 1000, //used this for security reasons...
-  });
-  res.send("done");
-});
 
 //home page
 app.get("/", function (req, res) {
@@ -71,17 +68,68 @@ app.get("/", function (req, res) {
 });
 
 //register a new user
-app.post("/register", (req, res) => {
-  const { email, password } = req.body;
-  bcrypt
-    .hash(password, 10)
-    .then((hash) => {
-      console.log(email, hash);
-      res.json({ email, hash });
+app.post("/signup", (req, res) => {
+  const name = req.body.name;
+  const email = req.body.email;
+  const number = req.body.number;
+  const password  = req.body.password;
+  const address = req.body.address;
+  const dob = req.body.dob;
+  const utype = req.body.userType;
+  if(utype === "patient"){
+    db.registerauth(name,password,utype,(err,result)=>{
+      if(err){
+        res.send(err);
+      }
+      else{
+        db.registerpatient(result,name,email,number,address,dob,(err,resu)=>{
+          if(err){
+            res.send(err);
+          }
+          else{
+            console.log("Patient sucessfully registered");
+            res.send("Patient sucessfully registered").status(200);
+          }
+        })
+      }
     })
-    .catch((err) => {
-      console.log(err);
-    });
+  }
+  else if(utype === "doctor"){
+    db.registerauth(name,password,utype,(err,result)=>{
+      if(err){
+        res.send(err);
+      }
+      else{
+        db.registerdoctor(result,name,email,number,address,dob,(err,resu)=>{
+          if(err){
+            res.send(err);
+          }
+          else{
+            console.log("Doctor sucessfully registered");
+            res.send("Doctor sucessfully registered").status(200);
+          }
+        })
+      }
+    })
+  }
+  else if(utype === "caretaker"){
+    db.registerauth(name,password,utype,(err,result)=>{
+      if(err){
+        res.send(err);
+      }
+      else{
+        db.registercaretaker(result,name,email,number,address,dob,(err,resu)=>{
+          if(err){
+            res.send(err);
+          }
+          else{
+            console.log("Patient sucessfully registered");
+            res.send("Patient sucessfully registered").status(200);
+          }
+        })
+      }
+    })
+  }
 });
 
 //Clearing cookie to logout user
@@ -90,9 +138,10 @@ app.get("/logout", (req, res) => {
   res.sendStatus(200);
 });
 
+
 //login the user
 app.post("/login", async (req, res) => {
-  console.log(req.body,"dfsfsdff");
+  console.log(req.body);
   const email = req.body.email;
   const password = req.body.password;
   const cooki = req.cookies["access-token"];
@@ -100,23 +149,22 @@ app.post("/login", async (req, res) => {
     jwt.validateUser(cooki);
   }
   const rest = db.authorise(email, password, (err, result) => {
-    if (err) console.log("err=" + err);
+    if (err) {
+    console.log(err);
+    }
     if (result.access === "denied") {
-      res.status(400).json({ error: "wrong email and password combinations" });
+      res.status(401).json({ 
+        error: "wrong email and password combinations",userType:"Notloggedin" 
+      });
     } else {
-      const id = result.userid;
+      // const id = result.userid;
+      const id = email;
       const accessToken = jwt.createToken(id);
       res.cookie("access-token", accessToken, {
-        maxAge: 60 * 30 * 1 * 30 * 1000,
+        maxAge: 1000*60*60*1,
         httpOnly: true,
-        // domain: undefined,
-        // sameSite: "lax",
-        //used this for security reasons...
       });
-      //use function to send all dashboard data
-      // res.setHeader('Access-Control-Allow-Origin','http://localhost:3000');
-      // res.setHeader('Access-Control-Allow-Credentials',true);
-      const userType = "patient";
+      const userType = "doctor";
       res.json({userType});
       res.send();
     }
@@ -127,18 +175,6 @@ app.use(validateCookiesfunc);
 app.use("/patient", patient);
 app.use("/doctor", doctor);
 app.use('/caretaker', caretaker);
-
-//return data for user dashboard
-app.get("/dashboard", (req, res) => {
-  const userid = req.userid;
-  res.send("hello page!");
-});
-
-
-app.get('/test',(req,res)=>{
-  console.log("user i  ===",req.userid)
-  res.send("ok")
-});
 
 
 //respond for other unused pages
