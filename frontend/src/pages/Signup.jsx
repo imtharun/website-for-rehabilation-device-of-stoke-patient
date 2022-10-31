@@ -140,6 +140,7 @@ const Login = () => {
         address,
         userTypee,
         formData,
+        doctorEmail,
       });
 
       console.log(resp);

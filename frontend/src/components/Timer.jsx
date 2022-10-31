@@ -84,7 +84,7 @@ const PomView = (props) => {
   const submit = async () => {
     try {
       console.log(ans);
-      const res = await axios.post({ ans });
+      const res = await axios.post("/patient/submit", { ans });
 
       console.log(res);
     } catch (error) {
@@ -568,7 +568,23 @@ const ModalSubmit = () => {
     wrist: "",
   });
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
+    const data = [];
+
+    // jointSelected.forEach((ele) => {
+    //   const obj = {};
+
+    // });
+
+    try {
+      const resp = await axios.post("/patient/feedback", {
+        assessmentMeth,
+        score,
+        outOf,
+      });
+    } catch (error) {
+      console.log(error);
+    }
     console.log(jointSelected, outOf, score, assessmentMeth);
   };
   const closeHandler = () => {

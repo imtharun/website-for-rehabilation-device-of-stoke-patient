@@ -1,10 +1,8 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import axios from "../api/axios";
 const AddOrRemovePatients = () => {
   const mailRef = useRef();
   const [patientMail, setPatientMail] = useState("");
-
-  useEffect(() => {}, []);
 
   const inputHandler = () => {
     setPatientMail(mailRef.current.value);
@@ -12,7 +10,10 @@ const AddOrRemovePatients = () => {
 
   const handler = async (type = "add", mailId) => {
     try {
-      const res = await axios.post({ userType: type, mailId: mailId });
+      const url = `/caretaker/${type}Patient`;
+      const res = await axios.post(url, {
+        mailId,
+      });
       console.log(res);
     } catch (error) {
       console.log(error);

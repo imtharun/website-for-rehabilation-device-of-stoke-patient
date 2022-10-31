@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Table from "./Table";
 import Recovery from "./Recovery";
+import axios from "../api/axios";
 
 const SessionCard = () => {
+  // const [values, setValues] = useState([]);
+
   const props = [
     {
       cols: [
@@ -122,6 +125,20 @@ const SessionCard = () => {
       ],
     },
   ];
+
+  const tableData = async () => {
+    try {
+      const data = await axios.get("/patient/dashboard");
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    tableData();
+  }, []);
+
   return (
     <div className="flex flex-col my-3 justify-center item-center">
       {props.map((ele, index) => {
