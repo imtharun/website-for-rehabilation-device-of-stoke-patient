@@ -44,6 +44,11 @@ app.use((req,res,next)=>{
   next(); 
 })
 
+app.get('/sett',(req,res)=>{
+  res.cookie('token', '1234567890');
+  res.send("cookie set");
+})
+
 
 //initializing
 app.listen(port, () => {
@@ -77,12 +82,13 @@ app.post("/signup", (req, res) => {
   const dob = req.body.dob;
   const utype = req.body.userType;
   if(utype === "patient"){
+    const docmail = req.body.docmail;
     db.registerauth(name,password,utype,(err,result)=>{
       if(err){
         res.send(err);
       }
       else{
-        db.registerpatient(result,name,email,number,address,dob,(err,resu)=>{
+        db.registerpatient(result,name,email,number,address,dob,docmail,(err,resu)=>{
           if(err){
             res.send(err);
           }

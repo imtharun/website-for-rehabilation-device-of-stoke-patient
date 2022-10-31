@@ -44,18 +44,19 @@ function authorise(email,password,callback)
 }
 
 //registering the auth for the user
-function registerauth(name,password,usertype,callback){
-    sql = " Insert into AUTH values (null,?,AES_ENCRYPT(?,'PSG'),?,?)";
+function registerauth(mail,password,usertype,callback){
+    // sql = " Insert into AUTH values (null,?,AES_ENCRYPT(?,'PSG'),?,?)";
+    sql = "insert into AUTH values(null,?,?,?,?)";
     const hashedpass = ()=>{
         return hash.hashpassword(password);
     };
-    value = [name,password,hashedpass,usertype];
+    value = [mail,password,hashedpass,usertype];
     con.query(sql,value,(err,result)=>{
         console.log("Auth table inserted");
     });
     console.log("registered auth");
     sql = "select user_id from AUTH Where user_name=?";
-    value = [name];
+    value = [mail];
     con.query(sql,value,(err,result)=>{
         var data = JSON.parse(JSON.stringify(result));
         var userid = data[0].user_id;
@@ -68,9 +69,9 @@ function registerauth(name,password,usertype,callback){
 
 
 //register the respective users
-function registerpatient(uid,name, email, number, password, address, dob,callback){
-    const sql = "select * from patient";
-    value = [name,email,number,password,address,dob];
+function registerpatient(uid,name, email, number,address, dob,docmail,callback){
+    const sql = "insert into patient values(?,?,?,?,?,?,?,?);";
+    value = [uid,email,name,null,address,dob,number,docmail];
     con.query(sql,value,(err,result)=>{
         callback(err,result);
     }); 
@@ -106,12 +107,9 @@ function patientsessions(patientid,callback){
 
 //----------------------------------------------DOCTOR----------------------------------------------
 
-function registerdoctor(uid,name, email, number, password, address, dob,callback){
-    sql = "insert into doctor values(?,?,?,null,?,?,?)";
-    const hashedpass = ()=>{
-        return hash.hashpassword(password);
-    };
-    value = [];
+function registerdoctor(uid,name, email, number, address, dob,callback){
+    sql = "insert into doctor values(user_id,patient_mail,name,image,address,dob,ph.number);";
+    value = [uid,email,name,null,address,dob,number];
     con.query(sql,value,(err,result)=>{
         callback(err,result);
         console.log('====================================');
@@ -148,27 +146,26 @@ function getdoctorpatients(doctorid,callback){
 
 //----------------------------------------------CARETAKER----------------------------------------------
 
-function registercaretaker(uid,name, email, number, password, address, dob,callback){
-    sql = "select * from patient";
-    value = [name,email,number,password,address,dob];
+function registercaretaker(uid,name, email, number, address, dob,callback){
+    sql = "insert into caretaker values(user_id,patient_mail,name,image,address,dob,ph.number);";
+    value = [uid,email,name,null,address,dob,number];
     con.query(sql,value,(err,result)=>{
         callback(err,result);
     });   
     console.log("registercaretaker");
 }
 
-function dashboard_caretaker(caretakerid,callback){
-    sql = "get caretaker dashboard data";
-    const value = [caretakerid];
-    con.query(sql,value,(err,result)=>{
-        callback(err,result);
-    })
-}
-
+// function dashboard_caretaker(caretakerid,callback){
+//     sql = "get caretaker dashboard data";
+//     const value = [caretakerid];
+//     con.query(sql,value,(err,result)=>{
+//         callback(err,result);
+//     })
+// }
 
 
 function getcaretakerpatients(caretakerid,callback){
-    sql = "select name from patient where caretaker_id = ?";
+    sql = "SELECT  * FROM patient s1 INNER JOIN care_pat s2 ON s1.patient_id = s2.patient_id where s2.caretaker_id=?";
     value = caretakerid;
     con.query(sql,value,(err,result)=>{
         callback(err,result);
@@ -176,7 +173,7 @@ function getcaretakerpatients(caretakerid,callback){
 }
 
 function linkcaretakerandpatient(caretakerid,patientid,callback){
-    sql = "update patient set caretaker_id = ? where patient_id = ?";
+    sql = "insert into care_pat values(?,?)";
     value = [caretakerid,patientid];
     con.query(sql,value,(err,result)=>{
         callback(err,result);
@@ -189,7 +186,7 @@ function linkcaretakerandpatient(caretakerid,patientid,callback){
 
 module.exports = {
     authorise,
-    dashboard_caretaker,
+    // dashboard_caretaker,
     dashboard_doctor,
     dashboard_patient,
     registercaretaker,
