@@ -21,11 +21,11 @@ router.get("/dashboard",(req,res)=>{
     });
 });
 
-router.get("/addpatient",(req,res)=>{
+router.get("/addPatient",(req,res)=>{
   const id = req.userid;
 });
 
-router.get("/removepatient",(req,res)=>{
+router.get("/removePatient",(req,res)=>{
   const id = req.userid;
 });
 

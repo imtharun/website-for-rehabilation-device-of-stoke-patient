@@ -38,11 +38,21 @@ router.get("/sess",(req,res)=>{
 
 
 //this is to add user data after checking the data in the jwt token
-router.post("/addusrdata", (req, res) => {
-    // const id = jwt.getjwt(req, res);
+router.post("/newsession", (req, res) => {
     const id = req.userid;
     const sessionid = req.body.sessionid;
+
+
 });
+
+router.post("/submit",(req,res)=>{
+  const id = req.userid;
+  const roms = req.body.roms;  //json
+  const game = req.body.game; //str
+  const timer = req.body.timer; //total time 
+  const timeInHMS = req.body.timeInHMS; //obj od hour min sec
+  const levels = req.body.levels; //json
+})
 
 //return data for user to check data of recent sessions
 router.get('/recentsessions',(req,res)=>{
@@ -50,8 +60,13 @@ router.get('/recentsessions',(req,res)=>{
     res.send("recent sessions....");
 });
 
+
 router.get("/feedback",(req,res)=>{
     const id = req.userid;
+    const assessmentMeth = req.body.assessmentMeth;
+    const score = req.body.score;
+    const outOf = req.body.outOf;
+    const percentage = req.body.percentage;
     res.send("feedback");
 })
 

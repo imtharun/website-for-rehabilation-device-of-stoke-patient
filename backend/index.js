@@ -76,14 +76,15 @@ app.get("/", function (req, res) {
 app.post("/signup", (req, res) => {
   const name = req.body.name;
   const email = req.body.email;
-  const number = req.body.number;
+  const number = req.body.phoneNumber;
   const password  = req.body.password;
   const address = req.body.address;
   const dob = req.body.dob;
-  const utype = req.body.userType;
-  if(utype === "patient"){
-    const docmail = req.body.docmail;
-    db.registerauth(name,password,utype,(err,result)=>{
+  const utype = req.body.userTypee;
+  console.log(req.body);
+  if(utype === "Patient"){
+    const docmail = req.body.doctorEmail;
+    db.registerauth(email,password,utype,(err,result)=>{
       if(err){
         res.send(err);
       }
@@ -100,8 +101,8 @@ app.post("/signup", (req, res) => {
       }
     })
   }
-  else if(utype === "doctor"){
-    db.registerauth(name,password,utype,(err,result)=>{
+  else if(utype === "Doctor"){
+    db.registerauth(email,password,utype,(err,result)=>{
       if(err){
         res.send(err);
       }
@@ -118,8 +119,8 @@ app.post("/signup", (req, res) => {
       }
     })
   }
-  else if(utype === "caretaker"){
-    db.registerauth(name,password,utype,(err,result)=>{
+  else if(utype === "Caretaker"){
+    db.registerauth(email,password,utype,(err,result)=>{
       if(err){
         res.send(err);
       }
@@ -170,7 +171,7 @@ app.post("/login", async (req, res) => {
         maxAge: 1000*60*60*1,
         httpOnly: true,
       });
-      const userType = "doctor";
+      const userType = result.type;
       res.json({userType});
       res.send();
     }
