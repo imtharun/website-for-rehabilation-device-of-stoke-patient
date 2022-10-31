@@ -11,7 +11,7 @@ router.use(express.json());
 
 router.get("/dashboard",(req,res)=>{
     const id = req.userid;
-    db.dashboard_caretaker(id,(err,result)=>{
+    db.getcaretakerpatients(id,(err,result)=>{
       if(err){
         res.send(err);
       }
@@ -23,10 +23,21 @@ router.get("/dashboard",(req,res)=>{
 
 router.get("/addpatient",(req,res)=>{
     const id = req.userid;
+    const patient_id = req.body.patient_id;
+    db.addpatienttocaretaker(id,patient_id,(err,result)=>{
+      if(err){
+        res.send(err);
+      }
+      else{
+        res.send(result);
+      }
+    });
 });
+
 
 router.get("/removepatient",(req,res)=>{
     const id = req.userid;
+    const patient_id = req.body.patient_id;
 });
 
 
