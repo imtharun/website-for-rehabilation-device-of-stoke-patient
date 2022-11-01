@@ -44,13 +44,16 @@ function authorise(email,password,callback)
 }
 
 //registering the auth for the user
-function registerauth(mail,password,usertype,callback){
+function  registerauth(mail,password,usertype,callback){
     // sql = " Insert into AUTH values (null,?,AES_ENCRYPT(?,'PSG'),?,?)";
     sql = "insert into AUTH values(null,?,?,?,?)";
-    const hashedpass = ()=>{
+    const hashedpass = async ()=>{
         return hash.hashpassword(password);
     };
-    value = [mail,password,hashedpass,usertype];
+    const sal = hashedpass();
+    
+    value = [mail,password,sal[0],usertype];
+    console.log(value);
     con.query(sql,value,(err,result)=>{
         console.log("Auth table inserted");
     });
@@ -59,6 +62,7 @@ function registerauth(mail,password,usertype,callback){
     value = [mail];
     con.query(sql,value,(err,result)=>{
         var data = JSON.parse(JSON.stringify(result));
+        console.log(data);
         var userid = data[0].user_id;
         callback(err,userid);
     })
@@ -96,7 +100,7 @@ function newsessionpatient(uid,callback){
 }
 
 function patientsessions(patientid,callback){
-    const sql = "SELECT * FROM shoulder_1 where patient_id=? UNION all SELECT * FROM shoulder_2 where patient_id=? UNION  all SELECT * FROM shoulder_3 where patient_id=? UNION  all SELECT * FROM elbow where patient_id=? UNION  all SELECT * FROM wrist where patient_id=?  order by session_no desc";
+    const sql = "SELECT * FROM shoulder_1 s1 inner join game_details gd where gd.game_id=s1.game_id and s1.patient_id=? UNION all SELECT * FROM shoulder_2 s2 inner join game_details gd where gd.game_id=s2.game_id and s2.patient_id=? UNION  all SELECT * FROM shoulder_3 s3 inner join game_details gd where gd.game_id=s3.game_id and s3.patient_id=? UNION  all SELECT * FROM elbow e inner join game_details gd where gd.game_id=e.game_id and e.patient_id=? UNION  all SELECT * FROM wrist w inner join game_details gd where gd.game_id=w.game_id and w.patient_id=? order by session_no desc";
     const value = [patientid,patientid,patientid,patientid,patientid];
     con.query(sql,value,(err,result)=>{
         callback(err,result);
@@ -108,8 +112,9 @@ function patientsessions(patientid,callback){
 //----------------------------------------------DOCTOR----------------------------------------------
 
 function registerdoctor(uid,name, email, number, address, dob,callback){
-    sql = "insert into doctor values(user_id,patient_mail,name,image,address,dob,ph.number);";
+    sql = "insert into doctor values(?,?,?,?,?,?,?)";
     value = [uid,email,name,null,address,dob,number];
+    console.log(value);
     con.query(sql,value,(err,result)=>{
         callback(err,result);
         console.log('====================================');
@@ -144,10 +149,10 @@ function getdoctorpatients(doctorid,callback){
     });
 }
 
-//----------------------------------------------CARETAKER----------------------------------------------
+// ----------------------------------------------CARETAKER----------------------------------------------
 
 function registercaretaker(uid,name, email, number, address, dob,callback){
-    sql = "insert into caretaker values(user_id,patient_mail,name,image,address,dob,ph.number);";
+    sql = "insert into caretaker values(?,?,?,?,?,?,?)";
     value = [uid,email,name,null,address,dob,number];
     con.query(sql,value,(err,result)=>{
         callback(err,result);
@@ -180,7 +185,13 @@ function linkcaretakerandpatient(caretakerid,patientid,callback){
     });
 }
 
-
+function removecaretakerandpatient(caretakerid,patientid,callback){
+    sql = "delete from care_pat where caretaker_id=? and patient_id=?";
+    value = [caretakerid,patientid];
+    con.query(sql,value,(err,result)=>{
+        callback(err,result);
+    });
+}
 
 
 
@@ -197,6 +208,7 @@ module.exports = {
     registerauth,
     getdoctorpatients,
     getcaretakerpatients,
+    removecaretakerandpatient,
     patientsessions,
 
 };

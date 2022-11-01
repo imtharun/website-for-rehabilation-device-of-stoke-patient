@@ -21,25 +21,34 @@ router.get("/dashboard",(req,res)=>{
     });
 });
 
-router.get("/addpatient",(req,res)=>{
+router.post("/addPatient",(req,res)=>{
     const id = req.userid;
-    const patient_id = req.body.patient_id;
-    db.addpatienttocaretaker(id,patient_id,(err,result)=>{
+    console.log(req.body);
+    const patient_id = req.body.mailId;
+    db.linkcaretakerandpatient(id,patient_id,(err,result)=>{
       if(err){
         res.send(err);
       }
       else{
-        res.send(result);
+        res.send(result).status(200);
       }
     });
 });
 
 
-router.get("/removepatient",(req,res)=>{
+router.post("/removePatient",(req,res)=>{
     const id = req.userid;
-    const patient_id = req.body.patient_id;
+    const patient_id = req.body.mailId;
+    console.log(req.body);
+    db.removecaretakerandpatient(id,patient_id,(err,result)=>{
+      if(err){
+        res.send(err);
+      }
+      else{
+        res.send(result).status(200);
+      }
+    });
 });
-
 
 
 router.get('*', (req, res) => {
