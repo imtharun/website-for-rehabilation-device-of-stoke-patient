@@ -4,21 +4,8 @@ import { CalendarIcon, ClockIcon } from "@radix-ui/react-icons";
 import Card from "./Card";
 import DefaultProfilePic from "./../assets/default-profile-pic.png";
 import SessionCard from "./SessionCard";
-import axios from "../api/axios";
 
 const PatientDashboard = () => {
-  const checkForAuth = async () => {
-    try {
-      const res = await axios.get("/auth")
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    checkForAuth();
-  }, []);
-
   return (
     <section className="rounded-tl-2xl bg-white p-3 pt-6 sm:p-4 w-full overflow-y-scroll">
       <div className="flex justify-between">
