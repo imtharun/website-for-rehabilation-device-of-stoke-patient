@@ -1,5 +1,8 @@
 import React, { useRef, useState } from "react";
 import axios from "../api/axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const AddOrRemovePatients = () => {
   const mailRef = useRef();
   const [patientMail, setPatientMail] = useState("");
@@ -11,11 +14,44 @@ const AddOrRemovePatients = () => {
   const handler = async (type = "add", mailId) => {
     try {
       const url = `/caretaker/${type}Patient`;
+      console.log(url);
       const res = await axios.post(url, {
         mailId,
       });
       console.log(res);
+      toast("Successfully Added", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      if (res.status === 200) {
+        toast("Successfully Added", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     } catch (error) {
+      toast("Error Occurred", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       console.log(error);
     }
   };
@@ -32,11 +68,11 @@ const AddOrRemovePatients = () => {
 
   return (
     <section className="bg-white w-full overflow-y-scroll rounded-tl-2xl ">
-      <div class="flex justify-center mt-5">
-        <div class="mb-3 xl:w-96 text-center">
+      <div className="flex justify-center mt-5">
+        <div className="mb-3 xl:w-96 text-center">
           <label
-            for="exampleText0"
-            class="form-label inline-block my-6 text-gray-700 text-2xl"
+            htmlFor="exampleText0"
+            className="form-label inline-block my-6 text-gray-700 text-2xl"
           >
             Add or Remove Patients
           </label>
@@ -45,7 +81,7 @@ const AddOrRemovePatients = () => {
             ref={mailRef}
             value={patientMail}
             onChange={inputHandler}
-            class="
+            className="
         form-control
         block
         w-full
@@ -80,6 +116,9 @@ const AddOrRemovePatients = () => {
         >
           Remove
         </button>
+      </div>
+      <div>
+        <ToastContainer />
       </div>
     </section>
   );

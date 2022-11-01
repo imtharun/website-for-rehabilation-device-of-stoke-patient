@@ -145,7 +145,7 @@ const Login = () => {
 
       console.log(resp);
       if (resp.status === 200) {
-        navigate("/login");
+        navigate("/login", { replace: true });
       }
     } catch (error) {
       console.log(error);
