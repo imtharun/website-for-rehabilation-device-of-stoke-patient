@@ -19,16 +19,6 @@ const AddOrRemovePatients = () => {
         mailId,
       });
       console.log(res);
-      toast("Successfully Added", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       if (res.status === 200) {
         toast("Successfully Added", {
           position: "bottom-center",

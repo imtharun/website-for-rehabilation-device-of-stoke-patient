@@ -42,6 +42,7 @@ const DoctorDashboard = () => {
 
   useEffect(() => {
     document.title = "Doctor";
+    // getData();
   }, []);
 
   const searchHandler = (e) => {

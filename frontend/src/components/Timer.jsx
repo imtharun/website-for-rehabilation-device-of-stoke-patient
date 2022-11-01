@@ -85,8 +85,6 @@ const PomView = (props) => {
     try {
       console.log(ans);
       const res = await axios.post("/patient/submit", { ans });
-
-      console.log(res);
     } catch (error) {
       console.log(error.message);
     }
@@ -94,8 +92,13 @@ const PomView = (props) => {
 
   const clickHandler = async () => {
     if (start) {
-      // console.log(roms);
-      const obj = { roms: roms, game, timer, timeInHMS: getTime(timer) };
+      const timerr = timer;
+      const obj = {
+        roms: roms,
+        game,
+        timerr: timer,
+        timeInHMS: getTime(timerr),
+      };
       ansHandler([...ans, obj]);
       setTimer(0);
     }
@@ -284,10 +287,13 @@ const IncreaseAndDecreaseButtons = (props) => {
 };
 
 const Modal = (props) => {
-  const { romsHandler, start, setTimer, game, timer, ansHandler, ans, roms } =
+  const { romsHandler, setTimer, game, timer, ansHandler, ans, roms } =
     useContext(GameNameContext);
 
-  const [shoulderOne, setShoulderOne] = useState({ minRom: "", maxRom: "" });
+  const [shoulderOne, setShoulderOne] = useState({
+    minRom: "",
+    maxRom: "",
+  });
   const [shoulderTwo, setShoulderTwo] = useState({ minRom: "", maxRom: "" });
   const [shoulderThree, setShoulderThree] = useState({
     minRom: "",
@@ -298,25 +304,27 @@ const Modal = (props) => {
 
   useEffect(() => {
     if (roms.length !== 0) {
-      console.log(roms);
-      const obj = {
-        game,
-        timer,
-        timeInHMS: getTime(timer),
-        roms: JSON.parse(JSON.stringify(roms)),
+      const o = {
+        [game]: {
+          timer: JSON.parse(JSON.stringify(timer)),
+          timeInHMS: getTime(timer),
+          roms: JSON.parse(JSON.stringify(roms)),
+        },
       };
-      ansHandler([...ans, obj]);
+      ansHandler([...ans, o]);
     }
   }, [roms]);
 
   const submitHandler = (e) => {
     // e.preventDefault();
 
-    romsHandler([shoulderOne, shoulderTwo, shoulderThree, elbow, wrist]);
-
-    if (!start) {
-      setTimer(0);
-    }
+    romsHandler({
+      shoulder1: shoulderOne,
+      shoulder2: shoulderTwo,
+      shoulder3: shoulderThree,
+      elbow: elbow,
+      wrist: wrist,
+    });
   };
 
   const closeHandler = (e) => {
@@ -331,6 +339,7 @@ const Modal = (props) => {
     elbow.maxRom = "";
     wrist.minRom = "";
     wrist.maxRom = "";
+    setTimer(0);
   };
 
   return (
@@ -544,71 +553,78 @@ const Modal = (props) => {
 };
 
 const ModalSubmit = () => {
+  const { ansHandler, ans } = useContext(GameNameContext);
   const [jointSelected, setJointSelected] = useState([]);
 
   const [assessmentMeth, setAssessmentMeth] = useState({
-    shoulderOne: "",
-    shoulderTwo: "",
-    shoulderThree: "",
+    shoulder1: "",
+    shoulder2: "",
+    shoulder3: "",
     elbow: "",
     wrist: "",
   });
   const [score, setScore] = useState({
-    shoulderOne: "",
-    shoulderTwo: "",
-    shoulderThree: "",
+    shoulder1: "",
+    shoulder2: "",
+    shoulder3: "",
     elbow: "",
     wrist: "",
   });
   const [outOf, setOutOf] = useState({
-    shoulderOne: "",
-    shoulderTwo: "",
-    shoulderThree: "",
+    shoulder1: "",
+    shoulder2: "",
+    shoulder3: "",
     elbow: "",
     wrist: "",
   });
 
   const submitHandler = async () => {
-    const data = [];
+    const data = jointSelected.map((ele) => {
+      const e = ele.toLowerCase().replace(/\s/g, "");
+      const obj = {
+        [e]: {
+          assessmentMeth: assessmentMeth[e],
+          score: score[e],
+          outOf: outOf[e],
+          percentage: ((+score[e] / +outOf[e]) * 100).toFixed(2),
+        },
+      };
+      return obj;
+    });
 
-    // jointSelected.forEach((ele) => {
-    //   const obj = {};
-
-    // });
+    ansHandler([...ans, { feedback: data }]);
 
     try {
       const resp = await axios.post("/patient/feedback", {
-        assessmentMeth,
-        score,
-        outOf,
+        ans,
       });
     } catch (error) {
       console.log(error);
     }
-    console.log(jointSelected, outOf, score, assessmentMeth);
   };
   const closeHandler = () => {
     setAssessmentMeth({
-      shoulderOne: "",
-      shoulderTwo: "",
-      shoulderThree: "",
+      shoulder1: "",
+      shoulder2: "",
+      shoulder3: "",
       elbow: "",
       wrist: "",
     });
     setScore({
-      shoulderOne: "",
-      shoulderTwo: "",
-      shoulderThree: "",
+      shoulder1: "",
+      shoulder2: "",
+      shoulder3: "",
       elbow: "",
       wrist: "",
     });
     setOutOf({
-      shoulderOne: "",
-      shoulderTwo: "",
-      shoulderThree: "",
+      shoulder1: "",
+      shoulder2: "",
+      shoulder3: "",
       elbow: "",
       wrist: "",
     });
+    ansHandler([]);
     setJointSelected([]);
   };
 
@@ -719,12 +735,12 @@ const ModalSubmit = () => {
                               type="text"
                               name="flexRadioDefault"
                               id={"flexRadioDefaultShoulder1"}
-                              value={assessmentMeth.shoulderOne}
+                              value={assessmentMeth.shoulder1}
                               onChange={(e) => {
-                                const shoulderOne = e.target.value;
+                                const shoulder1 = e.target.value;
                                 setAssessmentMeth({
                                   ...assessmentMeth,
-                                  shoulderOne,
+                                  shoulder1,
                                 });
                               }}
                               required
@@ -734,12 +750,12 @@ const ModalSubmit = () => {
                             <input
                               className="outline-none block w-full"
                               type="text"
-                              value={score.shoulderOne}
+                              value={score.shoulder1}
                               onChange={(e) => {
-                                const shoulderOne = e.target.value;
+                                const shoulder1 = e.target.value;
                                 setScore({
                                   ...score,
-                                  shoulderOne,
+                                  shoulder1,
                                 });
                               }}
                               placeholder=""
@@ -750,12 +766,12 @@ const ModalSubmit = () => {
                             <input
                               className="outline-none block w-full"
                               type="text"
-                              value={outOf.shoulderOne}
+                              value={outOf.shoulder1}
                               onChange={(e) => {
-                                const shoulderOne = e.target.value;
+                                const shoulder1 = e.target.value;
                                 setOutOf({
                                   ...outOf,
-                                  shoulderOne,
+                                  shoulder1,
                                 });
                               }}
                               placeholder=""
@@ -765,11 +781,11 @@ const ModalSubmit = () => {
                           <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                             <div>
                               {" "}
-                              {assessmentMeth.shoulderOne &&
-                                score.shoulderOne &&
-                                outOf.shoulderOne &&
+                              {assessmentMeth.shoulder1 &&
+                                score.shoulder1 &&
+                                outOf.shoulder1 &&
                                 (
-                                  (score.shoulderOne / outOf.shoulderOne) *
+                                  (score.shoulder1 / outOf.shoulder1) *
                                   100
                                 ).toFixed(2) + "%"}
                             </div>
@@ -815,14 +831,14 @@ const ModalSubmit = () => {
                               className="outline-none block w-full"
                               type="text"
                               placeholder=""
-                              value={assessmentMeth.shoulderTwo}
+                              value={assessmentMeth.shoulder2}
                               name="flexRadioDefault"
                               id={"flexRadioDefaultShoulder2"}
                               onChange={(e) => {
-                                const shoulderTwo = e.target.value;
+                                const shoulder2 = e.target.value;
                                 setAssessmentMeth({
                                   ...assessmentMeth,
-                                  shoulderTwo,
+                                  shoulder2,
                                 });
                               }}
                               required
@@ -832,12 +848,12 @@ const ModalSubmit = () => {
                             <input
                               className="outline-none block w-full"
                               type="text"
-                              value={score.shoulderTwo}
+                              value={score.shoulder2}
                               onChange={(e) => {
-                                const shoulderTwo = e.target.value;
+                                const shoulder2 = e.target.value;
                                 setScore({
                                   ...score,
-                                  shoulderTwo,
+                                  shoulder2,
                                 });
                               }}
                               placeholder=""
@@ -848,12 +864,12 @@ const ModalSubmit = () => {
                             <input
                               className="outline-none block w-full"
                               type="text"
-                              value={outOf.shoulderTwo}
+                              value={outOf.shoulder2}
                               onChange={(e) => {
-                                const shoulderTwo = e.target.value;
+                                const shoulder2 = e.target.value;
                                 setOutOf({
                                   ...outOf,
-                                  shoulderTwo,
+                                  shoulder2,
                                 });
                               }}
                               placeholder=""
@@ -863,11 +879,11 @@ const ModalSubmit = () => {
                           <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                             <div>
                               {" "}
-                              {assessmentMeth.shoulderTwo &&
-                                score.shoulderTwo &&
-                                outOf.shoulderTwo &&
+                              {assessmentMeth.shoulder2 &&
+                                score.shoulder2 &&
+                                outOf.shoulder2 &&
                                 (
-                                  (score.shoulderTwo / outOf.shoulderTwo) *
+                                  (score.shoulder2 / outOf.shoulder2) *
                                   100
                                 ).toFixed(2) + "%"}
                             </div>
@@ -913,14 +929,14 @@ const ModalSubmit = () => {
                               className="outline-none block w-full"
                               type="text"
                               placeholder=""
-                              value={assessmentMeth.shoulderThree}
+                              value={assessmentMeth.shoulder3}
                               name="flexRadioDefault"
                               id={"flexRadioDefaultShoulder3"}
                               onChange={(e) => {
-                                const shoulderThree = e.target.value;
+                                const shoulder3 = e.target.value;
                                 setAssessmentMeth({
                                   ...assessmentMeth,
-                                  shoulderThree,
+                                  shoulder3,
                                 });
                               }}
                               required
@@ -930,12 +946,12 @@ const ModalSubmit = () => {
                             <input
                               className="outline-none block w-full"
                               type="text"
-                              value={score.shoulderThree}
+                              value={score.shoulder3}
                               onChange={(e) => {
-                                const shoulderThree = e.target.value;
+                                const shoulder3 = e.target.value;
                                 setScore({
                                   ...score,
-                                  shoulderThree,
+                                  shoulder3,
                                 });
                               }}
                               placeholder=""
@@ -946,12 +962,12 @@ const ModalSubmit = () => {
                             <input
                               className="outline-none block w-full"
                               type="text"
-                              value={outOf.shoulderThree}
+                              value={outOf.shoulder3}
                               onChange={(e) => {
-                                const shoulderThree = e.target.value;
+                                const shoulder3 = e.target.value;
                                 setOutOf({
                                   ...outOf,
-                                  shoulderThree,
+                                  shoulder3,
                                 });
                               }}
                               placeholder=""
@@ -961,11 +977,11 @@ const ModalSubmit = () => {
                           <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                             <div>
                               {" "}
-                              {assessmentMeth.shoulderThree &&
-                                score.shoulderThree &&
-                                outOf.shoulderThree &&
+                              {assessmentMeth.shoulder3 &&
+                                score.shoulder3 &&
+                                outOf.shoulder3 &&
                                 (
-                                  (score.shoulderThree / outOf.shoulderThree) *
+                                  (score.shoulder3 / outOf.shoulder3) *
                                   100
                                 ).toFixed(2) + "%"}
                             </div>

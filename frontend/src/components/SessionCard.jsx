@@ -18,7 +18,7 @@ const SessionCard = () => {
       rows: [
         {
           gameName: "Burst",
-          joints: " Fingers and Palm – closing & opening",
+          joints: "Fingers and Palm – closing & opening",
           roms: [
             { minRom: 7, maxRom: 8 },
             { minRom: 9, maxRom: 10 },
@@ -29,7 +29,6 @@ const SessionCard = () => {
           timeDuration: 12,
           currentLevel: 2,
         },
-
         {
           gameName: "Trace",
           joints:

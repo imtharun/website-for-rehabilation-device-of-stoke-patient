@@ -2,46 +2,57 @@ import React, { useRef, useState, useEffect } from "react";
 import { Modal } from "./DoctorDashboard";
 import { TimeAndDate } from "./PatientDashboard";
 import profile from "./../assets/default-profile-pic.png";
+import axios from "../api/axios";
 
-const patientData = [
-  {
-    name: "D k Suryah ",
-    Age: 81,
-    monitorDoctor: "Adithiyaa",
-    profile: profile,
-  },
-  {
-    name: "Yuvarraj",
-    Age: 81,
-    monitorDoctor: "Adithiyaa",
-    profile: profile,
-  },
-  {
-    name: "Yuvarraj",
-    Age: 81,
-    monitorDoctor: "Adithiyaa",
-    profile: profile,
-  },
-  {
-    name: "Shivanesh",
-    Age: 81,
-    monitorDoctor: "Adithiyaa",
-    profile: profile,
-  },
-  {
-    name: "Shivanesh",
-    Age: 81,
-    monitorDoctor: "Adithiyaa",
-    profile: profile,
-  },
-];
+// const patientData = [
+//   {
+//     name: "D k Suryah ",
+//     Age: 81,
+//     monitorDoctor: "Adithiyaa",
+//     profile: profile,
+//   },
+//   {
+//     name: "Yuvarraj",
+//     Age: 81,
+//     monitorDoctor: "Adithiyaa",
+//     profile: profile,
+//   },
+//   {
+//     name: "Yuvarraj",
+//     Age: 81,
+//     monitorDoctor: "Adithiyaa",
+//     profile: profile,
+//   },
+//   {
+//     name: "Shivanesh",
+//     Age: 81,
+//     monitorDoctor: "Adithiyaa",
+//     profile: profile,
+//   },
+//   {
+//     name: "Shivanesh",
+//     Age: 81,
+//     monitorDoctor: "Adithiyaa",
+//     profile: profile,
+//   },
+// ];
 
 const CaretakerDashboard = () => {
   const searchRef = useRef();
   const [searchName, setSearchName] = useState("");
+  const [data, setData] = useState([]);
+
+  const getData = async () => {
+    try {
+      const res = await axios.get("/caretaker/dashboard");
+      console.log(res);
+      setData(res.data);
+    } catch (error) {}
+  };
 
   useEffect(() => {
     document.title = "Caretaker";
+    getData();
   }, []);
 
   const searchHandler = (e) => {
@@ -99,12 +110,14 @@ const CaretakerDashboard = () => {
       </div>
       <div className="flex justify-center   xxxs:ml-6 my-2  flex-1 flex-wrap">
         {searchName.length !== 0 ? (
-          patientData.filter((ele) => {
-            return ele.name.toLowerCase().includes(searchName.toLowerCase());
+          data.filter((ele) => {
+            return ele.patient_name
+              .toLowerCase()
+              .includes(searchName.toLowerCase());
           }).length !== 0 ? (
-            patientData
+            data
               .filter((ele) => {
-                return ele.name
+                return ele.patient_name
                   .toLowerCase()
                   .includes(searchName.toLowerCase());
               })
@@ -115,7 +128,7 @@ const CaretakerDashboard = () => {
             <div className="mx-auto text-gray-400">No Patient found!</div>
           )
         ) : (
-          patientData.map((ele, index) => {
+          data.map((ele, index) => {
             return <PatientCard key={index + 1} ele={ele} />;
           })
         )}
@@ -125,23 +138,43 @@ const CaretakerDashboard = () => {
 };
 
 const PatientCard = ({ ele }) => {
+  function getAge(dateString) {
+    const today = new Date();
+    const birthDate = new Date(dateString);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
   return (
     <div className="bg-gray-100 rounded-md mx-2 my-2 max-w-[26rem]">
       <div className="flex flex-col xs:flex-row px-4 py-2 ">
         <div className="self-center mt-4">
           <img
             className="w-[90px] h-[90px] rounded-full "
-            src={ele.profile}
+            src={ele?.profile || profile}
             alt="Profile"
           />
         </div>
         <div className="text-center xs:text-left pl-3 pt-4">
           <div>
-            <h1 className="text-base font-medium">{ele.name}</h1>
+            <h1 className="text-base font-medium">
+              {ele.patient_name.charAt(0).toUpperCase() +
+                ele.patient_name.slice(1)}
+            </h1>
             <small className="text-xs text-gray-500 block -pt-3">
-              {ele.Age} years old
+              {getAge(ele.patient_dob)} years old
             </small>
           </div>
+          <div className="pt-2 text-center xs:text-left">
+            <p className="text-sm">Email: </p>
+            <div className="">
+              <span className="block text-[0.8rem] mr-2">{ele.patient_id}</span>
+            </div>
+          </div>
+
           <div className="pt-2 text-center xs:text-left">
             <p className="text-sm">Monitor Doctor: </p>
             <div className="">
