@@ -10,22 +10,23 @@ router.use(express.json());
 
 
 
+// router.get("/dashboard",(req,res)=>{
+//   const id = req.userid;
+//   res.send("hi");
+//   // db.dashboard_patient(id,(err,result)=>{
+//   //   if(err){
+//   //     res.send(err);
+//   //   }
+//   //   else{
+//   //     res.send(result);
+//   //   }
+//   // })
+// })
+
+
 router.get("/dashboard",(req,res)=>{
-  const id = req.userid;
-  res.send("hi");
-  // db.dashboard_patient(id,(err,result)=>{
-  //   if(err){
-  //     res.send(err);
-  //   }
-  //   else{
-  //     res.send(result);
-  //   }
-  // })
-})
-
-
-router.get("/sess",(req,res)=>{
     const id = "patient1@gmail.com";
+    // const id = req.userid;
     db.patientsessions(id,(err,result)=>{
       if(err){
         res.send(err);
@@ -38,11 +39,16 @@ router.get("/sess",(req,res)=>{
 
 
 //this is to add user data after checking the data in the jwt token
-router.post("/newsession", (req, res) => {
+router.get("/gamelevels", (req, res) => {
     const id = req.userid;
-    const sessionid = req.body.sessionid;
-
-
+    global.getlevels(id, (err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        else {
+            res.send(result);
+        }
+    });
 });
 
 router.post("/submit",(req,res)=>{
@@ -54,11 +60,6 @@ router.post("/submit",(req,res)=>{
   const levels = req.body.levels; //json
 })
 
-//return data for user to check data of recent sessions
-router.get('/recentsessions',(req,res)=>{
-    const id = req.userid;
-    res.send("recent sessions....");
-});
 
 
 router.get("/feedback",(req,res)=>{

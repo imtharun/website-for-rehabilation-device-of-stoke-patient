@@ -16,10 +16,10 @@ function connect(){
     });
 }
 
-
 //used to check weather the user is authorised or not
 function authorise(email,password,callback)
 {
+    // const pass = hash.hashpass(password);
     let results;
     sql = 'select user_id,cat from auth where user_name = ? and password = ?';
     const value = [email,password];
@@ -45,14 +45,9 @@ function authorise(email,password,callback)
 
 //registering the auth for the user
 function  registerauth(mail,password,usertype,callback){
-    // sql = " Insert into AUTH values (null,?,AES_ENCRYPT(?,'PSG'),?,?)";
     sql = "insert into AUTH values(null,?,?,?,?)";
-    const hashedpass = async ()=>{
-        return hash.hashpassword(password);
-    };
-    const sal = hashedpass();
-    
-    value = [mail,password,sal[0],usertype];
+    const sal = hash.hashpass(password);
+    value = [mail,password,sal,usertype];
     console.log(value);
     con.query(sql,value,(err,result)=>{
         console.log("Auth table inserted");
@@ -79,7 +74,6 @@ function registerpatient(uid,name, email, number,address, dob,docmail,callback){
     con.query(sql,value,(err,result)=>{
         callback(err,result);
     }); 
-    console.log("registerpatient");
 }
 
 //dashboard functions
@@ -104,10 +98,16 @@ function patientsessions(patientid,callback){
     const value = [patientid,patientid,patientid,patientid,patientid];
     con.query(sql,value,(err,result)=>{
         callback(err,result);
-        console.log(result[0].id);
     });
 }
 
+function getlevels(patientid,callback){
+    const sql = "select MAX(level_no) AS Levels_completed from levelcompleted where game_id=1 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=2 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=3 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=4 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=5 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=6 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=7 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=8 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=9 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=10 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=11 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=12 and patient_id=?";
+    const value = [patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid];
+    con.query(sql,value,(err,result)=>{
+        callback(err,result);
+    });
+}
 
 //----------------------------------------------DOCTOR----------------------------------------------
 
@@ -117,11 +117,7 @@ function registerdoctor(uid,name, email, number, address, dob,callback){
     console.log(value);
     con.query(sql,value,(err,result)=>{
         callback(err,result);
-        console.log('====================================');
-        console.log(result);
-        console.log('====================================');
     });
-    console.log("registerdoctor");
 }
 
 function dashboard_doctor(doctorid,callback){ 
@@ -157,7 +153,6 @@ function registercaretaker(uid,name, email, number, address, dob,callback){
     con.query(sql,value,(err,result)=>{
         callback(err,result);
     });   
-    console.log("registercaretaker");
 }
 
 // function dashboard_caretaker(caretakerid,callback){
@@ -210,5 +205,5 @@ module.exports = {
     getcaretakerpatients,
     removecaretakerandpatient,
     patientsessions,
-
+    getlevels,
 };

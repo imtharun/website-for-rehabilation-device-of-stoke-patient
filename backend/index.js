@@ -44,8 +44,9 @@ app.use((req,res,next)=>{
   next(); 
 })
 
+//DEV
 app.get('/sett',(req,res)=>{
-  res.cookie('token', '1234567890');
+  res.cookie('access-token', 'eyJhbGciOiJIUzI1NiJ9.ZHVtbXkxQGdtYWlsLmNvbQ.V9-OYY-CLSUlFs6YCryMKkqaf1JtPnKw4AbT6WydSBI'); //dummy1@gmail.com
   res.send("cookie set");
 })
 
@@ -58,6 +59,7 @@ app.listen(port, () => {
 
 //function to validate user id and add it to request
 async function validateCookiesfunc (req, res, next) {
+  console.log(req.url);
   req.userid = jwt.getjwt(req, res);
   console.log("user_id = "+req.userid);
   if(req.userid === undefined){
@@ -69,7 +71,7 @@ async function validateCookiesfunc (req, res, next) {
 
 //home page
 app.get("/", function (req, res) {
-  res.send("Only accepting GET and POST requests!");
+  res.send("This is a development server");
 });
 
 //register a new user
@@ -82,7 +84,7 @@ app.post("/signup", (req, res) => {
   const dob = req.body.dob;
   const utype = req.body.userTypee;
   console.log(req.body);
-  if(utype === "Patient"){
+  if(utype === "patient" || utype === "Patient"){
     const docmail = req.body.doctorEmail;
     db.registerauth(email,password,utype,(err,result)=>{
       if(err){
@@ -101,7 +103,7 @@ app.post("/signup", (req, res) => {
       }
     })
   }
-  else if(utype === "Doctor"){
+  else if(utype === "doctor" || utype === "Doctor"){
     db.registerauth(email,password,utype,(err,result)=>{
       if(err){
         res.send(err);
@@ -119,7 +121,7 @@ app.post("/signup", (req, res) => {
       }
     })
   }
-  else if(utype === "Caretaker"){
+  else if(utype === "caretaker" || utype === "Caretaker"){
     db.registerauth(email,password,utype,(err,result)=>{
       if(err){
         res.send(err);
@@ -139,11 +141,13 @@ app.post("/signup", (req, res) => {
   }
 });
 
+
 //Clearing cookie to logout user
 app.get("/logout", (req, res) => {
   res.clearCookie("access-token");
   res.sendStatus(200);
 });
+
 
 
 //login the user
@@ -183,6 +187,10 @@ app.use("/patient", patient);
 app.use("/doctor", doctor);
 app.use('/caretaker', caretaker);
 
+
+app.get("/checklogin",(req,res)=>{
+  res.sendStatus(200);
+})
 
 //respond for other unused pages
 app.get('*', function(req, res){
