@@ -85,29 +85,14 @@ function dashboard_patient(patientid,callback){
     })
 }
 
-function newsessionpatient(uid,callback){
-    const sql = "add new patient session";
-    value = [uid];
-    con.query(sql,value,(err,res)=>{
-        callback(err,res);
-    });
-}
 
-function patientsessions(patientid,callback){
-    const sql = "SELECT * FROM shoulder_1 s1 inner join game_details gd where gd.game_id=s1.game_id and s1.patient_id=? UNION all SELECT * FROM shoulder_2 s2 inner join game_details gd where gd.game_id=s2.game_id and s2.patient_id=? UNION  all SELECT * FROM shoulder_3 s3 inner join game_details gd where gd.game_id=s3.game_id and s3.patient_id=? UNION  all SELECT * FROM elbow e inner join game_details gd where gd.game_id=e.game_id and e.patient_id=? UNION  all SELECT * FROM wrist w inner join game_details gd where gd.game_id=w.game_id and w.patient_id=? order by session_no desc";
-    const value = [patientid,patientid,patientid,patientid,patientid];
-    con.query(sql,value,(err,result)=>{
-        callback(err,result);
-    });
-}
-
-function getlevels(patientid,callback){
-    const sql = "select MAX(level_no) AS Levels_completed from levelcompleted where game_id=1 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=2 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=3 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=4 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=5 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=6 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=7 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=8 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=9 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=10 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=11 and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id=12 and patient_id=?";
-    const value = [patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid];
-    con.query(sql,value,(err,result)=>{
-        callback(err,result);
-    });
-}
+// function getlevels(patientid,callback){
+//     const sql = "select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Bird Dodge' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Burst' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Block & Ball' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Car Dodge' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Copter Block' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Drop balls' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Hit catch' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Hurdles' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Newton Balls' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Trace' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Veggie Pick' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Windows' and patient_id=?";
+//     const value = [patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid];
+//     con.query(sql,value,(err,result)=>{
+//         callback(err,result);
+//     });
+// }
 
 //----------------------------------------------DOCTOR----------------------------------------------
 
@@ -121,29 +106,14 @@ function registerdoctor(uid,name, email, number, address, dob,callback){
 }
 
 function dashboard_doctor(doctorid,callback){ 
-    sql = "get doctor dashboard data";
+    sql = "select s1.patient_id ,s1.patient_name ,s1.patient_dob,s3.caretaker_name from patient s1 inner join care_pat s2 on s1.patient_id = s2.patient_id inner join caretaker s3 on s2.caretaker_id = s3.caretaker_id where s1.doctor_id=?";
     const value = [doctorid];
     con.query(sql,value,(err,result)=>{
+        console.log(result);
         callback(err,result);
     })
 }
 
-
-function linkdoctorandpatient(doctorid,patientid,callback){
-    sql = "update patient set doctor_id = ? where patient_id = ?";
-    value = [doctorid,patientid];
-    con.query(sql,value,(err,result)=>{
-        callback(err,result);
-    });
-}
-
-function getdoctorpatients(doctorid,callback){
-    sql = "select name from patient where doctor_id = ?";
-    value = doctorid;
-    con.query(sql,value,(err,result)=>{
-        callback(err,result);
-    });
-}
 
 // ----------------------------------------------CARETAKER----------------------------------------------
 
@@ -155,17 +125,9 @@ function registercaretaker(uid,name, email, number, address, dob,callback){
     });   
 }
 
-// function dashboard_caretaker(caretakerid,callback){
-//     sql = "get caretaker dashboard data";
-//     const value = [caretakerid];
-//     con.query(sql,value,(err,result)=>{
-//         callback(err,result);
-//     })
-// }
-
 
 function getcaretakerpatients(caretakerid,callback){
-    sql = "SELECT  * FROM patient s1 INNER JOIN care_pat s2 ON s1.patient_id = s2.patient_id where s2.caretaker_id=?";
+    sql = "SELECT  s1.* ,s2.caretaker_id ,s3.doctor_name FROM patient s1 Inner Join doctor s3 on s3.doctor_id=s1.doctor_id INNER JOIN care_pat s2 ON s1.patient_id = s2.patient_id where s2.caretaker_id=?";
     value = caretakerid;
     con.query(sql,value,(err,result)=>{
         callback(err,result);
@@ -179,10 +141,9 @@ function linkcaretakerandpatient(caretakerid,patientid,callback){
         callback(err,result);
     });
 }
-
 function removecaretakerandpatient(caretakerid,patientid,callback){
-    sql = "delete from care_pat where caretaker_id=? and patient_id=?";
-    value = [caretakerid,patientid];
+    sql = "delete from care_pat where patient_id=? and caretaker_id=?";
+    value = [patientid,caretakerid];
     con.query(sql,value,(err,result)=>{
         callback(err,result);
     });
@@ -192,18 +153,14 @@ function removecaretakerandpatient(caretakerid,patientid,callback){
 
 module.exports = {
     authorise,
-    // dashboard_caretaker,
     dashboard_doctor,
     dashboard_patient,
     registercaretaker,
     registerdoctor,
     registerpatient,
     linkcaretakerandpatient,
-    linkdoctorandpatient,
     registerauth,
-    getdoctorpatients,
     getcaretakerpatients,
     removecaretakerandpatient,
-    patientsessions,
-    getlevels,
+    // getlevels,
 };
