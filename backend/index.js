@@ -82,9 +82,10 @@ app.post("/signup", (req, res) => {
   const password  = req.body.password;
   const address = req.body.address;
   const dob = req.body.dob;
-  const utype = req.body.userTypee;
+  let utype = req.body.userTypee;
   console.log(req.body);
   if(utype === "patient" || utype === "Patient"){
+    utype = "patient";
     const docmail = req.body.doctorEmail;
     db.registerauth(email,password,utype,(err,result)=>{
       if(err){
@@ -104,6 +105,7 @@ app.post("/signup", (req, res) => {
     })
   }
   else if(utype === "doctor" || utype === "Doctor"){
+    utype = "doctor";
     db.registerauth(email,password,utype,(err,result)=>{
       if(err){
         res.send(err);
@@ -122,6 +124,7 @@ app.post("/signup", (req, res) => {
     })
   }
   else if(utype === "caretaker" || utype === "Caretaker"){
+    utype = "caretaker";
     db.registerauth(email,password,utype,(err,result)=>{
       if(err){
         res.send(err);
