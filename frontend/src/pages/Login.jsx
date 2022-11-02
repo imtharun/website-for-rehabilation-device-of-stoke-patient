@@ -59,7 +59,7 @@ const Login = () => {
       if (resp.status === 200) {
         navigate("/", { replace: true });
       }
-      console.log(resp);
+      // console.log(resp);
       const cookies = new Cookies();
       cookies.set("userType", resp.data.userType, { path: "/", maxAge: 86400 });
       userHandler(resp.data.userType);

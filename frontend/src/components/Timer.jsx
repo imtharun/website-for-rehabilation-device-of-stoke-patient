@@ -595,7 +595,7 @@ const ModalSubmit = () => {
     ansHandler([...ans, { feedback: data }]);
 
     try {
-      const resp = await axios.post("/patient/feedback", {
+      const resp = await axios.post("/patient/submitNewSession", {
         ans,
       });
     } catch (error) {
