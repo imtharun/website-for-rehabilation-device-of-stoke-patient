@@ -22,33 +22,22 @@ router.get("/dashboard",(req,res)=>{
 })
 
 
-// router.get("/gamelevels", (req, res) => {
-//     const id = req.userid;
-//     db.getlevels(id, (err, result) => {
-//         if (err) {
-//             res.send(err);
-//         }
-//         else {
-//             res.send(result);
-//         }
-//     });
-// });
-
-
 router.post("/submitNewSession",(req,res)=>{
   const id = req.userid;
   const game = req.body.ans;
+  console.log("game:",game);
   mongodb.getsessionnumber(id,(err,result)=>{
     if(err){
       res.send(err);
     }
     else{
       const sessionno = "session"+String(result);
-      mongodb.addsession(id,sessionno,game,(req,res)=>{
+      mongodb.addsession(id,sessionno,game,(err,resul)=>{
         if(err){
           res.send(err);
         }
         else{
+          res.sendStatus(200);
           console.log("Added to mongo...");
         }
       })

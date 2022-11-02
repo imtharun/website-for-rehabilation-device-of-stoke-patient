@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const db = require("../database/mysql_db");
 const mongodb = require("../database/mongodb.js");
+const { route } = require('./patient');
 const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
@@ -39,7 +40,6 @@ router.post("/addPatient",(req,res)=>{
 router.post("/removePatient",(req,res)=>{
     const id = req.userid;
     const patient_id = req.body.mailId;
-    console.log(req.body);
     db.removecaretakerandpatient(id,patient_id,(err,result)=>{
       if(err){
         res.send(err);
@@ -49,6 +49,20 @@ router.post("/removePatient",(req,res)=>{
       }
     });
 });
+
+
+router.post("/patientdetails",(req,res)=>{
+  const id = req.userid;
+  const patientid = req.body.mailId;
+  mongodb.retrievepatientdata(patientid,(err,result)=>{
+    if(err){
+      res.send(err);
+    }
+    else{
+      res.send(result);
+    }
+  })
+})
 
 
 router.get('*', (req, res) => {

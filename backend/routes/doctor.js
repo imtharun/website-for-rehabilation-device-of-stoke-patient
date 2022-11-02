@@ -29,6 +29,19 @@ router.get("/removePatient",(req,res)=>{
   const id = req.userid;
 });
 
+router.post("/patientdetails",(req,res)=>{
+  const id = req.userid;
+  const patientid = req.body.mailId;
+  mongodb.retrievepatientdata(patientid,(err,result)=>{
+    if(err){
+      res.send(err);
+    }
+    else{
+      res.send(result);
+    }
+  })
+})
+
 
 router.get('*', (req, res) => {
     res.sendStatus(404);

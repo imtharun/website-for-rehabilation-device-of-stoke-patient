@@ -592,6 +592,10 @@ const ModalSubmit = () => {
     wrist: "",
   });
 
+  useEffect(() => {
+    console.log("ans", ans);
+  }, [ans]);
+
   const closeHandler = () => {
     setAssessmentMeth({
       shoulder1: "",
@@ -619,6 +623,9 @@ const ModalSubmit = () => {
     setSubmitted(false);
   };
 
+  useEffect(() => {}, [ans]);
+
+
   const submitHandler = async () => {
     const data = jointSelected.map((ele) => {
       const e = ele.toLowerCase().replace(/\s/g, "");
@@ -633,12 +640,12 @@ const ModalSubmit = () => {
       return obj;
     });
 
-    ansHandler([...ans, { feedback: data }]);
-
     try {
       if (submitted) return;
+      console.log("anssss",ans);
       const resp = await axios.post("/patient/submitNewSession", {
-        ans,
+        ans: [...ans, { feedback: data }],
+
       });
       if (resp.status === 200) {
         closeHandler();

@@ -22,9 +22,20 @@ function addsession(id,sessionno,data,callback){
   });
 }
 
+
 function retrievepatientdata(patientid,callback){
   db.collection(patientid).find({}).toArray(function(err, result) {
     if (err) throw err;
+    result.forEach((session,index) => {
+      let sess = "session"+(index+1);
+      let feed = session[sess][session[sess].length-1].feedback;
+      feed.forEach((joint,index) => {
+        const oobj = feed[index];
+        const keys = Object.keys(oobj);
+        const name = String(keys[0])
+        session[name] = oobj[keys[0]].percentage;
+      });
+    });
     callback(err,result);
   });
 }
@@ -38,7 +49,6 @@ function gettotalpatientsessions(patientid,callback){
 function getsessionnumber(patientid,callback){
   db.collection(patientid).find({}).toArray(function(err, result) {
     if (err) throw err;
-    console.log(result);
     callback(err,result.length+1);
   });
 }
