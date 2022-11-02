@@ -14,8 +14,7 @@ const getTime = (seconds) => {
 };
 
 const Timer = (props) => {
-  const [level, setLevel] = useState(3);
-
+  const { level } = useContext(GameNameContext);
   return (
     <section className="bg-white p-6 w-full overflow-y-scroll rounded-tl-2xl">
       <h1 className="text-3xl text-center">Timer</h1>
@@ -44,7 +43,7 @@ const Timer = (props) => {
               <h1 className="text-center text-xs sm:text-sm">
                 Current Level: <span>{level}</span>
               </h1>
-              <IncreaseAndDecreaseButtons setLevel={setLevel} />
+              <IncreaseAndDecreaseButtons />
             </div>
           </div>
         </div>
@@ -55,7 +54,6 @@ const Timer = (props) => {
 };
 
 const PomView = (props) => {
-  // const [ans, setAns] = useState([]);
   const { game, start, startHandler, ans, ansHandler, timer, setTimer, roms } =
     useContext(GameNameContext);
   const firstStart = useRef(true);
@@ -81,15 +79,6 @@ const PomView = (props) => {
     startHandler(!start);
   };
 
-  const submit = async () => {
-    try {
-      console.log(ans);
-      const res = await axios.post("/patient/submit", { ans });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
   const clickHandler = async () => {
     if (start) {
       const timerr = timer;
@@ -103,10 +92,6 @@ const PomView = (props) => {
       setTimer(0);
     }
     startHandler(false);
-
-    if (game) {
-      submit();
-    }
   };
 
   useEffect(() => {
@@ -253,16 +238,15 @@ const Input = (props) => {
   );
 };
 
-const IncreaseAndDecreaseButtons = (props) => {
-  const maxLevel = 5;
-  const defaultLevel = 3;
+const IncreaseAndDecreaseButtons = () => {
+  const { levelHandler } = useContext(GameNameContext);
   return (
     <div className="flex flex-col justify-center items-center mt-4 ">
       <div className="mb-0 sm:mb-4 ">
         <button
           onClick={() => {
-            props.setLevel((prev) => {
-              return prev === maxLevel ? prev : prev + 1;
+            levelHandler((prev) => {
+              return prev + 1;
             });
           }}
           className="text-xs sm:text-sm block m-4 shadow-md sm:my-0 transition ease-in-out hover:scale-110  px-3 sm:px-5 py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
@@ -273,8 +257,8 @@ const IncreaseAndDecreaseButtons = (props) => {
       <div>
         <button
           onClick={() => {
-            props.setLevel((prev) => {
-              return prev === defaultLevel ? prev : prev - 1;
+            levelHandler((prev) => {
+              return prev <= 0 ? 0 : prev - 1;
             });
           }}
           className="text-xs sm:text-sm block m-4 shadow-md sm:my-0 transition ease-in-out hover:scale-110 px-3 sm:px-5  py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
@@ -287,6 +271,8 @@ const IncreaseAndDecreaseButtons = (props) => {
 };
 
 const Modal = (props) => {
+  const [submitted, setSubmitted] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(true);
   const { romsHandler, setTimer, game, timer, ansHandler, ans, roms } =
     useContext(GameNameContext);
 
@@ -303,6 +289,25 @@ const Modal = (props) => {
   const [wrist, setWrist] = useState({ minRom: "", maxRom: "" });
 
   useEffect(() => {
+    if (
+      shoulderOne.minRom === "" ||
+      shoulderOne.maxRom === "" ||
+      shoulderTwo.minRom === "" ||
+      shoulderTwo.maxRom === "" ||
+      shoulderThree.minRom === "" ||
+      shoulderThree.maxRom === "" ||
+      elbow.minRom === "" ||
+      elbow.maxRom === "" ||
+      wrist.minRom === "" ||
+      wrist.maxRom === ""
+    ) {
+      setIsEmpty(true);
+    } else {
+      setIsEmpty(false);
+    }
+  }, [shoulderOne, shoulderTwo, shoulderThree, elbow, wrist]);
+
+  useEffect(() => {
     if (roms.length !== 0) {
       const o = {
         [game]: {
@@ -317,7 +322,7 @@ const Modal = (props) => {
 
   const submitHandler = (e) => {
     // e.preventDefault();
-
+    if (isEmpty || submitted) return;
     romsHandler({
       shoulder1: shoulderOne,
       shoulder2: shoulderTwo,
@@ -325,6 +330,7 @@ const Modal = (props) => {
       elbow: elbow,
       wrist: wrist,
     });
+    setSubmitted(true);
   };
 
   const closeHandler = (e) => {
@@ -340,6 +346,8 @@ const Modal = (props) => {
     wrist.minRom = "";
     wrist.maxRom = "";
     setTimer(0);
+    setIsEmpty(true);
+    setSubmitted(false);
   };
 
   return (
@@ -371,7 +379,7 @@ const Modal = (props) => {
           <div className="modal-body relative p-4">
             {props.children}
 
-            <div className=" mb-6 px-3">
+            <div className=" px-3">
               <div className="w-[100px] text-left text-base font-medium">
                 Shoulder 1
               </div>
@@ -527,6 +535,11 @@ const Modal = (props) => {
                   />
                 </div>
               </div>
+              {isEmpty && (
+                <div className="mt-4">
+                  <p className="text-red-500">Enter all the values!</p>
+                </div>
+              )}
             </div>
           </div>
           <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
@@ -553,6 +566,7 @@ const Modal = (props) => {
 };
 
 const ModalSubmit = () => {
+  const [submitted, setSubmitted] = useState(false);
   const { ansHandler, ans } = useContext(GameNameContext);
   const [jointSelected, setJointSelected] = useState([]);
 
@@ -578,30 +592,6 @@ const ModalSubmit = () => {
     wrist: "",
   });
 
-  const submitHandler = async () => {
-    const data = jointSelected.map((ele) => {
-      const e = ele.toLowerCase().replace(/\s/g, "");
-      const obj = {
-        [e]: {
-          assessmentMeth: assessmentMeth[e],
-          score: score[e],
-          outOf: outOf[e],
-          percentage: ((+score[e] / +outOf[e]) * 100).toFixed(2),
-        },
-      };
-      return obj;
-    });
-
-    ansHandler([...ans, { feedback: data }]);
-
-    try {
-      const resp = await axios.post("/patient/submitNewSession", {
-        ans,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const closeHandler = () => {
     setAssessmentMeth({
       shoulder1: "",
@@ -626,6 +616,37 @@ const ModalSubmit = () => {
     });
     ansHandler([]);
     setJointSelected([]);
+    setSubmitted(false);
+  };
+
+  const submitHandler = async () => {
+    const data = jointSelected.map((ele) => {
+      const e = ele.toLowerCase().replace(/\s/g, "");
+      const obj = {
+        [e]: {
+          assessmentMeth: assessmentMeth[e],
+          score: score[e],
+          outOf: outOf[e],
+          percentage: ((+score[e] / +outOf[e]) * 100).toFixed(2),
+        },
+      };
+      return obj;
+    });
+
+    ansHandler([...ans, { feedback: data }]);
+
+    try {
+      if (submitted) return;
+      const resp = await axios.post("/patient/submitNewSession", {
+        ans,
+      });
+      if (resp.status === 200) {
+        closeHandler();
+      }
+      setSubmitted(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -702,11 +723,12 @@ const ModalSubmit = () => {
                               value={"Shoulder 1"}
                               type="checkbox"
                               checked={
+                                jointSelected.length !== 0 &&
                                 jointSelected.indexOf("Shoulder 1") > -1
                                   ? true
                                   : false
                               }
-                              id={"flexCheckDefaultShoulderOne"}
+                              id={"flexCheckDefaultShoulder1"}
                               onChange={(e) => {
                                 if (e.target.checked) {
                                   setJointSelected([
@@ -714,17 +736,17 @@ const ModalSubmit = () => {
                                     "Shoulder 1",
                                   ]);
                                 } else {
-                                  setJointSelected([
-                                    ...jointSelected.filter(
-                                      (ele) => ele === "Shoulder 1"
-                                    ),
-                                  ]);
+                                  const filtered = jointSelected.filter(
+                                    (ele) => ele !== "Shoulder 1"
+                                  );
+
+                                  setJointSelected([...filtered]);
                                 }
                               }}
                             />
                             <label
                               className="form-check-label inline-block text-gray-800"
-                              htmlFor={"flexCheckDefaultShoulderOne"}
+                              htmlFor={"flexCheckDefaultShoulder1"}
                             >
                               Shoulder 1
                             </label>
@@ -811,11 +833,10 @@ const ModalSubmit = () => {
                                     "Shoulder 2",
                                   ]);
                                 } else {
-                                  setJointSelected([
-                                    jointSelected.filter(
-                                      (ele) => ele === "Shoulder 2"
-                                    ),
-                                  ]);
+                                  const filtered = jointSelected.filter(
+                                    (ele) => ele !== "Shoulder 2"
+                                  );
+                                  setJointSelected([...filtered]);
                                 }
                               }}
                             />
@@ -909,11 +930,10 @@ const ModalSubmit = () => {
                                     "Shoulder 3",
                                   ]);
                                 } else {
-                                  setJointSelected([
-                                    jointSelected.filter(
-                                      (ele) => ele === "Shoulder 3"
-                                    ),
-                                  ]);
+                                  const filtered = jointSelected.filter(
+                                    (ele) => ele !== "Shoulder 3"
+                                  );
+                                  setJointSelected([...filtered]);
                                 }
                               }}
                             />
@@ -1004,11 +1024,10 @@ const ModalSubmit = () => {
                                 if (e.target.checked) {
                                   setJointSelected([...jointSelected, "Elbow"]);
                                 } else {
-                                  setJointSelected([
-                                    jointSelected.filter(
-                                      (ele) => ele === "Elbow"
-                                    ),
-                                  ]);
+                                  const filtered = jointSelected.filter(
+                                    (ele) => ele !== "Elbow"
+                                  );
+                                  setJointSelected([...filtered]);
                                 }
                               }}
                             />
@@ -1097,11 +1116,10 @@ const ModalSubmit = () => {
                                 if (e.target.checked) {
                                   setJointSelected([...jointSelected, "Wrist"]);
                                 } else {
-                                  setJointSelected([
-                                    jointSelected.filter(
-                                      (ele) => ele === "Wrist"
-                                    ),
-                                  ]);
+                                  const filtered = jointSelected.filter(
+                                    (ele) => ele !== "Wrist"
+                                  );
+                                  setJointSelected([...filtered]);
                                 }
                               }}
                             />

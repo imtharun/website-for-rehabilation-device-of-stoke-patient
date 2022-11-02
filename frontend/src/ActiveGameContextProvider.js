@@ -2,6 +2,8 @@ import React, { useState } from "react";
 export const GameNameContext = React.createContext();
 
 function UserContextProvider(props) {
+  const [level, setLevel] = useState(0);
+
   const [game, setGame] = useState("");
   const [start, setStart] = useState(false);
   const [ans, setAns] = useState([]);
@@ -24,6 +26,10 @@ function UserContextProvider(props) {
     setRoms(romsData);
   };
 
+  const levelHandler = (level) => {
+    setLevel(level);
+  };
+
   return (
     <GameNameContext.Provider
       value={{
@@ -37,6 +43,8 @@ function UserContextProvider(props) {
         romsHandler,
         timer,
         setTimer,
+        level,
+        levelHandler,
       }}
     >
       {props.children}

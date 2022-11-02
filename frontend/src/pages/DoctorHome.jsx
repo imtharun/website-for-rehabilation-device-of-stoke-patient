@@ -1,6 +1,6 @@
 import React from "react";
 import Nav from "../components/Nav";
-import { AvatarIcon, HomeIcon } from "@radix-ui/react-icons";
+import { HomeIcon } from "@radix-ui/react-icons";
 import DoctorDashboard from "../components/DoctorDashboard";
 
 const DoctorHome = () => {
@@ -10,11 +10,11 @@ const DoctorHome = () => {
       link: "/",
       iconComponent: <HomeIcon className="w-5 h-5 mx-auto sm:mx-0 sm:ml-1" />,
     },
-    {
-      name: "Manage Patients",
-      link: "/manage-patients",
-      iconComponent: <AvatarIcon className="w-5 h-5 mx-auto sm:mx-0 sm:ml-1" />,
-    },
+    // {
+    //   name: "Manage Patients",
+    //   link: "/manage-patients",
+    //   iconComponent: <AvatarIcon className="w-5 h-5 mx-auto sm:mx-0 sm:ml-1" />,
+    // },
   ];
 
   return (

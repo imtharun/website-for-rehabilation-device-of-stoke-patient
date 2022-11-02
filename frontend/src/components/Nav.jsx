@@ -8,7 +8,7 @@ import { UserTypeContext } from "../UserContextProvider";
 
 const Nav = (props) => {
   const navigate = useNavigate();
-  const { userHandler } = useContext(UserTypeContext);
+  const { userHandler, userType } = useContext(UserTypeContext);
 
   const onLogout = async () => {
     try {
@@ -62,13 +62,17 @@ const Nav = (props) => {
             );
           })}
       </ul>
-      <div className="relative">
+      <div className={`relative `}>
         <button onClick={logoutHandler}>
-          <ExitIcon className="mt-[13rem] fill-current ml-[0.6rem] sm:hidden w-5 h-5" />
+          <ExitIcon
+            className={`mt-[13rem] fill-current ml-[1rem] sm:hidden w-5 h-5 userType === "patient" ? "" : "-bottom-12 "`}
+          />
         </button>
         <button
           onClick={logoutHandler}
-          className="hidden font-medium mx-auto sm:inline-block mt-[11rem] ml-9 transition ease-in-out hover:scale-110 bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100 shadow-sm px-5 text-sm py-3 rounded-full"
+          className={`relative hidden font-medium mx-auto sm:inline-block mt-[9rem] ml-9 transition ease-in-out hover:scale-110 bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100 shadow-sm px-5 text-sm py-3 rounded-full ${
+            userType === "patient" ? "" : "-bottom-12"
+          }`}
         >
           Log out
         </button>
