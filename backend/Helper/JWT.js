@@ -15,9 +15,7 @@ const createToken = (user) => {
 const validateUser = (req, res) => {
   const accessToken = req.cookies["access-token"];
   if (!accessToken) {
-    return res.status(400).json({ 
-      error: "User not authenticated!"
-    });
+    return res.status(400);
   }
   try {
     const validToken = jwt.verify(accessToken,secret_key);
@@ -27,7 +25,8 @@ const validateUser = (req, res) => {
     else{
       res.send("Invalid token user not authenticated!")
     }
-  } catch (error) {
+  } 
+  catch (error) {
     res.send("Invalid token user not authorised")
   }
 };
@@ -68,10 +67,9 @@ const getjwt = (req, res) => {
   return resp;
 };
 
-module.exports = { createToken ,
-
+module.exports = { 
+  createToken ,
   validateUser,
   getTokendata,
   getjwt,
-  
 };

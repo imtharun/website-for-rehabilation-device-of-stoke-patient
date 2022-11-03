@@ -21,13 +21,6 @@ router.get("/dashboard",(req,res)=>{
     });
 });
 
-router.get("/addPatient",(req,res)=>{
-  const id = req.userid;
-});
-
-router.get("/removePatient",(req,res)=>{
-  const id = req.userid;
-});
 
 router.post("/patientdetails",(req,res)=>{
   const id = req.userid;

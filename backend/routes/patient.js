@@ -16,11 +16,18 @@ router.get("/dashboard",(req,res)=>{
         res.send(err);
       }
       else{
-        res.send(result);
+        db.dashboard_patient(id,(err,resu)=>{
+          if(err){
+            res.send(err);
+          }
+          else{
+            const card = {card : resu}
+            res.send(result.concat(resu));
+          }
+        })
       }
     })
 })
-
 
 router.post("/submitNewSession",(req,res)=>{
   const id = req.userid;

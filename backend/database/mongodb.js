@@ -36,13 +36,9 @@ function retrievepatientdata(patientid,callback){
         const keys = Object.keys(oobj);
         const name = String(keys[0])
         jsoobj = {[name] : oobj[keys[0]].percentage};
-        console.log(jsoobj);
         arr.push(jsoobj);
-        // session[name] = oobj[keys[0]].percentage;
       });
       session["percentage"] = arr;
-      console.log(jsoobj);
-      // console.log("asdads",arr);
     });
     callback(err,result);
   });

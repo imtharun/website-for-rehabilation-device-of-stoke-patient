@@ -78,21 +78,19 @@ function registerpatient(uid,name, email, number,address, dob,docmail,callback){
 
 //dashboard functions
 function dashboard_patient(patientid,callback){
-    sql = "get patient dashboard data";
+    sql1 = "select s2.* from patient s1 inner join doctor s2 on s1.doctor_id = s2.doctor_id where s1.patient_id = ?";
+    sql2 = "select s1.* from caretaker s1 inner join care_pat s2 on s1.caretaker_id = s2.caretaker_id where s2.patient_id=?";
+    let card = {}
     const value = [patientid];
-    con.query(sql,value,(err,result)=>{
-        callback(err,result);
+    con.query(sql1,value,(err,result)=>{
+        card["doctor"] = result;
     })
+    con.query(sql2,value,(err,result)=>{
+        card["caretaker"] = result;
+        callback(err,card);
+    });
 }
 
-
-// function getlevels(patientid,callback){
-//     const sql = "select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Bird Dodge' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Burst' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Block & Ball' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Car Dodge' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Copter Block' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Drop balls' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Hit catch' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Hurdles' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Newton Balls' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Trace' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Veggie Pick' and patient_id=? union all select MAX(level_no) AS Levels_completed from levelcompleted where game_id='Windows' and patient_id=?";
-//     const value = [patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid,patientid];
-//     con.query(sql,value,(err,result)=>{
-//         callback(err,result);
-//     });
-// }
 
 //----------------------------------------------DOCTOR----------------------------------------------
 
