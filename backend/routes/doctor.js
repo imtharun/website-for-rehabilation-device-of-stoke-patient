@@ -9,7 +9,7 @@ router.use(bodyParser.json());
 router.use(express.json());
 
 
-router.get("/dashboard",(req,res)=>{
+router.post("/dashboard",(req,res)=>{
     const id = req.userid;
     db.dashboard_doctor(id,(err,result)=>{
       if(err){
@@ -24,7 +24,7 @@ router.get("/dashboard",(req,res)=>{
 
 router.post("/patientdetails",(req,res)=>{
   const id = req.userid;
-  const patientid = req.body.mailId;
+  const patientid = req.body.email;
   mongodb.retrievepatientdata(patientid,(err,result)=>{
     if(err){
       res.send(err);
