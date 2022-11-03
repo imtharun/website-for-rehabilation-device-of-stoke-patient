@@ -107,7 +107,6 @@ function dashboard_doctor(doctorid,callback){
     sql = "select s1.patient_id ,s1.patient_name ,s1.patient_dob,s3.caretaker_name from patient s1 inner join care_pat s2 on s1.patient_id = s2.patient_id inner join caretaker s3 on s2.caretaker_id = s3.caretaker_id where s1.doctor_id=?";
     const value = [doctorid];
     con.query(sql,value,(err,result)=>{
-        console.log(result);
         callback(err,result);
     })
 }

@@ -9,14 +9,25 @@ router.use(bodyParser.json());
 router.use(express.json());
 
 
-router.post("/dashboard",(req,res)=>{
+router.get("/dashboard",(req,res)=>{
     const id = req.userid;
     db.dashboard_doctor(id,(err,result)=>{
       if(err){
         res.send(err);
       }
       else{
-        res.send(result);
+        let sol = {};
+        let caretakerarr = []
+        result.forEach(index => {
+          if(index.patient_id in sol){
+            sol[index.patient_id].push(index.caretaker_name);
+          }
+          else{
+            sol[index.patient_id] = [index.caretaker_name];
+          }
+        });
+        const solu = {caretakers : sol};
+        res.send(result.concat(solu));
       }
     });
 });
