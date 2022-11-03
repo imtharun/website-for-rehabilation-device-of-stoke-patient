@@ -14,26 +14,38 @@ router.get("/dashboard",(req,res)=>{
         res.send(err);
       }
       else{
-        db.dashboard_patient(id,(err,resu)=>{
-          if(err){
-            res.send(err);
-          }
-          else{
-            const card = {
-              card : resu,
-              session : result
-            }
-            res.send(card);
-          }
-        })
+        // db.dashboard_patient(id,(err,resu)=>{
+        //   if(err){
+        //     res.send(err);
+        //   }
+        //   else{
+        //     const card = {
+        //       card : resu,
+        //       session : result
+        //     }
+        //     res.send(card);
+        //   }
+        // })
+        res.send(result);
       }
     })
+})
+
+router.get("/card",(req,res)=>{
+  const id = req.userid;
+  db.dashboard_patient(id,(err,result)=>{
+    if(err){
+      res.send(err);
+    }
+    else{
+      res.send(result);
+    }
+  })
 })
 
 router.post("/submitNewSession",(req,res)=>{
   const id = req.userid;
   const game = req.body.ans;
-  console.log("game:",game);
   mongodb.getsessionnumber(id,(err,result)=>{
     if(err){
       res.send(err);

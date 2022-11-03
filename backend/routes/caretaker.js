@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const db = require("../database/mysql_db");
 const mongodb = require("../database/mongodb.js");
-const { route } = require('./patient');
 const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
@@ -22,7 +21,6 @@ router.get("/dashboard",(req,res)=>{
 
 router.post("/addPatient",(req,res)=>{
     const id = req.userid;
-    console.log(req.body);
     const patient_id = req.body.mailId;
     db.linkcaretakerandpatient(id,patient_id,(err,result)=>{
       if(err){

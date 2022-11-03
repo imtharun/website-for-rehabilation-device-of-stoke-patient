@@ -47,7 +47,6 @@ function  registerauth(mail,password,usertype,callback){
     con.query(sql,value,(err,result)=>{
         console.log("Auth table inserted");
     });
-    console.log("registered auth");
     sql = "select user_id from AUTH Where user_name=?";
     value = [mail];
     con.query(sql,value,(err,result)=>{
@@ -89,7 +88,6 @@ function dashboard_patient(patientid,callback){
 function registerdoctor(uid,name, email, number, address, dob,callback){
     sql = "insert into doctor values(?,?,?,?,?,?,?)";
     value = [uid,email,name,null,address,dob,number];
-    console.log(value);
     con.query(sql,value,(err,result)=>{
         callback(err,result);
     });

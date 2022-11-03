@@ -42,6 +42,10 @@ router.get("/dashboard",(req,res)=>{
             count = count + 1;
           }
         });
+        session = {};
+        sol.forEach((index,ind) => {
+
+        });
         res.send(sol);
       }
     });
