@@ -24,7 +24,7 @@ router.post("/addPatient",(req,res)=>{
     const patient_id = req.body.mailId;
     db.linkcaretakerandpatient(id,patient_id,(err,result)=>{
       if(err){
-        res.send(err);
+        res.sendStatus(404);
       }
       else{
         res.send(result).status(200);
@@ -37,7 +37,7 @@ router.post("/removePatient",(req,res)=>{
     const patient_id = req.body.mailId;
     db.removecaretakerandpatient(id,patient_id,(err,result)=>{
       if(err){
-        res.send(err);
+        res.sendStatus(404);
       }
       else{
         res.send(result).status(200);
