@@ -61,7 +61,7 @@ app.listen(port, () => {
 async function validateCookiesfunc (req, res, next) {
   console.log(req.url);
   req.userid = jwt.getjwt(req, res);
-  console.log("user_id = "+req.userid);
+  console.log("user= "+req.userid);
   if(req.userid === undefined){
     return
   }
@@ -167,9 +167,7 @@ app.post("/login", async (req, res) => {
     console.log(err);
     }
     if (result.access === "denied") {
-      res.status(401).json({ 
-        error: "wrong email and password combinations",userType:"Notloggedin" 
-      });
+      res.status(401);
     } else {
       // const id = result.userid;
       const id = email;
@@ -197,6 +195,5 @@ app.get("/checklogin",(req,res)=>{
 
 //respond for other unused pages
 app.get('*', function(req, res){
-  res.sendStatus(404).json({
-    error:"Sorry this is an invalid URL!"});
+  res.sendStatus(404)
 });

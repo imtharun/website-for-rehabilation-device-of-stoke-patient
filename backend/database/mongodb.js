@@ -27,14 +27,22 @@ function retrievepatientdata(patientid,callback){
   db.collection(patientid).find({}).toArray(function(err, result) {
     if (err) throw err;
     result.forEach((session,index) => {
+      let jsoobj = {};
+      let arr = [];
       let sess = "session"+(index+1);
       let feed = session[sess][session[sess].length-1].feedback;
       feed.forEach((joint,index) => {
         const oobj = feed[index];
         const keys = Object.keys(oobj);
         const name = String(keys[0])
-        session[name] = oobj[keys[0]].percentage;
+        jsoobj = {[name] : oobj[keys[0]].percentage};
+        console.log(jsoobj);
+        arr.push(jsoobj);
+        // session[name] = oobj[keys[0]].percentage;
       });
+      session["percentage"] = arr;
+      console.log(jsoobj);
+      // console.log("asdads",arr);
     });
     callback(err,result);
   });

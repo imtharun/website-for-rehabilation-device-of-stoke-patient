@@ -38,7 +38,6 @@ router.post("/submitNewSession",(req,res)=>{
         }
         else{
           res.sendStatus(200);
-          console.log("Added to mongo...");
         }
       })
   }
@@ -47,13 +46,13 @@ router.post("/submitNewSession",(req,res)=>{
 
 router.get("/getsessiondata",(req,res)=>{
   const id = req.userid;
-  const sessionid = "session1";
+  const sessionid = req.body.sessionid;
   mongodb.retrievepatientdata(id,(err,result)=>{
     if(err){
       res.send(err);
     }
     else{
-      res.send(String(result.length));
+      res.send(result);
     }
   })
 });
