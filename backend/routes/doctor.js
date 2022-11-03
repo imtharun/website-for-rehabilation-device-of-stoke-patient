@@ -17,6 +17,25 @@ const checkexist = (arr,ele) => {
   return false;
 };
 
+const getdata = (sol,dum,res) => {
+  sol.forEach((index,ind) => {
+    mongodb.retrievepatientdata(index.patient_id,(err,resa)=>{
+      if(err){
+        res.send(err);
+      }else{
+        dum[ind] = {
+          [index.patient_id] : resa,
+        };
+        console.log(dum);
+      }
+      if(ind === sol.length-1){
+        console.log("dfsdfsd")
+        res.send(sol.concat(dum));
+      }
+    });
+  });
+}
+
 router.get("/dashboard",(req,res)=>{
     const id = req.userid;
     db.dashboard_doctor(id,(err,result)=>{
@@ -24,6 +43,7 @@ router.get("/dashboard",(req,res)=>{
         res.send(err);
       }
       else{
+        let dum = [];
         let sol = [];
         let count = 0;
         result.forEach((index,ind) => {
@@ -42,11 +62,7 @@ router.get("/dashboard",(req,res)=>{
             count = count + 1;
           }
         });
-        session = {};
-        sol.forEach((index,ind) => {
-
-        });
-        res.send(sol);
+        const da = getdata(sol,dum,res);
       }
     });
 });
