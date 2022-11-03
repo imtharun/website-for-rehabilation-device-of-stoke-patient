@@ -15,8 +15,8 @@ export const Progress = (props) => {
 
 const Recovery = () => {
   const recovered = [
-    { gameName: "Burst", currentLevel: 2, totalLevel: 5 },
-    { gameName: "Trace", currentLevel: 4, totalLevel: 5 },
+    { jointName: "shoulder 1", currentLevel: 2, totalLevel: 5 },
+    { jointName: "shoulder 2", currentLevel: 4, totalLevel: 5 },
   ];
 
   return (
@@ -26,7 +26,7 @@ const Recovery = () => {
         return (
           <div key={index + 1} className="mb-3">
             <span className="inline-block text-sm pb-2">
-              Progress - {ele.gameName} [{percentage.toFixed(2)}%]
+              Progress - {ele.jointName} [{percentage.toFixed(2)}%]
             </span>
             <Progress percentage={percentage.toFixed(2)} />
           </div>

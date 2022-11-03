@@ -273,7 +273,7 @@ const IncreaseAndDecreaseButtons = () => {
 const Modal = (props) => {
   const [submitted, setSubmitted] = useState(false);
   const [isEmpty, setIsEmpty] = useState(true);
-  const { romsHandler, setTimer, game, timer, ansHandler, ans, roms } =
+  const { romsHandler, setTimer, game, timer, ansHandler, level, ans, roms } =
     useContext(GameNameContext);
 
   const [shoulderOne, setShoulderOne] = useState({
@@ -314,6 +314,7 @@ const Modal = (props) => {
           timer: JSON.parse(JSON.stringify(timer)),
           timeInHMS: getTime(timer),
           roms: JSON.parse(JSON.stringify(roms)),
+          level: JSON.parse(JSON.stringify(level)),
         },
       };
       ansHandler([...ans, o]);
@@ -323,13 +324,7 @@ const Modal = (props) => {
   const submitHandler = (e) => {
     // e.preventDefault();
     if (isEmpty || submitted) return;
-    romsHandler({
-      shoulder1: shoulderOne,
-      shoulder2: shoulderTwo,
-      shoulder3: shoulderThree,
-      elbow: elbow,
-      wrist: wrist,
-    });
+    romsHandler([shoulderOne, shoulderTwo, shoulderThree, elbow, wrist]);
     setSubmitted(true);
   };
 
@@ -623,9 +618,6 @@ const ModalSubmit = () => {
     setSubmitted(false);
   };
 
-  useEffect(() => {}, [ans]);
-
-
   const submitHandler = async () => {
     const data = jointSelected.map((ele) => {
       const e = ele.toLowerCase().replace(/\s/g, "");
@@ -642,10 +634,8 @@ const ModalSubmit = () => {
 
     try {
       if (submitted) return;
-      console.log("anssss",ans);
       const resp = await axios.post("/patient/submitNewSession", {
         ans: [...ans, { feedback: data }],
-
       });
       if (resp.status === 200) {
         closeHandler();

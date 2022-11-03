@@ -166,7 +166,7 @@ const PatientCard = ({ ele }) => {
           </div>
         </div>
       </div>
-      <div className="grid justify-items-center xs:justify-items-end">
+      <div className="grid mt-2 p-4 pb-2 justify-items-center xs:justify-items-end">
         <button
           type="button"
           className=" mr-3 mb-2 inline-block font-medium  transition ease-in-out hover:scale-110 bg-gray-100 border-slate-500 border text-slate-500 hover:bg-slate-500 hover:text-gray-100 shadow-sm px-3 text-sm py-2 rounded-full "

@@ -4,8 +4,35 @@ import Recovery from "./Recovery";
 import axios from "../api/axios";
 
 const SessionCard = () => {
-  // const [values, setValues] = useState([]);
+  const [values, setValues] = useState([]);
+  const jointInfo = {
+    "Bird Dodge":
+      "Fingers and Palm – closing & opening, Wrist – Flexion/Extension",
+    Burst: "Fingers and Palm – closing & opening",
+    "Block & Ball":
+      "Shoulder – Horizontal Abduction/Adduction, Elbow – Flexion/Extension",
+    "Car Dodge": "Shoulder – Horizontal Abduction/Adduction",
+    "Copter Block": "Shoulder – Vertical Abduction/Adduction",
+    "Drop balls":
+      "Shoulder – Vertical Abduction/Adduction & Horizontal Abduction/Adduction",
+    "Hit catch":
+      "Shoulder – Flexion/Extension & Abduction/Adduction, Elbow – Flexion/Extension",
+    Hurdles: "Elbow – Flexion/Extension",
+    "Newton Balls": "Shoulder – Horizontal Abduction/Adduction",
 
+    Trace:
+      "Shoulder – Flexion/Extension, Horizontal & Vertical Abduction/Adduction",
+    "Veggie Pick":
+      "Palm and fingers – gripping and grasping, Elbow – internal rotation",
+    Windows: "Wrist – Flexion/Extension, Elbow – Flexion/Extension",
+  };
+  const cols = [
+    "Game name",
+    "Joints",
+    ["Shoulder 1", "Shoulder 2", "Shoulder 3", "Elbow", "Wrist"],
+    "Duration (in mins)",
+    "Current Level",
+  ];
   const props = [
     {
       cols: [
@@ -85,13 +112,6 @@ const SessionCard = () => {
       ],
     },
     {
-      cols: [
-        "Game name",
-        "Joints",
-        ["Shoulder 1", "Shoulder 2", "Shoulder 3", "Elbow", "Wrist"],
-        "Duration (in mins)",
-        "Current Level",
-      ],
       rows: [
         {
           gameName: "Burst",
@@ -125,10 +145,13 @@ const SessionCard = () => {
     },
   ];
 
+  const rows = [];
+
   const tableData = async () => {
     try {
       const data = await axios.get("/patient/dashboard");
-      console.log(data);
+      console.log(data.data);
+      setValues(data.data);
     } catch (error) {
       console.log(error);
     }
@@ -138,18 +161,39 @@ const SessionCard = () => {
     tableData();
   }, []);
 
+  let size = values.length;
   return (
     <div className="flex flex-col my-3 justify-center item-center">
-      {props.map((ele, index) => {
+      {values.reverse().map((ele, index) => {
         return (
           <div
             key={index + 1}
             className="w-full bg-gray-300 p-2 my-2 rounded-md"
           >
             <h1 className="text-sm sm:text-lg font-medium pl-4 pt-2">
-              Session 99
+              Session {size}
             </h1>
-            <Table key={index + 1} cols={ele.cols} rows={ele.rows} />
+            {ele["session" + size--].forEach((e) => {
+              if (e["feedback"]) return "";
+              const keys = Object.keys(e);
+              keys.forEach((key) => {
+                const row = {
+                  gameName: key,
+                  joints: jointInfo[key],
+                  roms: [
+                    { minRom: 7, maxRom: 8 },
+                    { minRom: 9, maxRom: 10 },
+                    { minRom: 9, maxRom: 10 },
+                    { minRom: 9, maxRom: 10 },
+                    { minRom: 9, maxRom: 10 },
+                  ],
+                  timeDuration: e[key].timer,
+                  currentLevel: e[key].level,
+                };
+                rows.push(row);
+              });
+            })}
+            <Table key={index + 1} cols={cols} rows={rows} />
             <Buttons />
           </div>
         );
