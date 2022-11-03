@@ -17,24 +17,24 @@ const checkexist = (arr,ele) => {
   return false;
 };
 
-const getdata = (sol,dum,res) => {
-  sol.forEach((index,ind) => {
-    mongodb.retrievepatientdata(index.patient_id,(err,resa)=>{
-      if(err){
-        res.send(err);
-      }else{
-        dum[ind] = {
-          [index.patient_id] : resa,
-        };
-        console.log(dum);
-      }
-      if(ind === sol.length-1){
-        console.log("dfsdfsd")
-        res.send(sol.concat(dum));
-      }
-    });
-  });
-}
+// const getdata = (sol,dum,res) => {
+//   sol.forEach((index,ind) => {
+//     mongodb.retrievepatientdata(index.patient_id,(err,resa)=>{
+//       if(err){
+//         res.send(err);
+//       }else{
+//         dum[ind] = {
+//           [index.patient_id] : resa,
+//         };
+//         console.log(dum);
+//       }
+//       if(ind === sol.length-1){
+//         console.log("dfsdfsd")
+//         res.send(sol.concat(dum));
+//       }
+//     });
+//   });
+// }
 
 router.get("/dashboard",(req,res)=>{
     const id = req.userid;
@@ -62,7 +62,8 @@ router.get("/dashboard",(req,res)=>{
             count = count + 1;
           }
         });
-        const da = getdata(sol,dum,res);
+        // const da = getdata(sol,dum,res);
+        res.send(sol);
       }
     });
 });
