@@ -16,6 +16,14 @@ router.get("/dashboard",(req,res)=>{
         res.send(err);
       }
       else{
+        const sample = {
+          patient : [{
+            patient1 :{
+              name : "patient1",
+              caretakers : ["caretaker1","caretaker2"],
+            }
+          }]
+        }
         let sol = {};
         let caretakerarr = []
         result.forEach(index => {
@@ -27,7 +35,8 @@ router.get("/dashboard",(req,res)=>{
           }
         });
         const solu = {caretakers : sol};
-        res.send(result.concat(solu));
+        console.log(sol);
+        res.send(result);
       }
     });
 });
