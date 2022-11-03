@@ -8,6 +8,15 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 router.use(express.json());
 
+const checkexist = (arr,ele) => {
+  for(let i=0;i<arr.length;i++){
+    const a = arr[i].patient_name;
+    if(a === ele){
+      return true;
+    }
+  }
+  return false;
+};
 
 router.get("/dashboard",(req,res)=>{
     const id = req.userid;
@@ -16,30 +25,32 @@ router.get("/dashboard",(req,res)=>{
         res.send(err);
       }
       else{
-        const sample = {
-          patient : [{
-            patient1 :{
-              name : "patient1",
-              caretakers : ["caretaker1","caretaker2"],
-            }
-          }]
-        }
-        let sol = {};
-        let caretakerarr = []
-        result.forEach(index => {
-          if(index.patient_id in sol){
-            sol[index.patient_id].push(index.caretaker_name);
+        let sol = [];
+        let count = 0;
+        result.forEach((index,ind) => {
+          if(checkexist(sol,index.patient_name)){
+            console.log(sol,count);
+            let a = sol[count-1].caretaker_name;
+            a.push(index.caretaker_name);
           }
           else{
-            sol[index.patient_id] = [index.caretaker_name];
+            let caretaker_name = [index.caretaker_name];
+            sol[count] = {
+              patient_name : index.patient_name, 
+              patient_id : index.patient_id,
+              caretaker_name : caretaker_name,
+              patient_dob : index.patient_dob
+            };
+            count = count + 1;
           }
         });
-        const solu = {caretakers : sol};
         console.log(sol);
-        res.send(result);
+        res.send(sol);
       }
     });
 });
+
+
 
 
 router.post("/patientdetails",(req,res)=>{
