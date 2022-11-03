@@ -8,7 +8,7 @@ const con = mysql.createConnection({
     database: config.database
 });
 connect();
-//used to establish connection with the database
+
 function connect(){
     con.connect(function(err){
         if (err) throw err;
@@ -16,10 +16,7 @@ function connect(){
     });
 }
 
-//used to check weather the user is authorised or not
-function authorise(email,password,callback)
-{
-    // const pass = hash.hashpass(password);
+function authorise(email,password,callback){
     let results;
     sql = 'select user_id,cat from auth where user_name = ? and password = ?';
     const value = [email,password];
@@ -33,7 +30,6 @@ function authorise(email,password,callback)
         }
         else{
             var data = JSON.parse(JSON.stringify(result));
-            console.log(data)
             results = {"access":"granted",
             "userid":data[0].user_id,
             "type":data[0].cat};
@@ -43,7 +39,6 @@ function authorise(email,password,callback)
     })
 }
 
-//registering the auth for the user
 function  registerauth(mail,password,usertype,callback){
     sql = "insert into AUTH values(null,?,?,?,?)";
     const sal = hash.hashpass(password);
@@ -66,8 +61,6 @@ function  registerauth(mail,password,usertype,callback){
 
 //----------------------------------------------PATIENT----------------------------------------------
 
-
-//register the respective users
 function registerpatient(uid,name, email, number,address, dob,docmail,callback){
     const sql = "insert into patient values(?,?,?,?,?,?,?,?);";
     value = [uid,email,name,null,address,dob,number,docmail];
@@ -76,7 +69,6 @@ function registerpatient(uid,name, email, number,address, dob,docmail,callback){
     }); 
 }
 
-//dashboard functions
 function dashboard_patient(patientid,callback){
     sql1 = "select s2.* from patient s1 inner join doctor s2 on s1.doctor_id = s2.doctor_id where s1.patient_id = ?";
     sql2 = "select s1.* from caretaker s1 inner join care_pat s2 on s1.caretaker_id = s2.caretaker_id where s2.patient_id=?";
@@ -111,7 +103,6 @@ function dashboard_doctor(doctorid,callback){
     })
 }
 
-
 // ----------------------------------------------CARETAKER----------------------------------------------
 
 function registercaretaker(uid,name, email, number, address, dob,callback){
@@ -121,7 +112,6 @@ function registercaretaker(uid,name, email, number, address, dob,callback){
         callback(err,result);
     });   
 }
-
 
 function getcaretakerpatients(caretakerid,callback){
     sql = "SELECT  s1.* ,s2.caretaker_id ,s3.doctor_name FROM patient s1 Inner Join doctor s3 on s3.doctor_id=s1.doctor_id INNER JOIN care_pat s2 ON s1.patient_id = s2.patient_id where s2.caretaker_id=?";
@@ -138,6 +128,7 @@ function linkcaretakerandpatient(caretakerid,patientid,callback){
         callback(err,result);
     });
 }
+
 function removecaretakerandpatient(caretakerid,patientid,callback){
     sql = "delete from care_pat where patient_id=? and caretaker_id=?";
     value = [patientid,caretakerid];
@@ -145,7 +136,6 @@ function removecaretakerandpatient(caretakerid,patientid,callback){
         callback(err,result);
     });
 }
-
 
 
 module.exports = {
@@ -159,5 +149,4 @@ module.exports = {
     registerauth,
     getcaretakerpatients,
     removecaretakerandpatient,
-    // getlevels,
 };

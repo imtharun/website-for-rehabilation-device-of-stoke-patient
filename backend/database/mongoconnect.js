@@ -1,9 +1,8 @@
-const MongoClient = require("mongodb").MongoClient  //package not file
+const MongoClient = require("mongodb").MongoClient
 const config = require('./config_sql');
 var db
 var uri = config.mongodburl
 const dbname = config.mongodbname;
-
 
 const connectDb = (callback) => {
     if (db) return callback()

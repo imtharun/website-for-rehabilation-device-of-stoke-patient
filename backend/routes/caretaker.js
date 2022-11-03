@@ -1,4 +1,3 @@
-//imports
 const express = require('express');
 const bodyParser = require("body-parser");
 const db = require("../database/mysql_db");
@@ -8,7 +7,6 @@ const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 router.use(express.json());
-
 
 router.get("/dashboard",(req,res)=>{
     const id = req.userid;
@@ -36,7 +34,6 @@ router.post("/addPatient",(req,res)=>{
     });
 });
 
-
 router.post("/removePatient",(req,res)=>{
     const id = req.userid;
     const patient_id = req.body.mailId;
@@ -50,7 +47,6 @@ router.post("/removePatient",(req,res)=>{
     });
 });
 
-
 router.post("/patientdetails",(req,res)=>{
   const id = req.userid;
   const patientid = req.body.mailId;
@@ -63,7 +59,6 @@ router.post("/patientdetails",(req,res)=>{
     }
   })
 })
-
 
 router.get('*', (req, res) => {
     res.sendStatus(404);

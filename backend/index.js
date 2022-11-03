@@ -1,4 +1,3 @@
-//imports
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -6,16 +5,14 @@ const db = require("./database/mysql_db");
 const cookieParser = require("cookie-parser");
 const jwt = require("./helper/jwt.js");
 const mongodb = require("./database/mongodb.js");
-
-//routing
 const patient = require("./routes/patient");
 const doctor = require("./routes/doctor");
 const caretaker = require("./routes/caretaker");
 
-//port number to listen
+
 const port = 5000;
 
-//init
+
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -26,7 +23,6 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-//request from frontend allowed oringins....
 const allowedOrigins = ['http://localhost:3000', 
 'http://localhost:3000/patient/dashboard', 
 'http://localhost:3000/login',
@@ -38,43 +34,29 @@ app.use((req,res,next)=>{
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
-}
+  }
   res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
   res.setHeader('Access-Control-Allow-Methods','Content-Type','Authorization');
   next(); 
 })
 
-//DEV
-app.get('/sett',(req,res)=>{
-  res.cookie('access-token', 'eyJhbGciOiJIUzI1NiJ9.ZHVtbXkxQGdtYWlsLmNvbQ.V9-OYY-CLSUlFs6YCryMKkqaf1JtPnKw4AbT6WydSBI'); //dummy1@gmail.com
-  res.send("cookie set");
-})
 
-
-//initializing
 app.listen(port, () => {
   console.log("Server started to listen...");
 });
 
-
-//function to validate user id and add it to request
 async function validateCookiesfunc (req, res, next) {
-  console.log(req.url);
   req.userid = jwt.getjwt(req, res);
-  console.log("user= "+req.userid);
   if(req.userid === undefined){
     return
   }
   next()
 }
 
-
-//home page
 app.get("/", function (req, res) {
   res.send("This is a development server");
 });
 
-//register a new user
 app.post("/signup", (req, res) => {
   const name = req.body.name;
   const email = req.body.email;
@@ -97,7 +79,6 @@ app.post("/signup", (req, res) => {
             res.send(err);
           }
           else{
-            console.log("Patient sucessfully registered");
             res.send("Patient sucessfully registered").status(200);
           }
         })
@@ -116,7 +97,6 @@ app.post("/signup", (req, res) => {
             res.send(err);
           }
           else{
-            console.log("Doctor sucessfully registered");
             res.send("Doctor sucessfully registered").status(200);
           }
         })
@@ -135,7 +115,6 @@ app.post("/signup", (req, res) => {
             res.send(err);
           }
           else{
-            console.log("Patient sucessfully registered");
             res.send("Patient sucessfully registered").status(200);
           }
         })
@@ -144,16 +123,11 @@ app.post("/signup", (req, res) => {
   }
 });
 
-
-//Clearing cookie to logout user
 app.get("/logout", (req, res) => {
   res.clearCookie("access-token");
   res.sendStatus(200);
 });
 
-
-
-//login the user
 app.post("/login", async (req, res) => {
   console.log(req.body);
   const email = req.body.email;
@@ -164,12 +138,11 @@ app.post("/login", async (req, res) => {
   }
   const rest = db.authorise(email, password, (err, result) => {
     if (err) {
-    console.log(err);
+      res.send(err);
     }
-    if (result.access === "denied") {
+    else if (result.access === "denied") {
       res.status(401);
     } else {
-      // const id = result.userid;
       const id = email;
       const accessToken = jwt.createToken(id);
       res.cookie("access-token", accessToken, {
@@ -193,7 +166,6 @@ app.get("/checklogin",(req,res)=>{
   res.sendStatus(200);
 })
 
-//respond for other unused pages
 app.get('*', function(req, res){
   res.sendStatus(404)
 });

@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const secret_key = "thisisthesecretkeydontforgettochangeit" //change the secret key
 
-//creatinf a token using userid
 const createToken = (user) => {
   const accessToken = jwt.sign(
     user,
@@ -10,8 +9,6 @@ const createToken = (user) => {
   return accessToken;
 };
 
-
-//checking if the user is valid or not
 const validateUser = (req, res) => {
   const accessToken = req.cookies["access-token"];
   if (!accessToken) {
@@ -31,8 +28,6 @@ const validateUser = (req, res) => {
   }
 };
 
-
-//fetch the token data using accesstoken and secret key
 function getTokendata(req,callback)
 {
   const accessToken = req.cookies["access-token"];
@@ -52,8 +47,6 @@ function getTokendata(req,callback)
   }
 }
 
-
-//checking the jwt token for authentication
 const getjwt = (req, res) => {
   let resp = undefined;
   const id = getTokendata(req, (result) => {

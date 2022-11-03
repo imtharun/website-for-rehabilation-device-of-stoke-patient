@@ -1,4 +1,3 @@
-//imports
 const express = require('express');
 const bodyParser = require("body-parser");
 const db = require("../database/mysql_db");
@@ -7,7 +6,6 @@ const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 router.use(express.json());
-
 
 router.get("/dashboard",(req,res)=>{
     const id = req.userid;
@@ -21,8 +19,11 @@ router.get("/dashboard",(req,res)=>{
             res.send(err);
           }
           else{
-            const card = {card : resu}
-            res.send(result.concat(resu));
+            const card = {
+              card : resu,
+              session : result
+            }
+            res.send(card);
           }
         })
       }
@@ -64,7 +65,6 @@ router.get("/getsessiondata",(req,res)=>{
   })
 });
 
-//404 error page
 router.get('*', (req, res) => {
     res.sendStatus(404);
 })

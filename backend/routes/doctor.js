@@ -1,4 +1,3 @@
-//imports
 const express = require('express');
 const bodyParser = require("body-parser");
 const db = require("../database/mysql_db");
@@ -29,7 +28,6 @@ router.get("/dashboard",(req,res)=>{
         let count = 0;
         result.forEach((index,ind) => {
           if(checkexist(sol,index.patient_name)){
-            console.log(sol,count);
             let a = sol[count-1].caretaker_name;
             a.push(index.caretaker_name);
           }
@@ -44,14 +42,10 @@ router.get("/dashboard",(req,res)=>{
             count = count + 1;
           }
         });
-        console.log(sol);
         res.send(sol);
       }
     });
 });
-
-
-
 
 router.post("/patientdetails",(req,res)=>{
   const id = req.userid;
@@ -65,7 +59,6 @@ router.post("/patientdetails",(req,res)=>{
     }
   })
 })
-
 
 router.get('*', (req, res) => {
     res.sendStatus(404);

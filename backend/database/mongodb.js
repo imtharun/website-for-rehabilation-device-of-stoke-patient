@@ -1,14 +1,12 @@
-var MongoClient = require('mongodb').MongoClient; //package
+var MongoClient = require('mongodb').MongoClient;
 const { connectDb, getDb } = require('./mongoconnect')
 
-
-var db // store db object in this object
+var db;
 connectDb(() => ( db = getDb() ))
 
 function createcoollection(name,callback){
   db.createCollection(name, function(err, res) {
     if (err) throw err;
-    console.log("Collection created!");
     callback(err,res);
   });  
 }
@@ -17,11 +15,9 @@ function addsession(id,sessionno,data,callback){
   const myobj = { [sessionno]:data  };
   db.collection(id).insertOne(myobj, function(err, res) {
     if (err) throw err;
-    console.log("1 document inserted");
     callback(err,res);
   });
 }
-
 
 function retrievepatientdata(patientid,callback){
   db.collection(patientid).find({}).toArray(function(err, result) {
