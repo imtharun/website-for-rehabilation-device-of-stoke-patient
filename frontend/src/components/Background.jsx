@@ -1,14 +1,10 @@
 import React from "react";
-import Bg from "./../assets/og-bg.svg";
+import Bg from "./../assets/og-bg.png  ";
 
 const Background = () => {
   return (
     <div className="shadow-lg h-full hidden sm:block">
-      <img
-        className="h-full rounded-tl-3xl"
-        src={Bg}
-        alt="Background"
-      />
+      <img className="h-full rounded-tl-3xl" src={Bg} alt="Background" />
     </div>
   );
 };

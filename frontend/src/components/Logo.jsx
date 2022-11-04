@@ -6,7 +6,7 @@ const Logo = () => {
   return (
     <div>
       <img className="block sm:hidden w-[4rem] h-[2.8rem]" src={Logo_PSG_Mob} alt="Logo" />
-      <img className="hidden sm:block ml-4 w-[8rem] " src={Logo_PSG} alt="Logo" />
+      <img className="hidden sm:block ml-4 w-[10rem] " src={Logo_PSG} alt="Logo" />
     </div>
   );
 };

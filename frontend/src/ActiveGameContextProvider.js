@@ -3,7 +3,7 @@ export const GameNameContext = React.createContext();
 
 function UserContextProvider(props) {
   const [level, setLevel] = useState(0);
-
+  const [patientData, setPatientData] = useState([]);
   const [game, setGame] = useState("");
   const [start, setStart] = useState(false);
   const [ans, setAns] = useState([]);
@@ -30,6 +30,10 @@ function UserContextProvider(props) {
     setLevel(level);
   };
 
+  const patientHandler = (data) => {
+    setPatientData(data);
+  };
+
   return (
     <GameNameContext.Provider
       value={{
@@ -45,6 +49,8 @@ function UserContextProvider(props) {
         setTimer,
         level,
         levelHandler,
+        patientData,
+        patientHandler,
       }}
     >
       {props.children}

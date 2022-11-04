@@ -74,7 +74,7 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-og-bg bg-cover min-h-screen">
+    <div className="bg-og-bg bg-contain min-h-screen">
       <div className="pt-3 ml-2">
         <Logo />
       </div>

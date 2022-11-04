@@ -33,7 +33,7 @@ module.exports = {
 
     extend: {
       backgroundImage: {
-        "og-bg": "url('/src/assets/og-bg.svg')",
+        "og-bg": "url('/src/assets/og-bg.png')",
       },
       fontFamily: {
         workSans: ["Work Sans", "sans-serif"],

@@ -19,6 +19,7 @@ const Nav = (props) => {
         cookies.remove("userType");
         userHandler("");
         navigate("/login", { replace: true });
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);

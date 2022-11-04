@@ -3,28 +3,28 @@ import Table from "./Table";
 import Recovery from "./Recovery";
 import axios from "../api/axios";
 
-const SessionCard = () => {
+const SessionCard = (props) => {
   const [values, setValues] = useState([]);
   const jointInfo = {
-    "Bird Dodge":
+    "bird dodge":
       "Fingers and Palm – closing & opening, Wrist – Flexion/Extension",
-    Burst: "Fingers and Palm – closing & opening",
-    "Block & Ball":
+    burst: "Fingers and Palm – closing & opening",
+    "block & ball":
       "Shoulder – Horizontal Abduction/Adduction, Elbow – Flexion/Extension",
-    "Car Dodge": "Shoulder – Horizontal Abduction/Adduction",
-    "Copter Block": "Shoulder – Vertical Abduction/Adduction",
-    "Drop balls":
+    "car dodge": "Shoulder – Horizontal Abduction/Adduction",
+    "copter block": "Shoulder – Vertical Abduction/Adduction",
+    "drop balls":
       "Shoulder – Vertical Abduction/Adduction & Horizontal Abduction/Adduction",
-    "Hit catch":
+    "hit catch":
       "Shoulder – Flexion/Extension & Abduction/Adduction, Elbow – Flexion/Extension",
-    Hurdles: "Elbow – Flexion/Extension",
+    hurdles: "Elbow – Flexion/Extension",
     "Newton Balls": "Shoulder – Horizontal Abduction/Adduction",
 
-    Trace:
+    trace:
       "Shoulder – Flexion/Extension, Horizontal & Vertical Abduction/Adduction",
-    "Veggie Pick":
+    "veggie pick":
       "Palm and fingers – gripping and grasping, Elbow – internal rotation",
-    Windows: "Wrist – Flexion/Extension, Elbow – Flexion/Extension",
+    windows: "Wrist – Flexion/Extension, Elbow – Flexion/Extension",
   };
   const cols = [
     "Game name",
@@ -33,168 +33,55 @@ const SessionCard = () => {
     "Duration (in mins)",
     "Current Level",
   ];
-  const props = [
-    {
-      cols: [
-        "Game name",
-        "Joints",
-        ["Shoulder 1", "Shoulder 2", "Shoulder 3", "Elbow", "Wrist"],
-        "Duration (in mins)",
-        "Current Level",
-      ],
-      rows: [
-        {
-          gameName: "Burst",
-          joints: "Fingers and Palm – closing & opening",
-          roms: [
-            { minRom: 7, maxRom: 8 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 11, maxRom: 12 },
-            { minRom: 11, maxRom: 12 },
-            { minRom: 11, maxRom: 12 },
-          ],
-          timeDuration: 12,
-          currentLevel: 2,
-        },
-        {
-          gameName: "Trace",
-          joints:
-            "Shoulder – Flexion/Extension, Horizontal & Vertical Abduction/Adduction",
-          roms: [
-            { minRom: 7, maxRom: 8 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 11, maxRom: 12 },
-            { minRom: 11, maxRom: 12 },
-            { minRom: 11, maxRom: 12 },
-          ],
-          timeDuration: 12,
-          currentLevel: 4,
-        },
-      ],
-    },
-    {
-      cols: [
-        "Game name",
-        "Joints",
-        ["Shoulder 1", "Shoulder 2", "Shoulder 3", "Elbow", "Wrist"],
-        "Duration (in mins)",
-        "Current Level",
-      ],
-      rows: [
-        {
-          gameName: "Burst",
-          joints: " Fingers and Palm – closing & opening",
-          roms: [
-            { minRom: -17, maxRom: 8 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-          ],
-          timeDuration: 12,
-          currentLevel: 2,
-        },
-
-        {
-          gameName: "Trace",
-          joints:
-            "Shoulder – Flexion/Extension, Horizontal & Vertical Abduction/Adduction",
-          roms: [
-            { minRom: 7, maxRom: 8 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-          ],
-          timeDuration: 12,
-          currentLevel: 4,
-        },
-      ],
-    },
-    {
-      rows: [
-        {
-          gameName: "Burst",
-          joints: " Fingers and Palm – closing & opening",
-          roms: [
-            { minRom: 7, maxRom: 8 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-          ],
-          timeDuration: 12,
-          currentLevel: 2,
-        },
-
-        {
-          gameName: "Trace",
-          joints:
-            "Shoulder – Flexion/Extension, Horizontal & Vertical Abduction/Adduction",
-          roms: [
-            { minRom: 7, maxRom: 8 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-            { minRom: 9, maxRom: 10 },
-          ],
-          timeDuration: 12,
-          currentLevel: 4,
-        },
-      ],
-    },
-  ];
-
-  const rows = [];
 
   const tableData = async () => {
     try {
       const data = await axios.get("/patient/dashboard");
-      console.log(data.data);
+      console.log(data);
       setValues(data.data);
     } catch (error) {
       console.log(error);
     }
   };
 
+  let size = values?.length;
+
   useEffect(() => {
     tableData();
   }, []);
 
-  let size = values.length;
   return (
     <div className="flex flex-col my-3 justify-center item-center">
-      {values.reverse().map((ele, index) => {
+      {values?.reverse()?.map((ele, index) => {
+        const sess = "session" + (size - index);
+        if (size - index === 0) return "";
+        const percentage = ele.percentage;
+        const rows = [];
+        ele[sess]?.forEach((game) => {
+          const gameName = Object.keys(game)[0];
+          if (gameName === "feedback") return;
+          const row = {
+            gameName: gameName,
+            timeDuration: game[gameName]["timer"],
+            currentLevel: game[gameName]["level"],
+            roms: game[gameName]["roms"],
+            joints: jointInfo[gameName.toLowerCase()],
+          };
+          rows.push(JSON.parse(JSON.stringify(row)));
+        });
+
         return (
           <div
             key={index + 1}
             className="w-full bg-gray-300 p-2 my-2 rounded-md"
           >
             <h1 className="text-sm sm:text-lg font-medium pl-4 pt-2">
-              Session {size}
+              Session {size - index}
             </h1>
-            {ele["session" + size--].forEach((e) => {
-              if (e["feedback"]) return "";
-              const keys = Object.keys(e);
-              keys.forEach((key) => {
-                const row = {
-                  gameName: key,
-                  joints: jointInfo[key],
-                  roms: [
-                    { minRom: 7, maxRom: 8 },
-                    { minRom: 9, maxRom: 10 },
-                    { minRom: 9, maxRom: 10 },
-                    { minRom: 9, maxRom: 10 },
-                    { minRom: 9, maxRom: 10 },
-                  ],
-                  timeDuration: e[key].timer,
-                  currentLevel: e[key].level,
-                };
-                rows.push(row);
-              });
-            })}
-            <Table key={index + 1} cols={cols} rows={rows} />
-            <Buttons />
+            {rows.length !== 0 && (
+              <Table key={index + 1} cols={cols} rows={rows} />
+            )}
+            <Buttons percentage={percentage} />
           </div>
         );
       })}
@@ -202,11 +89,11 @@ const SessionCard = () => {
   );
 };
 
-export const Buttons = () => {
+export const Buttons = (props) => {
   return (
     <div className="flex flex-col xxxs:flex-row xxxs:justify-between p-4 pt-0 -mx-2  ">
       <div className="w-full">
-        <Recovery />
+        <Recovery percentage={props.percentage} />
       </div>
     </div>
   );

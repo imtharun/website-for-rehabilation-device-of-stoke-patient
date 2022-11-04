@@ -18,9 +18,10 @@ const AddOrRemovePatients = () => {
       const res = await axios.post(url, {
         mailId,
       });
-      console.log(res);
+
+      const message = type === "add" ? "Added" : "Removed";
       if (res.status === 200) {
-        toast("Successfully Added", {
+        toast(`Successfully ${message}`, {
           position: "bottom-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -30,8 +31,24 @@ const AddOrRemovePatients = () => {
           progress: undefined,
           theme: "light",
         });
+        setPatientMail("");
       }
     } catch (error) {
+      if (error.response.status === 404) {
+        toast("User not found!", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setPatientMail("");
+
+        return;
+      }
       toast("Error Occurred", {
         position: "bottom-center",
         autoClose: 5000,
@@ -42,7 +59,6 @@ const AddOrRemovePatients = () => {
         progress: undefined,
         theme: "light",
       });
-      console.log(error);
     }
   };
 

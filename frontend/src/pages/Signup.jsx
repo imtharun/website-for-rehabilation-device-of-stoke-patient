@@ -43,7 +43,7 @@ const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
   const [dob, setDob] = useState("");
-  const [image, setImage] = useState("");
+  // const [image, setImage] = useState("");
   const [hospitalName, setHospitalName] = useState("");
   const [userTypee, setUserTypee] = useState("Patient");
   const [doctorEmail, setDoctorEmail] = useState("");
@@ -127,9 +127,9 @@ const Login = () => {
 
   const postData = async () => {
     try {
-      const formData = new FormData();
-      formData.append("image", image, image.name);
-      formData.append("name", image.name);
+      // const formData = new FormData();
+      // formData.append("image", image, image.name);
+      // formData.append("name", image.name);
 
       const resp = await axios.post("/signup", {
         name,
@@ -139,7 +139,7 @@ const Login = () => {
         dob,
         address,
         userTypee,
-        formData,
+        // formData,
         doctorEmail,
       });
 
@@ -158,7 +158,7 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-og-bg bg-cover">
+    <div className="bg-og-bg bg-contain">
       <div className="pt-3 ml-2">
         <Logo />
       </div>
@@ -166,7 +166,7 @@ const Login = () => {
         {/* form div */}
         <div className="xxxs:w-[28rem] mx-5 ">
           <form
-            className="mt-[3.3rem] shadow-2xl p-6 bg-white rounded-md h-[880px] overflow-y-scroll scrollbar-none"
+            className="mt-[3.3rem] shadow-2xl p-6 bg-[#FFF] rounded-md h-[880px] overflow-y-scroll scrollbar-none"
             onSubmit={submitHandler}
           >
             <Top />
@@ -256,7 +256,7 @@ const Login = () => {
                   </span>
                 )}
               </div>
-              <div className="max-w-[22rem] mt-4  mx-auto p-1 pl-0">
+              {/* <div className="max-w-[22rem] mt-4  mx-auto p-1 pl-0">
                 <label
                   htmlFor="formFile"
                   className="form-label inline-block mb-2 text-gray-400"
@@ -273,7 +273,7 @@ const Login = () => {
                   accept="image/png, image/gif, image/jpeg"
                   required
                 />
-              </div>
+              </div> */}
 
               <div className="max-w-[22rem] mt-4 relative border-b-[1.5px] border-black mx-auto p-1 pl-0">
                 <TextareaAutosize

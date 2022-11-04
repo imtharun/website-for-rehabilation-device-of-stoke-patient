@@ -1,54 +1,46 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import profile from "./../assets/default-profile-pic.png";
-import SessionCard from "./SessionCard";
 import { TimeAndDate } from "./PatientDashboard";
+import axios from "../api/axios";
+import Table from "./Table";
+import Recovery from "./Recovery";
+import { GameNameContext } from "../ActiveGameContextProvider";
+import { UserTypeContext } from "../UserContextProvider";
 
-const patientData = [
-  {
-    name: "D k Suryah ",
-    Age: 81,
-    caretakers: ["Adhithya sdfsdfs", "Karikala dasdasda", "Pooniyin Selvan"],
-    profile: profile,
-  },
-  {
-    name: "Yuvarraj",
-    Age: 81,
-    caretakers: ["Adhithya", "Karikala", "Pooniyin Selvan"],
-    profile: profile,
-  },
-  {
-    name: "Yuvarraj",
-    Age: 81,
-    caretakers: ["Adhithya sdfsdfs", "Karikala", "Pooniyin Selvan"],
-    profile: profile,
-  },
-  {
-    name: "Shivanesh",
-    Age: 81,
-    caretakers: ["Adhithya", "Karikala", "Pooniyin Selvan"],
-    profile: profile,
-  },
-  {
-    name: "Shivanesh",
-    Age: 81,
-    caretakers: ["Adhithya", "Karikala", "Pooniyin Selvan"],
-    profile: profile,
-  },
-];
+export const getAge = (dateString) => {
+  var today = new Date();
+  var birthDate = new Date(dateString);
+  var age = today.getFullYear() - birthDate.getFullYear();
+  var m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+};
 
 const DoctorDashboard = () => {
   const searchRef = useRef();
+  const [data, setData] = useState([]);
   const [searchName, setSearchName] = useState("");
+
+  const getData = async () => {
+    try {
+      const res = await axios.get("/doctor/dashboard");
+      console.log(res);
+      setData(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     document.title = "Doctor";
-    // getData();
+    getData();
   }, []);
 
   const searchHandler = (e) => {
     e.preventDefault();
     setSearchName(searchRef.current.value);
-    console.log(searchName);
   };
 
   return (
@@ -100,12 +92,14 @@ const DoctorDashboard = () => {
       </div>
       <div className="flex justify-center   xxxs:ml-6 my-2  flex-1 flex-wrap">
         {searchName.length !== 0 ? (
-          patientData.filter((ele) => {
-            return ele.name.toLowerCase().includes(searchName.toLowerCase());
+          data.filter((ele) => {
+            return ele.patient_name
+              .toLowerCase()
+              .includes(searchName.toLowerCase());
           }).length !== 0 ? (
-            patientData
+            data
               .filter((ele) => {
-                return ele.name
+                return ele.patient_name
                   .toLowerCase()
                   .includes(searchName.toLowerCase());
               })
@@ -116,8 +110,10 @@ const DoctorDashboard = () => {
             <div className="mx-auto text-gray-400">No Patient found!</div>
           )
         ) : (
-          patientData.map((ele, index) => {
-            return <PatientCard key={index + 1} ele={ele} />;
+          data.map((ele, index) => {
+            return (
+              <PatientCard key={index + 1} ele={ele} email={ele.patient_id} />
+            );
           })
         )}
       </div>
@@ -125,39 +121,77 @@ const DoctorDashboard = () => {
   );
 };
 
-const PatientCard = ({ ele }) => {
+const PatientCard = (props) => {
+  // let patientData = [];
+  const { patientHandler } = useContext(GameNameContext);
+
+  const get = async (email) => {
+    console.log("getting", email);
+    try {
+      const data = await axios.post("/doctor/patientdetails", {
+        email,
+      });
+      patientHandler(data.data);
+      // setPatientData([]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const clear = () => {
+    patientHandler([]);
+  };
+
+  const clickHandler = (email) => {
+    get(email);
+  };
+
   return (
     <div className="bg-gray-100 rounded-md mx-2 my-2 max-w-[25rem]">
       <div className="flex flex-col xs:flex-row px-4 py-2 ">
         <div className="self-center mt-4">
           <img
             className="w-[90px] h-[90px] rounded-full "
-            src={ele.profile}
+            src={props.ele.profile || profile}
             alt="Profile"
           />
         </div>
         <div className="text-center xs:text-left pl-3 pt-4">
           <div>
-            <h1 className="text-base font-medium">{ele.name}</h1>
+            <h1 className="text-base font-medium">
+              {props.ele.patient_name?.charAt(0)?.toUpperCase() +
+                props.ele.patient_name?.slice(1)}
+            </h1>
             <small className="text-xs text-gray-500 block -pt-3">
-              {ele.Age} years old
+              {getAge(props.ele.patient_dob)} years old
             </small>
           </div>
           <div className="pt-2 text-center xs:text-left">
             <p className="text-base">Caretakers: </p>
             <div className="flex flex-wrap max-w-[17rem] h-[2rem] max-h-2rem justify-center xs:justify-start">
-              {ele.caretakers.map((caretaker, index) => {
-                const size = ele.caretakers.length;
+              {props.ele.caretaker_name.map((caretaker, index) => {
+                const size = props.ele.caretaker_name.length;
+                if (size === 1) {
+                  return (
+                    <span key={index + 1} className="block text-[0.8rem] mr-2">
+                      {caretaker.charAt(0).toUpperCase() + caretaker.slice(1)}
+                    </span>
+                  );
+                }
                 if (index !== size - 1) {
                   return (
                     <span key={index + 1} className="block text-[0.8rem] mr-2">
-                      {caretaker},{" "}
+                      {caretaker.charAt(0).toUpperCase() + caretaker.slice(1)},
                     </span>
                   );
                 } else {
                   return (
                     <span key={index + 1} className="block text-[0.8rem] mr-2">
-                      and {caretaker}{" "}
+                      and
+                      {" " +
+                        caretaker.charAt(0).toUpperCase() +
+                        caretaker.slice(1)}
+                      .
                     </span>
                   );
                 }
@@ -169,6 +203,7 @@ const PatientCard = ({ ele }) => {
       <div className="grid mt-2 p-4 pb-2 justify-items-center xs:justify-items-end">
         <button
           type="button"
+          onClick={() => clickHandler(props.email)}
           className=" mr-3 mb-2 inline-block font-medium  transition ease-in-out hover:scale-110 bg-gray-100 border-slate-500 border text-slate-500 hover:bg-slate-500 hover:text-gray-100 shadow-sm px-3 text-sm py-2 rounded-full "
           data-bs-toggle="modal"
           data-bs-target="#exampleModalLg"
@@ -181,7 +216,12 @@ const PatientCard = ({ ele }) => {
   );
 };
 
-export const Modal = () => {
+export const Modal = (props) => {
+  const { userType } = useContext(UserTypeContext);
+  const { patientData } = useContext(GameNameContext);
+
+  console.log(patientData);
+
   return (
     <div
       className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-y-scroll"
@@ -208,9 +248,92 @@ export const Modal = () => {
             ></button>
           </div>
           <div className="modal-body relative p-4">
-            <SessionCard />
+            {userType === "doctor" && patientData.length === 0 ? (
+              <p>No user data found</p>
+            ) : (
+              <SessionCardForDoctor values={patientData.data} />
+            )}
           </div>
         </div>
+      </div>
+    </div>
+  );
+};
+
+const SessionCardForDoctor = (props) => {
+  const { patientData } = useContext(GameNameContext);
+
+  const jointInfo = {
+    "bird dodge":
+      "Fingers and Palm – closing & opening, Wrist – Flexion/Extension",
+    burst: "Fingers and Palm – closing & opening",
+    "block & ball":
+      "Shoulder – Horizontal Abduction/Adduction, Elbow – Flexion/Extension",
+    "car dodge": "Shoulder – Horizontal Abduction/Adduction",
+    "copter block": "Shoulder – Vertical Abduction/Adduction",
+    "drop balls":
+      "Shoulder – Vertical Abduction/Adduction & Horizontal Abduction/Adduction",
+    "hit catch":
+      "Shoulder – Flexion/Extension & Abduction/Adduction, Elbow – Flexion/Extension",
+    hurdles: "Elbow – Flexion/Extension",
+    "Newton Balls": "Shoulder – Horizontal Abduction/Adduction",
+
+    trace:
+      "Shoulder – Flexion/Extension, Horizontal & Vertical Abduction/Adduction",
+    "veggie pick":
+      "Palm and fingers – gripping and grasping, Elbow – internal rotation",
+    windows: "Wrist – Flexion/Extension, Elbow – Flexion/Extension",
+  };
+  const cols = [
+    "Game name",
+    "Joints",
+    ["Shoulder 1", "Shoulder 2", "Shoulder 3", "Elbow", "Wrist"],
+    "Duration (in mins)",
+    "Current Level",
+  ];
+
+  let size = patientData?.length;
+  return (
+    <div className="flex flex-col my-3 justify-center item-center">
+      {patientData?.reverse()?.map((ele, index) => {
+        const sess = "session" + (size - index);
+        if (size - index === 0) return "";
+        const percentage = ele.percentage;
+        const rows = [];
+        ele[sess]?.forEach((game) => {
+          const gameName = Object.keys(game)[0];
+          if (gameName === "feedback") return;
+          const row = {
+            gameName: gameName,
+            timeDuration: game[gameName]["timer"],
+            currentLevel: game[gameName]["level"],
+            roms: game[gameName]["roms"],
+            joints: jointInfo[gameName.toLowerCase()],
+          };
+          rows.push(JSON.parse(JSON.stringify(row)));
+        });
+        return (
+          <div
+            key={index + 1}
+            className="w-full bg-gray-300 p-2 my-2 rounded-md"
+          >
+            <h1 className="text-sm sm:text-lg font-medium pl-4 pt-2">
+              Session {size - index}
+            </h1>
+            <Table key={index + 1} cols={cols} rows={rows} />
+            <Buttons percentage={percentage} />
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+const Buttons = (props) => {
+  return (
+    <div className="flex flex-col xxxs:flex-row xxxs:justify-between p-4 pt-0 -mx-2  ">
+      <div className="w-full">
+        <Recovery percentage={props.percentage} />
       </div>
     </div>
   );

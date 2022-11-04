@@ -2,8 +2,8 @@ import React from "react";
 
 const Table = (props) => {
   return (
-    props.cols &&
-    props.rows && (
+    props?.cols &&
+    props?.rows && (
       <div className="flex flex-col mx-auto rounded-md max-w-3xl xxl:max-w-4xl 2xl:max-w-[64rem] p-2">
         <div className="p-2">
           <div className="">
@@ -54,7 +54,7 @@ const Table = (props) => {
                       </th>
                     </tr>
                     <tr>
-                      {props.rows[0].roms.map((ele, index) => {
+                      {props?.rows[0]?.roms.map((ele, index) => {
                         return (
                           <th
                             key={index + 1}
@@ -64,7 +64,7 @@ const Table = (props) => {
                           </th>
                         );
                       })}
-                      {props.rows[0].roms.map((ele, index) => {
+                      {props?.rows[0]?.roms.map((ele, index) => {
                         return (
                           <th
                             key={index + 1}
@@ -92,14 +92,14 @@ const Table = (props) => {
                           </td>
                           {row.roms.map((ele, index) => {
                             return (
-                              <>
+                              <React.Fragment key={index + 1}>
                                 <td className="text-sm  font-light px-6 py-4 whitespace-nowrap">
                                   {ele.minRom}
                                 </td>
                                 <td className="text-sm  font-light px-6 py-4 whitespace-nowrap">
                                   {ele.maxRom}
                                 </td>
-                              </>
+                              </React.Fragment>
                             );
                           })}
                           <td className="text-sm  font-light px-6 py-4 whitespace-nowrap">

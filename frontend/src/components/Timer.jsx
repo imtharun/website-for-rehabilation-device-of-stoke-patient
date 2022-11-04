@@ -94,12 +94,6 @@ const PomView = (props) => {
     startHandler(false);
   };
 
-  useEffect(() => {
-    if (ans.length !== 0) {
-      console.log(ans);
-    }
-  }, [ans]);
-
   const displaySecondsAsMins = (seconds) => {
     const { mins, _seconds } = getTime(seconds);
 
@@ -159,7 +153,6 @@ const PomView = (props) => {
           <button
             type="button"
             disabled={game === "" || start || timer === 0}
-            // onClick={addHandler}
             className={`px-6 leading-tight text-xs sm:text-sm mx-auto w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out   py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 ${
               game === "" || start || timer === 0
                 ? "opacity-50 cursor-not-allowed"
@@ -175,7 +168,7 @@ const PomView = (props) => {
         <div className="text-center ml-4 mb-4">
           <button
             type="button"
-            onClick={clickHandler}
+            // onClick={clickHandler}
             disabled={ans.length === 0}
             className={`text-xs mr-3 sm:text-sm mx-auto w-[5rem] sm:inline-block shadow-md sm:my-0 transition ease-in-out py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 ${
               ans.length === 0
@@ -213,7 +206,7 @@ const PomView = (props) => {
 };
 
 const Input = (props) => {
-  const { nameHandler } = useContext(GameNameContext);
+  const { nameHandler, game } = useContext(GameNameContext);
 
   const radioChangeHandler = (event) => {
     nameHandler(event.target.value);
@@ -226,6 +219,7 @@ const Input = (props) => {
         name="flexRadioDefault"
         onChange={radioChangeHandler}
         value={props.game}
+        checked={game === props.game}
         id={props.game.toLowerCase().replace(" ", "")}
       />
       <label
@@ -308,7 +302,7 @@ const Modal = (props) => {
   }, [shoulderOne, shoulderTwo, shoulderThree, elbow, wrist]);
 
   useEffect(() => {
-    if (roms.length !== 0) {
+    if (roms.length !== 0 && timer !== 0 && game !== "") {
       const o = {
         [game]: {
           timer: JSON.parse(JSON.stringify(timer)),
@@ -319,11 +313,12 @@ const Modal = (props) => {
       };
       ansHandler([...ans, o]);
     }
+    console.log(ans);
   }, [roms]);
 
   const submitHandler = (e) => {
-    // e.preventDefault();
-    if (isEmpty || submitted) return;
+    if (isEmpty || submitted || !game) return;
+
     romsHandler([shoulderOne, shoulderTwo, shoulderThree, elbow, wrist]);
     setSubmitted(true);
   };
@@ -562,7 +557,7 @@ const Modal = (props) => {
 
 const ModalSubmit = () => {
   const [submitted, setSubmitted] = useState(false);
-  const { ansHandler, ans } = useContext(GameNameContext);
+  const { ansHandler, ans, nameHandler, game } = useContext(GameNameContext);
   const [jointSelected, setJointSelected] = useState([]);
 
   const [assessmentMeth, setAssessmentMeth] = useState({
@@ -586,10 +581,6 @@ const ModalSubmit = () => {
     elbow: "",
     wrist: "",
   });
-
-  useEffect(() => {
-    console.log("ans", ans);
-  }, [ans]);
 
   const closeHandler = () => {
     setAssessmentMeth({
@@ -616,7 +607,12 @@ const ModalSubmit = () => {
     ansHandler([]);
     setJointSelected([]);
     setSubmitted(false);
+    nameHandler("");
   };
+
+  // useEffect(() => {
+  //   console.log(ans);
+  // }, [ans]);
 
   const submitHandler = async () => {
     const data = jointSelected.map((ele) => {
@@ -634,13 +630,15 @@ const ModalSubmit = () => {
 
     try {
       if (submitted) return;
+      if (!game) return;
       const resp = await axios.post("/patient/submitNewSession", {
         ans: [...ans, { feedback: data }],
       });
       if (resp.status === 200) {
         closeHandler();
+        setJointSelected([]);
+        setSubmitted(true);
       }
-      setSubmitted(true);
     } catch (error) {
       console.log(error);
     }

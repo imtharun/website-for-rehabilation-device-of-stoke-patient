@@ -1,9 +1,10 @@
-import React, { useEffect, useContext } from "react";
-import { GameNameContext } from "../ActiveGameContextProvider";
+import React, { useEffect, useState } from "react";
+// import { GameNameContext } from "../ActiveGameContextProvider";
 
 const Serial = (props) => {
   //   const encoder = new TextEncoder();
-  const { start } = useContext(GameNameContext);
+  const [firstTime, setFirstTime] = useState(false);
+  // const { start } = useContext(GameNameContext);
   const decoder = new TextDecoder();
   let reader = "";
   const init = async () => {
@@ -34,7 +35,7 @@ const Serial = (props) => {
 
   const read = async () => {
     try {
-      const readerData = await reader.read();
+      const readerData = await reader?.read();
       console.log(readerData);
       return decoder.decode(readerData.value);
     } catch (error) {
@@ -45,10 +46,10 @@ const Serial = (props) => {
   };
 
   const getSerialMessages = async () => {
-    init();
-
-    const message = document.getElementById("message");
-    message.innerText += await read();
+    while (true) {
+      const message = document.getElementById("message");
+      message.innerText += await read();
+    }
   };
   useEffect(() => {}, []);
 
@@ -64,13 +65,13 @@ const Serial = (props) => {
         >
           Connect with Serial Device
         </button>
-        {/* <button
+        <button
           onPointerDown={async () => getSerialMessages()}
           id="get-serial-message"
           className="text-xs sm:text-sm mx-auto inline-block my-5 sm:my-0 sm:ml-2 shadow-md  transition ease-in-out hover:scale-110  px-5 py-3 rounded-full bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100"
         >
           Get serial message
-        </button> */}
+        </button>
       </div>
       <div id="serial-message-container">
         <div className="bg-gray-100 p-3 mx-auto max-w-lg max-h-60 overflow-y-scroll mt-8 rounded-md">
