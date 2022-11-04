@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
-// import { GameNameContext } from "../ActiveGameContextProvider";
+import React from "react";
 
 const Serial = (props) => {
   //   const encoder = new TextEncoder();
-  const [firstTime, setFirstTime] = useState(false);
-  // const { start } = useContext(GameNameContext);
   const decoder = new TextDecoder();
   let reader = "";
   const init = async () => {
@@ -48,10 +45,13 @@ const Serial = (props) => {
   const getSerialMessages = async () => {
     while (true) {
       const message = document.getElementById("message");
-      message.innerText += await read();
+      const msg = await read();
+      if (msg.includes("Error")) {
+        break;
+      }
+      message.innerText += msg;
     }
   };
-  useEffect(() => {}, []);
 
   return (
     <div className="mt-6 ">
@@ -74,7 +74,7 @@ const Serial = (props) => {
         </button>
       </div>
       <div id="serial-message-container">
-        <div className="bg-gray-100 p-3 mx-auto max-w-lg max-h-60 overflow-y-scroll mt-8 rounded-md">
+        <div className="bg-gray-100 p-3 mx-auto max-w-lg h-60 max-h-60 overflow-y-scroll mt-8 rounded-md scrollbar-thin scrollbar-thumb-[#389387] scrollbar-track-[#cfece8] scrollbar-thumb-rounded-full">
           <div>Serial Monitor</div>
           <div id="message" className=""></div>
         </div>

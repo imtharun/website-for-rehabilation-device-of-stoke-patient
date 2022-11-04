@@ -195,8 +195,6 @@ export const Modal = (props) => {
   const { userType } = useContext(UserTypeContext);
   const { patientData } = useContext(GameNameContext);
 
-  console.log(patientData);
-
   return (
     <div
       className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-y-scroll"
@@ -226,7 +224,10 @@ export const Modal = (props) => {
             {userType === "doctor" && patientData.length === 0 ? (
               <p>No user data found</p>
             ) : (
-              <SessionCardForCaretaker values={patientData.data} />
+              <div>
+                <h1 className="text-lg font-medium">Total Sessions: {patientData.length}</h1>
+                <SessionCardForCaretaker values={patientData} />
+              </div>
             )}
           </div>
         </div>

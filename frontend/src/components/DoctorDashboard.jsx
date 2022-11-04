@@ -251,7 +251,12 @@ export const Modal = (props) => {
             {userType === "doctor" && patientData.length === 0 ? (
               <p>No user data found</p>
             ) : (
-              <SessionCardForDoctor values={patientData.data} />
+              <div>
+                <h1 className="text-lg font-medium">
+                  Total Sessions: {patientData.length}
+                </h1>
+                <SessionCardForDoctor values={patientData} />
+              </div>
             )}
           </div>
         </div>

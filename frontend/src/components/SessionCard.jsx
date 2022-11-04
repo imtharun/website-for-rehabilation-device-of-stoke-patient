@@ -52,39 +52,44 @@ const SessionCard = (props) => {
 
   return (
     <div className="flex flex-col my-3 justify-center item-center">
-      {values?.reverse()?.map((ele, index) => {
-        const sess = "session" + (size - index);
-        if (size - index === 0) return "";
-        const percentage = ele.percentage;
-        const rows = [];
-        ele[sess]?.forEach((game) => {
-          const gameName = Object.keys(game)[0];
-          if (gameName === "feedback") return;
-          const row = {
-            gameName: gameName,
-            timeDuration: game[gameName]["timer"],
-            currentLevel: game[gameName]["level"],
-            roms: game[gameName]["roms"],
-            joints: jointInfo[gameName.toLowerCase()],
-          };
-          rows.push(JSON.parse(JSON.stringify(row)));
-        });
+      {values.length === 0 ? (
+        <p className="text-center">No Session Details found</p>
+      ) : (
+        values?.reverse()?.map((ele, index) => {
+          const sess = "session" + (size - index);
+          if (size - index === 0) return "";
+          const percentage = ele.percentage;
+          const rows = [];
+          ele[sess]?.forEach((game) => {
+            const gameName = Object.keys(game)[0];
+            if (gameName === "feedback") return;
+            const row = {
+              gameName: gameName,
+              timeDuration: game[gameName]["timer"],
+              currentLevel: game[gameName]["level"],
+              roms: game[gameName]["roms"],
+              joints: jointInfo[gameName.toLowerCase()],
+            };
+            rows.push(JSON.parse(JSON.stringify(row)));
+          });
 
-        return (
-          <div
-            key={index + 1}
-            className="w-full bg-gray-300 p-2 my-2 rounded-md"
-          >
-            <h1 className="text-sm sm:text-lg font-medium pl-4 pt-2">
-              Session {size - index}
-            </h1>
-            {rows.length !== 0 && (
-              <Table key={index + 1} cols={cols} rows={rows} />
-            )}
-            <Buttons percentage={percentage} />
-          </div>
-        );
-      })}
+          return (
+            <div
+              key={index + 1}
+              className="w-full bg-gray-300 p-2 my-2 rounded-md"
+            >
+              <h1 className="text-sm sm:text-lg font-medium pl-4 pt-2">
+                Session {size - index}
+              </h1>
+
+              {rows.length !== 0 && (
+                <Table key={index + 1} cols={cols} rows={rows} />
+              )}
+              <Buttons percentage={percentage} />
+            </div>
+          );
+        })
+      )}
     </div>
   );
 };

@@ -206,7 +206,7 @@ const PomView = (props) => {
 };
 
 const Input = (props) => {
-  const { nameHandler, game } = useContext(GameNameContext);
+  const { nameHandler, game, timer } = useContext(GameNameContext);
 
   const radioChangeHandler = (event) => {
     nameHandler(event.target.value);
