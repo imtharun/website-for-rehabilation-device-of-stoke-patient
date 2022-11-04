@@ -18,7 +18,7 @@ const SessionCard = (props) => {
     "hit catch":
       "Shoulder – Flexion/Extension & Abduction/Adduction, Elbow – Flexion/Extension",
     hurdles: "Elbow – Flexion/Extension",
-    "Newton Balls": "Shoulder – Horizontal Abduction/Adduction",
+    "newton balls": "Shoulder – Horizontal Abduction/Adduction",
 
     trace:
       "Shoulder – Flexion/Extension, Horizontal & Vertical Abduction/Adduction",

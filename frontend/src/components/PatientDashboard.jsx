@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import moment from "moment";
 import { CalendarIcon, ClockIcon } from "@radix-ui/react-icons";
 import Card from "./Card";
 import DefaultProfilePic from "./../assets/default-profile-pic.png";
 import SessionCard from "./SessionCard";
 import axios from "../api/axios";
+import { UserTypeContext } from "../UserContextProvider";
 
 const PatientDashboard = () => {
-  const [sessions, setSessions] = useState(0);
+  const { sessions } = useContext(UserTypeContext);
   return (
     <section className="rounded-tl-2xl bg-white p-3 pt-6 sm:p-4 w-full overflow-y-scroll">
       <div className="flex justify-between">
@@ -20,7 +21,7 @@ const PatientDashboard = () => {
       </div>
       <div className="flex flex-col justify-around mx-auto 970:flex-col xlg:flex-row mt-2">
         <div className="">
-          <SessionCard setSessions={setSessions} />
+          <SessionCard />
         </div>
         <div>
           <CardComponent />
@@ -61,6 +62,7 @@ export const TimeAndDate = () => {
 };
 
 const CardComponent = () => {
+  const { sessionHandler } = useContext(UserTypeContext);
   const calculate_age = (dob1) => {
     const today = new Date();
     const birthDate = new Date(dob1); // create a date object directly from `dob1` argument
@@ -75,9 +77,8 @@ const CardComponent = () => {
   const getData = async () => {
     try {
       const res = await axios.get("/patient/card");
-      console.log(res.data);
-      setData(res.data);
-      console.log(res.data.doctor);
+      setData(res.data.res);
+      sessionHandler(res.data.totalsessions);
     } catch (error) {}
   };
 
