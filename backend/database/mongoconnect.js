@@ -8,7 +8,7 @@ const connectDb = (callback) => {
     if (db) return callback()
     MongoClient.connect( uri, 
         (err, database) => {
-            if (err) return console.log(err)
+            if (err)  throw(err);
             db = database.db(dbname) 
             console.log("Mongodb Connected")
             callback()

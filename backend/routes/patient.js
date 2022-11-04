@@ -33,13 +33,21 @@ router.get("/dashboard",(req,res)=>{
 
 router.get("/card",(req,res)=>{
   const id = req.userid;
+  let session = {};
   db.dashboard_patient(id,(err,result)=>{
     if(err){
       res.send(err);
     }
     else{
-      res.send(result);
-    }
+      mongodb.getsessionnumber(id,(err,resd)=>{
+        session = {
+          res : result,
+          totalsessions : resd-1
+        }
+        res.send(session);
+      })
+      
+    } 
   })
 })
 

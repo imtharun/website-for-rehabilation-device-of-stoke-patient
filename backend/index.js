@@ -65,7 +65,6 @@ app.post("/signup", (req, res) => {
   const address = req.body.address;
   const dob = req.body.dob;
   let utype = req.body.userTypee;
-  console.log(req.body);
   if(utype === "patient" || utype === "Patient"){
     utype = "patient";
     const docmail = req.body.doctorEmail;
@@ -129,7 +128,6 @@ app.get("/logout", (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  console.log(req.body);
   const email = req.body.email;
   const password = req.body.password;
   const cooki = req.cookies["access-token"];

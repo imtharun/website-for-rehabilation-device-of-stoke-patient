@@ -43,7 +43,6 @@ function  registerauth(mail,password,usertype,callback){
     sql = "insert into AUTH values(null,?,?,?,?)";
     const sal = hash.hashpass(password);
     value = [mail,password,sal,usertype];
-    console.log(value);
     con.query(sql,value,(err,result)=>{
         console.log("Auth table inserted");
     });
@@ -51,7 +50,6 @@ function  registerauth(mail,password,usertype,callback){
     value = [mail];
     con.query(sql,value,(err,result)=>{
         var data = JSON.parse(JSON.stringify(result));
-        console.log(data);
         var userid = data[0].user_id;
         callback(err,userid);
     })
