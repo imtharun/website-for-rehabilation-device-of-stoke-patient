@@ -62,7 +62,6 @@ export const TimeAndDate = () => {
 };
 
 const CardComponent = () => {
-  const { sessionHandler } = useContext(UserTypeContext);
   const calculate_age = (dob1) => {
     const today = new Date();
     const birthDate = new Date(dob1); // create a date object directly from `dob1` argument
@@ -78,7 +77,6 @@ const CardComponent = () => {
     try {
       const res = await axios.get("/patient/card");
       setData(res.data.res);
-      sessionHandler(res.data.totalsessions);
     } catch (error) {}
   };
 

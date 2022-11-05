@@ -32,11 +32,11 @@ const Nav = (props) => {
   };
 
   return (
-    <nav className="nav py-4 relative mx-1 sm:w-[14rem] sm:max-w-[14rem] overflow-scroll h-full">
+    <nav className="nav py-4 relative mx-1 sm:w-[16rem] sm:max-w-[14rem] overflow-scroll h-full">
       <div>
         <Logo />
       </div>
-      <ul className="mt-48 -ml-2">
+      <ul className="mt-48">
         {props.navItems &&
           props.navItems.map((ele, index) => {
             return (
@@ -53,9 +53,13 @@ const Nav = (props) => {
                 replace
                 end
               >
-                <li className="flex items-center sm:ml-6 mb-4 ">
+                <li
+                  className={`flex justify-start  ${
+                    userType === "doctor" ? "xs:ml-10" : "xs:ml-5"
+                  } items-center mb-4`}
+                >
                   {ele.iconComponent}
-                  <span className="pl-2 hidden sm:inline-block">
+                  <span className="pl-2 text-center hidden sm:inline-block">
                     {ele.name}
                   </span>
                 </li>
@@ -63,17 +67,13 @@ const Nav = (props) => {
             );
           })}
       </ul>
-      <div className={`relative `}>
+      <div className="fixed bottom-10">
         <button onClick={logoutHandler}>
-          <ExitIcon
-            className={`mt-[13rem] fill-current ml-[1rem] sm:hidden w-5 h-5 userType === "patient" ? "" : "-bottom-12 "`}
-          />
+          <ExitIcon className="mt-[13rem] fill-current ml-[1rem] sm:hidden w-5 h-5" />
         </button>
         <button
           onClick={logoutHandler}
-          className={`relative hidden font-medium mx-auto sm:inline-block mt-[9rem] ml-9 transition ease-in-out hover:scale-110 bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100 shadow-sm px-5 text-sm py-3 rounded-full ${
-            userType === "patient" ? "" : "-bottom-12"
-          }`}
+          className="hidden font-medium mx-auto sm:inline-block mt-[9rem] ml-9 transition ease-in-out hover:scale-110 bg-gray-100 border-slate-500 border  text-slate-500 hover:bg-slate-500 hover:text-gray-100 shadow-sm px-5 text-sm py-3 rounded-full"
         >
           Log out
         </button>

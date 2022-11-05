@@ -122,24 +122,17 @@ const DoctorDashboard = () => {
 };
 
 const PatientCard = (props) => {
-  // let patientData = [];
   const { patientHandler } = useContext(GameNameContext);
 
   const get = async (email) => {
-    console.log("getting", email);
     try {
       const data = await axios.post("/doctor/patientdetails", {
         email,
       });
       patientHandler(data.data);
-      // setPatientData([]);
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const clear = () => {
-    patientHandler([]);
   };
 
   const clickHandler = (email) => {
@@ -147,8 +140,8 @@ const PatientCard = (props) => {
   };
 
   return (
-    <div className="bg-gray-100 rounded-md mx-2 my-2 max-w-[25rem]">
-      <div className="flex flex-col xs:flex-row px-4 py-2 ">
+    <div className="relative bg-gray-100 rounded-md mx-2 my-2 w-[21rem] max-w-[25rem]">
+      <div className="flex flex-col xs:flex-row px-4 py-2">
         <div className="self-center mt-4">
           <img
             className="w-[90px] h-[90px] rounded-full "
@@ -165,10 +158,14 @@ const PatientCard = (props) => {
             <small className="text-xs text-gray-500 block -pt-3">
               {getAge(props.ele.patient_dob)} years old
             </small>
+            <h2 className="text-sm">
+              <span>Email: </span>
+              {props.ele.patient_id}
+            </h2>
           </div>
           <div className="pt-2 text-center xs:text-left">
             <p className="text-base">Caretakers: </p>
-            <div className="flex flex-wrap max-w-[17rem] h-[2rem] max-h-2rem justify-center xs:justify-start">
+            <div className="flex flex-wrap w-[10rem] max-w-[18rem] h-[2rem] max-h-2rem justify-center xs:justify-start">
               {props.ele.caretaker_name.map((caretaker, index) => {
                 const size = props.ele.caretaker_name.length;
                 if (size === 1) {
@@ -200,7 +197,7 @@ const PatientCard = (props) => {
           </div>
         </div>
       </div>
-      <div className="grid mt-2 p-4 pb-2 justify-items-center xs:justify-items-end">
+      <div className="grid mt-2 p-4 pb-2 mx-auto justify-items-center xs:justify-items-end">
         <button
           type="button"
           onClick={() => clickHandler(props.email)}
@@ -219,8 +216,6 @@ const PatientCard = (props) => {
 export const Modal = (props) => {
   const { userType } = useContext(UserTypeContext);
   const { patientData } = useContext(GameNameContext);
-
-  console.log(patientData);
 
   return (
     <div
@@ -249,7 +244,9 @@ export const Modal = (props) => {
           </div>
           <div className="modal-body relative p-4">
             {userType === "doctor" && patientData.length === 0 ? (
-              <p>No user data found</p>
+              <p className="text-center font-medium text-xl">
+                No user data found
+              </p>
             ) : (
               <div>
                 <h1 className="text-lg font-medium">

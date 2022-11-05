@@ -114,20 +114,14 @@ const PatientCard = (props) => {
   const { patientHandler } = useContext(GameNameContext);
 
   const get = async (email) => {
-    console.log("getting", email);
     try {
       const data = await axios.post("/doctor/patientdetails", {
         email,
       });
       patientHandler(data.data);
-      // setPatientData([]);
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const clear = () => {
-    patientHandler([]);
   };
 
   const clickHandler = (email) => {
@@ -221,11 +215,13 @@ export const Modal = (props) => {
             ></button>
           </div>
           <div className="modal-body relative p-4">
-            {userType === "doctor" && patientData.length === 0 ? (
-              <p>No user data found</p>
+            {userType === "caretaker" && patientData.length === 0 ? (
+              <p className="text-center">No user data found</p>
             ) : (
               <div>
-                <h1 className="text-lg font-medium">Total Sessions: {patientData.length}</h1>
+                <h1 className="text-lg font-medium">
+                  Total Sessions: {patientData.length}
+                </h1>
                 <SessionCardForCaretaker values={patientData} />
               </div>
             )}
@@ -236,7 +232,7 @@ export const Modal = (props) => {
   );
 };
 
-const SessionCardForCaretaker = (props) => {
+const SessionCardForCaretaker = () => {
   const { patientData } = useContext(GameNameContext);
 
   const jointInfo = {

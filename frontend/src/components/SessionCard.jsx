@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import Table from "./Table";
 import Recovery from "./Recovery";
 import axios from "../api/axios";
+import { UserTypeContext } from "../UserContextProvider";
 
-const SessionCard = (props) => {
+const SessionCard = () => {
   const [values, setValues] = useState([]);
+  const { sessionHandler } = useContext(UserTypeContext);
   const jointInfo = {
     "bird dodge":
       "Fingers and Palm – closing & opening, Wrist – Flexion/Extension",
@@ -30,25 +32,25 @@ const SessionCard = (props) => {
     "Game name",
     "Joints",
     ["Shoulder 1", "Shoulder 2", "Shoulder 3", "Elbow", "Wrist"],
-    "Duration (in mins)",
+    "Duration (in secs)",
     "Current Level",
   ];
 
-  const tableData = async () => {
+  const tableData = useCallback(async () => {
     try {
-      const data = await axios.get("/patient/dashboard");
-      console.log(data);
-      setValues(data.data);
+      const res = await axios.get("/patient/dashboard");
+        setValues(res.data);
+      sessionHandler(res.data.length);
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [sessionHandler]);
 
   let size = values?.length;
 
   useEffect(() => {
     tableData();
-  }, []);
+  }, [tableData]);
 
   return (
     <div className="flex flex-col my-3 justify-center item-center">
@@ -62,7 +64,6 @@ const SessionCard = (props) => {
           const rows = [];
           ele[sess]?.forEach((game) => {
             const gameName = Object.keys(game)[0];
-            if (gameName === "feedback") return;
             const row = {
               gameName: gameName,
               timeDuration: game[gameName]["timer"],
@@ -70,7 +71,9 @@ const SessionCard = (props) => {
               roms: game[gameName]["roms"],
               joints: jointInfo[gameName.toLowerCase()],
             };
-            rows.push(JSON.parse(JSON.stringify(row)));
+            if (gameName !== "feedback") {
+              rows.push(JSON.parse(JSON.stringify(row)));
+            }
           });
 
           return (

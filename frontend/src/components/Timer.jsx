@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import axios from "./../api/axios";
 import Serial from "../components/Serial";
 import { GameNameContext } from "../ActiveGameContextProvider";
@@ -54,7 +54,7 @@ const Timer = (props) => {
 };
 
 const PomView = (props) => {
-  const { game, start, startHandler, ans, ansHandler, timer, setTimer, roms } =
+  const { game, start, startHandler, ans, timer, setTimer } =
     useContext(GameNameContext);
   const firstStart = useRef(true);
   const tick = useRef();
@@ -79,20 +79,20 @@ const PomView = (props) => {
     startHandler(!start);
   };
 
-  const clickHandler = async () => {
-    if (start) {
-      const timerr = timer;
-      const obj = {
-        roms: roms,
-        game,
-        timerr: timer,
-        timeInHMS: getTime(timerr),
-      };
-      ansHandler([...ans, obj]);
-      setTimer(0);
-    }
-    startHandler(false);
-  };
+  // const clickHandler = async () => {
+  //   if (start) {
+  //     const timerr = timer;
+  //     const obj = {
+  //       roms: roms,
+  //       game,
+  //       timerr: timer,
+  //       timeInHMS: getTime(timerr),
+  //     };
+  //     ansHandler([...ans, obj]);
+  //     setTimer(0);
+  //   }
+  //   startHandler(false);
+  // };
 
   const displaySecondsAsMins = (seconds) => {
     const { mins, _seconds } = getTime(seconds);
@@ -206,10 +206,11 @@ const PomView = (props) => {
 };
 
 const Input = (props) => {
-  const { nameHandler, game, timer } = useContext(GameNameContext);
+  const { nameHandler, game, levelHandler } = useContext(GameNameContext);
 
   const radioChangeHandler = (event) => {
     nameHandler(event.target.value);
+    levelHandler(0);
   };
   return (
     <div className="form-check pb-1">
@@ -314,6 +315,7 @@ const Modal = (props) => {
       ansHandler([...ans, o]);
     }
     console.log(ans);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roms]);
 
   const submitHandler = (e) => {
@@ -557,7 +559,8 @@ const Modal = (props) => {
 
 const ModalSubmit = () => {
   const [submitted, setSubmitted] = useState(false);
-  const { ansHandler, ans, nameHandler, game } = useContext(GameNameContext);
+  const { ansHandler, ans, nameHandler, game, levelHandler } =
+    useContext(GameNameContext);
   const [jointSelected, setJointSelected] = useState([]);
 
   const [assessmentMeth, setAssessmentMeth] = useState({
@@ -608,6 +611,7 @@ const ModalSubmit = () => {
     setJointSelected([]);
     setSubmitted(false);
     nameHandler("");
+    levelHandler(0);
   };
 
   // useEffect(() => {
