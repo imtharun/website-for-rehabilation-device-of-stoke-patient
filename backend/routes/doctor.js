@@ -11,7 +11,7 @@ const checkexist = (arr,ele) => {
   for(let i=0;i<arr.length;i++){
     const a = arr[i].patient_name;
     if(a === ele){
-      return true;
+      return arr.indexOf(arr[i]);
     }
   }
   return false;
@@ -47,11 +47,8 @@ router.get("/dashboard",(req,res)=>{
         let sol = [];
         let count = 0;
         result.forEach((index,ind) => {
-          if(checkexist(sol,index.patient_name)){
-            let a = sol[count-1].caretaker_name;
-            a.push(index.caretaker_name);
-          }
-          else{
+          const x = checkexist(sol,index.patient_name);
+          if(x===false){
             let caretaker_name = [index.caretaker_name];
             sol[count] = {
               patient_name : index.patient_name, 
@@ -61,6 +58,10 @@ router.get("/dashboard",(req,res)=>{
               patient_phonenumber: index.patient_phonenumber,
             };
             count = count + 1;
+          }
+          else{
+            let a = sol[x].caretaker_name;
+            a.push(index.caretaker_name);
           }
         });
         // const da = getdata(sol,dum,res);
