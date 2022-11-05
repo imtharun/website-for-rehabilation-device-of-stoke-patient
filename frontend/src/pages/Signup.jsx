@@ -136,6 +136,7 @@ const Login = () => {
         email,
         password,
         phoneNumber,
+        hospitalName,
         dob,
         address,
         userTypee,

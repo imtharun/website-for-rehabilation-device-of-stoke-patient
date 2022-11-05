@@ -260,7 +260,7 @@ const SessionCardForCaretaker = () => {
     "Game name",
     "Joints",
     ["Shoulder 1", "Shoulder 2", "Shoulder 3", "Elbow", "Wrist"],
-    "Duration (in mins)",
+    "Duration (in secs)",
     "Current Level",
   ];
 
