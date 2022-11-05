@@ -8,6 +8,8 @@ import { GameNameContext } from "../ActiveGameContextProvider";
 import { UserTypeContext } from "../UserContextProvider";
 
 export const getAge = (dateString) => {
+  const date = dateString.split("-");
+  dateString = date[1] + "-" + date[0] + "-" + date[2];
   var today = new Date();
   var birthDate = new Date(dateString);
   var age = today.getFullYear() - birthDate.getFullYear();

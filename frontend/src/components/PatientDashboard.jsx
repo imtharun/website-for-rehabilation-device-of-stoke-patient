@@ -6,6 +6,7 @@ import DefaultProfilePic from "./../assets/default-profile-pic.png";
 import SessionCard from "./SessionCard";
 import axios from "../api/axios";
 import { UserTypeContext } from "../UserContextProvider";
+import { getAge } from "./DoctorDashboard";
 
 const PatientDashboard = () => {
   const { sessions } = useContext(UserTypeContext);
@@ -62,16 +63,6 @@ export const TimeAndDate = () => {
 };
 
 const CardComponent = () => {
-  const calculate_age = (dob1) => {
-    const today = new Date();
-    const birthDate = new Date(dob1); // create a date object directly from `dob1` argument
-    let age_now = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age_now--;
-    }
-    return age_now;
-  };
   const [data, setData] = useState([]);
   const getData = async () => {
     try {
@@ -94,7 +85,7 @@ const CardComponent = () => {
               name={user.doctor_name}
               role={"Doctor"}
               email={user.doctor_id}
-              age={calculate_age(user.doctor_dob)}
+              age={getAge(user.doctor_dob)}
               address={user.doctor_address}
               profile={user.doctor_image ?? DefaultProfilePic}
             />
@@ -108,7 +99,7 @@ const CardComponent = () => {
               name={user.caretaker_name}
               role={"Caretaker"}
               email={user.caretaker_id}
-              age={calculate_age("21-05-08")}
+              age={getAge(user.caretaker_dob)}
               address={user.caretaker_address}
               profile={user.caretaker_image ?? DefaultProfilePic}
             />
