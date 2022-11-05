@@ -147,14 +147,14 @@ const PatientCard = (props) => {
             <small className="text-xs text-gray-500 block -pt-3">
               {getAge(props.ele.patient_dob)} years old
             </small>
-          </div>
-          <div className="pt-2 text-center xs:text-left">
-            <p className="text-sm">Email: </p>
-            <div className="">
-              <span className="block text-[0.8rem] mr-2">
-                {props.ele.patient_id}
-              </span>
-            </div>
+            <h2 className="text-sm mt-1">
+              <span>Phone: </span>
+              {props.ele.patient_phonenumber}
+            </h2>
+            <h2 className="text-sm">
+              <span>Email: </span>
+              {props.ele.patient_id}
+            </h2>
           </div>
 
           <div className="pt-2 text-center xs:text-left">

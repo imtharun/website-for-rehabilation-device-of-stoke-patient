@@ -86,6 +86,7 @@ const CardComponent = () => {
               role={"Doctor"}
               email={user.doctor_id}
               age={getAge(user.doctor_dob)}
+              phoneNumber={user.doctor_phonenumber}
               address={user.doctor_address}
               profile={user.doctor_image ?? DefaultProfilePic}
             />
@@ -100,6 +101,7 @@ const CardComponent = () => {
               role={"Caretaker"}
               email={user.caretaker_id}
               age={getAge(user.caretaker_dob)}
+              phoneNumber={user.caretaker_phonenumber}
               address={user.caretaker_address}
               profile={user.caretaker_image ?? DefaultProfilePic}
             />

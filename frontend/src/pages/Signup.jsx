@@ -218,7 +218,7 @@ const Login = () => {
                   ref={dobRef}
                   className="outline-none block w-full"
                   value={dob}
-                  placeholder="DD/MM/YYYY"
+                  placeholder="DD-MM-YYYY"
                   onChange={() => setDob(dobRef.current.value)}
                   type="text"
                   required
@@ -433,7 +433,7 @@ export const Top = () => {
 
 export const Bottom = () => {
   return (
-    <div className="pt-[3.5rem] pb-4 w-sm max-w-[370px] mx-auto ">
+    <div className="pt-[3.5rem] pb-4 w-sm max-w-[370px] mx-auto text-white">
       <h1 className="text-center text-xs">
         Virtual Reality Based Rehabilitation Device for Upper Extremity Stroke
         Survivors

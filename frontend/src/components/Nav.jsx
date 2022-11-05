@@ -55,7 +55,7 @@ const Nav = (props) => {
               >
                 <li
                   className={`flex justify-start  ${
-                    userType === "doctor" ? "xs:ml-10" : "xs:ml-5"
+                    userType === "doctor" ? "sm:ml-10" : "sm:ml-5"
                   } items-center mb-4`}
                 >
                   {ele.iconComponent}

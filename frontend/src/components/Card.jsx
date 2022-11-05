@@ -15,11 +15,11 @@ const Card = (props) => {
         <h1 className="font-medium">
           Name: <span className="font-normal">{props.name}</span>
         </h1>
-        {/* <h2 className="font-medium">
-          Age: <span className="font-normal">{props.age}</span>
-        </h2> */}
         <h2 className="font-medium">
-          Role: <span className="font-normal">{props.role}</span>
+          Age: <span className="font-normal">{props.age}</span>
+        </h2>
+        <h2 className="font-medium">
+          Phone: <span className="font-normal">{props.phoneNumber}</span>
         </h2>
         <h2 className="font-medium">
           Email: <span className="font-normal">{props.email}</span>

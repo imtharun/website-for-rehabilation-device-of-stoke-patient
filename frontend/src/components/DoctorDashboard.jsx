@@ -160,12 +160,16 @@ const PatientCard = (props) => {
             <small className="text-xs text-gray-500 block -pt-3">
               {getAge(props.ele.patient_dob)} years old
             </small>
+            <h2 className="text-sm mt-1">
+              <span>Phone: </span>
+              {props.ele.patient_phonenumber}
+            </h2>
             <h2 className="text-sm">
               <span>Email: </span>
               {props.ele.patient_id}
             </h2>
           </div>
-          <div className="pt-2 text-center xs:text-left">
+          <div className="pt-1 text-center xs:text-left">
             <p className="text-base">Caretakers: </p>
             <div className="flex flex-wrap w-[10rem] max-w-[18rem] h-[2rem] max-h-2rem justify-center xs:justify-start">
               {props.ele.caretaker_name.map((caretaker, index) => {
@@ -199,7 +203,7 @@ const PatientCard = (props) => {
           </div>
         </div>
       </div>
-      <div className="grid mt-2 p-4 pb-2 mx-auto justify-items-center xs:justify-items-end">
+      <div className="grid p-4 pb-2 mx-auto justify-items-center xs:justify-items-end">
         <button
           type="button"
           onClick={() => clickHandler(props.email)}
