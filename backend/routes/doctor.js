@@ -57,7 +57,8 @@ router.get("/dashboard",(req,res)=>{
               patient_name : index.patient_name, 
               patient_id : index.patient_id,
               caretaker_name : caretaker_name,
-              patient_dob : index.patient_dob
+              patient_dob : index.patient_dob,
+              patient_phonenumber: index.patient_phonenumber,
             };
             count = count + 1;
           }
