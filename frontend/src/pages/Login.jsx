@@ -6,6 +6,7 @@ import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import { UserTypeContext } from "./../UserContextProvider";
+import dst from "./../assets/dst.png"
 
 const Login = () => {
   useEffect(() => {
@@ -74,9 +75,10 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-og-bg bg-contain min-h-screen">
-      <div className="pt-3 ml-2">
+    <div className="bg-og-bg bg-cover min-h-screen">
+     <div className="flex justify-between pt-3 ml-2">
         <Logo />
+        <img className="w-[10rem] h-[5rem] mr-4" src={dst} alt="DST"/>
       </div>
       <div className="xxxs:flex xxxs:justify-center min-h-screen xxxs:items-center">
         {/* form div */}

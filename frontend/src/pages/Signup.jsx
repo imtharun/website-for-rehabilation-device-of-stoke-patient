@@ -1,6 +1,7 @@
 import React, { useRef, useState, useContext, useEffect } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import Logo from "../components/Logo";
+import dst from "../assets/dst.png";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import axios from "../api/axios";
@@ -159,9 +160,10 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-og-bg bg-contain">
-      <div className="pt-3 ml-2">
+    <div className="bg-og-bg bg-contain min-h-screen">
+      <div className="flex justify-between pt-3 ml-2">
         <Logo />
+        <img className="w-[10rem] h-[7rem] mr-4" src={dst} alt="DST"/>
       </div>
       <div className="xxxs:flex xxxs:justify-center shadow-xl">
         {/* form div */}
@@ -433,8 +435,8 @@ export const Top = () => {
 
 export const Bottom = () => {
   return (
-    <div className="pt-[3.5rem] pb-4 w-sm max-w-[370px] mx-auto text-white">
-      <h1 className="text-center text-xs">
+    <div className="pt-[3.5rem] pb-4 w-sm max-w-[370px] mx-auto text-back font-semibold ">
+      <h1 className="text-center text-xs ">
         Virtual Reality Based Rehabilitation Device for Upper Extremity Stroke
         Survivors
       </h1>

@@ -75,7 +75,7 @@ const Serial = (props) => {
       </div>
       <div id="serial-message-container">
         <div className="bg-gray-100 p-3 mx-auto max-w-lg h-60 max-h-60 overflow-y-scroll mt-8 rounded-md scrollbar-thin scrollbar-thumb-[#389387] scrollbar-track-[#cfece8] scrollbar-thumb-rounded-full">
-          <div>Serial Monitor</div>
+          <div className="text-center font-medium text-lg">Serial Monitor</div>
           <div id="message" className=""></div>
         </div>
       </div>
